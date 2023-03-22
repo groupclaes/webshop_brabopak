@@ -1,0 +1,75 @@
+{
+  "components": {},
+  "pages": {
+    "home": {
+      "header": {
+        "title": "Welkom terug {{name}}"
+      }
+    },
+    "product": {
+      "allergen": {
+        "nonePresent": "Geen van de verplicht te vermelden allergenen aanwezig.",
+        "noneAvailable": "Niet beschikbaar voor dit artikel.",
+        "may_contain": "Kan bevatten",
+        "does_not_contain": "Bevat niet",
+        "contains": "Bevat",
+        "ae": "Eieren",
+        "af": "Vis",
+        "am": "Melk",
+        "an": "Noten",
+        "ap": "Pindanoten",
+        "as": "Sesamzaad",
+        "au": "Zwaveldioxide en sulfieten",
+        "aw": "Glutenhoudende granen",
+        "ay": "Sojabonen",
+        "bc": "Selderij",
+        "bm": "Mosterd",
+        "nl": "Lupine",
+        "um": "Weekdieren",
+        "ac": "Schaaldieren",
+        "uw": "Tarwe",
+        "nc": "Cacao",
+        "nk": "Koriander",
+        "nm": "Maïs",
+        "np": "Peulvruchten",
+        "nr": "Rogge",
+        "nw": "Wortelen",
+        "ml": "Lactose",
+        "ah": "Anijsalcohol",
+        "ai": "Alfa-isomethyljonon",
+        "al": "Amyl cinnamal",
+        "ax": "Andere glutenhoudende granen en graanproducten",
+        "ba": "Benzylalcohol",
+        "bb": "Benzylbenzoaat",
+        "be": "Butylfenylmetylpropionaat",
+        "bi": "Benzylcinnamaat",
+        "bs": "Benzylsalicylaat",
+        "ca": "Cinnamylalcohol",
+        "cl": "Cinnamal",
+        "cn": "Citronellol",
+        "co": "Cumarine",
+        "ct": "Citral",
+        "eg": "Eugenol",
+        "ep": "Evernia prunastri",
+        "ev": "Evernia furfuracea",
+        "fa": "Farnesol",
+        "gb": "Gerst en gerstproducten"
+      }
+    }
+  },
+  "actions": {
+    "login": "Aanmelden",
+    "logout": "Afmelden",
+    "register": "Registreren",
+    "newCustomer": "Klant worden",
+    "close": "Sluiten",
+    "search": "Zoeken",
+    "edit": "Wijzigen",
+    "save": "Opslaan",
+    "view": "Bekijken"
+  },
+  "languages": {
+    "nl-BE": "Nederlands",
+    "fr-BE": "Français"
+  }
+}

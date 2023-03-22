@@ -1,0 +1,43 @@
+<button type="menu" tabindex="1" id="btn-search" (click)="toggle()"
+  class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-primary dark:hover:text-primary hover:bg-transparent">
+  <!-- <input type="search" class="w-80"> -->
+  <i title="search" class="text-2xl fal fa-search"></i>
+</button>
+
+<div id="search-container" class="flex items-center justify-center z-10 absolute top-10 bottom-0 left-0 right-0 bg-white px-4 space-x-4 mb-1 lg:px-8
+  dark:bg-gray-900 mx-auto max-w-7xl" *ngIf="active">
+  <div class="flex relative h-10 w-full border rounded-full bg-white dark:bg-gray-900" id="search-field-container">
+    <input class="w-full bg-transparent px-6 outline-none" spellcheck="false" type="search" name="search"
+      id="search_field" autocapitalize="off" autocomplete="off" autocorrect="off" autosave="brabopakSearch"
+      aria-label="Zoeken naar producten" [(ngModel)]="query" role="search" (keydown)="doKeyDown($event)"
+      (keyup)="doKeyUp($event)" (focusin)="showFilters()" (focusout)="hideFilters()">
+    <div
+      class="absolute left-3 right-3 px-4 py-3 top-[2.25rem] backdrop-blur shadow-xl bg-[#ffffffcc] border border-t-primary dark:border-t-primary dark:bg-[#1118278f] rounded-b-xl dark:shadow-none"
+      id="filters" *ngIf="filtersShown">
+      <ng-template [ngIf]="suggestions.length > 0">
+        <div class="font-bold text-xl mb-.5">Suggesties</div>
+        <ul class="space-y-1">
+          <li class="cursor-pointer hover:text-primary dark:hover:text-primary hover:underline"
+            *ngFor="let suggestion of suggestions" (mousedown)="searchQuery(suggestion)"
+            (click)="$event.preventDefault()">
+            {{ suggestion.text }}
+          </li>
+        </ul>
+      </ng-template>
+      <!-- 
+      <ng-template [ngIf]="recommended.length > 0">
+      <h5 class="font-medium text-xl mb-.5">{{ 'recommendedProducts' | translate }}</h5>
+        <ul class="mb-3 ">
+          <li class="py-1">product 1</li>
+          <li class="py-1">product 2</li>
+          <li class="py-1">product 3</li>
+          <li class="py-1">product 4</li>
+        </ul>
+      </ng-template> -->
+    </div>
+  </div>
+  <button class="h-10 px-6 border rounded-full cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900" tabindex="1"
+    id="btn-search-close" (click)="close()">
+    {{ 'actions.close' | translate }}
+  </button>
+</div>

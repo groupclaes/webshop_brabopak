@@ -1,0 +1,24 @@
+<!-- <div>
+    <div draggable="false" routerLink="/" routerLinkActive="text-gray-600 dark:text-gray-200"
+      [routerLinkActiveOptions]="{exact: true}"
+      class="w-full overflow-hidden rounded hover:bg-gray-100 cursor-pointer hover:text-gray-600 hover:dark:text-gray-200 dark:hover:bg-gray-700">
+      <div class="px-4 flex relative items-center flex-start h-12 w-full text-sm">
+        <i class="inline-flex items-center justify-center text-xl w-4 h-4 far fa-home-lg"></i>
+        <div class="hidden text-md font-medium ml-2 lg:block" translate="components.nav.dashboard"></div>
+      </div>
+    </div>
+  </div> -->
+<div *ngFor="let category of categories">
+  <div
+    class="w-full overflow-hidden rounded hover:bg-gray-100 cursor-pointer text-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+    draggable="false" routerLink="/products" [queryParams]="{ id: category.id }"
+    routerLinkActive="text-accent">
+    <div class="px-4 flex relative items-center flex-start h-12 w-full text-sm">
+      <i *ngIf="category.icon" class="inline-flex items-center justify-center mr-2 text-xl w-4 h-4 fal"
+        [ngClass]="category.icon"></i>
+      <div class="text-lg font-medium">
+        {{ category.name }}
+      </div>
+    </div>
+  </div>
+</div>

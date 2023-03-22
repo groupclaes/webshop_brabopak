@@ -1,0 +1,5 @@
+<div class="flex h-full space-x-8">
+  <bra-flyout-navigation-group [category]="category" [active]="isCategoryActive(category.id)"
+    (activateChange)="activateCategory(category.id)" *ngFor="let category of categories" class="flex">
+  </bra-flyout-navigation-group>
+</div>

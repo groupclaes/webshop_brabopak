@@ -1,0 +1,44 @@
+<div class="flex flex-col flex-auto items-center w-full min-w-0 bg-lynch-100 dark:bg-gray-800">
+  <div
+    class="relative flex flex-col flex-0 justify-center w-full h-16 sm:h-20 md:h-36 overflow-hidden z-49 shadow dark:shadow-none print:hidden">
+    <div class="relative dark flex flex-auto justify-center w-full px-4 md:px-8 bg-gray-800 dark:bg-gray-900">
+      <div class="flex items-center w-full max-w-screen-xl h-16 sm:h-20">
+        <div class="flex flex-items">
+          <img src="https://pcm.groupclaes.be/v3/content/bra/website/logo" alt="Brabopak company logo"
+            class="w-20 md:w-24">
+        </div>
+        <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+          <claes-languages></claes-languages>
+          <claes-fullscreen></claes-fullscreen>
+          <claes-search></claes-search>
+          <!-- <claes-bookmarks></claes-bookmarks> -->
+          <!---->
+          <!-- <claes-messages></claes-messages> -->
+          <!---->
+          <!-- <claes-notifications></claes-notifications> -->
+          <!---->
+          <claes-account></claes-account>
+          <claes-cart></claes-cart>
+        </div>
+      </div>
+    </div>
+    <div
+      class="hidden flex-auto justify-center px-4 md:px-8 md:flex bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100">
+      <div class="relative flex items-center w-full max-w-screen-xl h-16">
+        <claes-horizontal-navigation class="-mx-4"></claes-horizontal-navigation>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-auto justify-center w-full sm:p-6 md:p-8">
+    <div
+      class="flex flex-col flex-auto w-full sm:max-w-screen-xl sm:shadow-lg sm:rounded-lg sm:overflow-hidden bg-default dark:bg-gray-900 dark:shadow-none">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <div
+    class="relative flex flex-0 justify-center w-full px-6 md:px-8 z-49 border-t text-gray-700 z-49 shadow bg-white dark:bg-gray-900 dark:shadow-none dark:text-gray-200 print:hidden">
+    <claes-footer class="flex items-center w-full max-w-screen-xl h-8 sm:h-12"></claes-footer>
+  </div>
+</div>

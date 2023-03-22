@@ -1,0 +1,56 @@
+<claes-vertical-navigation appearance="thin" class="bg-white border-r dark:bg-gray-900 print:hidden">
+  <div navscroll class="claes-vertical-navigation-content">
+    <div id="claes-vertical-navigation-content-header">
+      <div class="flex items-center justify-center h-20">
+        <img src="https://pcm.groupclaes.be/v3/content/bra/website/logo" alt="Brabopak company logo" class="w-12">
+      </div>
+    </div>
+    <claes-vertical-navigation-aside-item icon="fa-home-lg" [link]="['/']">
+    </claes-vertical-navigation-aside-item>
+    <claes-vertical-navigation-aside-item icon="fa-folder" [link]="['/browse']">
+    </claes-vertical-navigation-aside-item>
+    <claes-vertical-navigation-aside-item icon="fa-file-check" [link]="['/datasheet-check']">
+    </claes-vertical-navigation-aside-item>
+    <claes-vertical-navigation-aside-item icon="fa-poll-people" [link]="['/access-log']">
+    </claes-vertical-navigation-aside-item>
+    <claes-vertical-navigation-aside-item icon="fa-cog" [link]="['/settings']">
+    </claes-vertical-navigation-aside-item>
+  </div>
+</claes-vertical-navigation>
+<div class="flex flex-col flex-auto w-full min-w-0">
+  <div class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-white
+    dark:bg-transparent print:hidden">
+    <div class="flex items-center pr-2 space-x-2">
+      <button type="menu" tabindex="1"
+        class="hidden border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent md:inline-flex">
+        <!-- toggle vertical nav -->
+        <i title="menu" class="text-2xl far fa-bars"></i>
+      </button>
+      <button type="menu" tabindex="1"
+        class="hidden border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent md:inline-flex">
+        <!-- toggle vertical nav -->
+        <i title="menu" class="text-2xl far fa-bars"></i>
+      </button>
+    </div>
+    <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+      <claes-languages></claes-languages>
+      <claes-fullscreen></claes-fullscreen>
+      <claes-search></claes-search>
+      <!-- <claes-bookmarks></claes-bookmarks> -->
+      <!---->
+      <!-- <claes-messages></claes-messages> -->
+      <!---->
+      <!-- <claes-notifications></claes-notifications> -->
+      <!---->
+      <button class="lg:hidden">Y</button>
+      <claes-account></claes-account>
+    </div>
+  </div>
+  <div class="flex flex-col flex-auto">
+    <router-outlet></router-outlet>
+  </div>
+  <claes-footer class="relative flex flex-0 items-center justify-start w-full h-14 px-4 md:px-6 z-49 border-t bg-white
+    dark:bg-transparent print:hidden">
+  </claes-footer>
+</div>
+<!-- quick chat -->

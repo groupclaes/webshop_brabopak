@@ -1,0 +1,226 @@
+<div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8" *ngIf="product">
+  <div id="images space-y-8" *ngIf="images.length > 0">
+    <div class="rounded-xl ring  ring-gray-50 dark:ring-gray-700">
+      <img [ngStyle]="{background: '#' + product.color}"
+        [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
+        rounded-xl">
+    </div>
+    <div class="grid grid-cols-4 gap-8 mt-8 mx-[7px]" *ngIf="images.length > 1">
+      <div class="rounded-xl ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index"
+        (click)="activateImage(i)" [ngClass]="{ 
+          'ring-primary ring-offset-gray-2000': activeImage === image.guid,
+          'ring-gray-50 dark:ring-gray-700': activeImage !== image.guid
+        }">
+        <img [src]="'https://pcm.groupclaes.be/v3/product-images/' + image.guid" alt="" class="block rounded-xl">
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col" id="details">
+    <h1 class="text-3xl md:text-6xl font-semibold italic leading-8 mb-2">
+      {{ product.name }}
+    </h1>
+
+    <div class="mx-1">
+      <div class="flex flex-row items-center space-x-2">
+        <span class="text-xl md:text-4xl font-light">
+          {{ product.prices[0].basePrice | currency:'EUR':'symbol-narrow':'0.2-2':culture }}
+        </span>
+        <span *ngIf="product.prices[0].isPromo && product.prices[0].discount > 0" class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300
+          dark:text-red-900">Promotie
+          {{ (product.prices[product.prices.length-1].discount * -.01) | percent:'0.0-1'}}</span>
+      </div>
+
+      <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
+        <i class="fas fa-star text-lg text-primary"></i>
+        <i class="fas fa-star text-lg text-primary"></i>
+        <i class="fas fa-star text-lg text-primary"></i>
+        <i class="fas fa-star text-lg text-primary"></i>
+        <i class="fas fa-star text-lg text-secondary-300"></i>
+      </div> -->
+
+      <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line"
+        [innerHTML]="product.description"></p>
+
+      <div id="actions" class="flex flex-row mt-8 gap-4">
+        <button class="font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
+          title="Plaats in winkelwagen">Plaats in winkelwagen</button>
+        <button type="menu" tabindex="-1"
+          class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
+          disabled="true">
+          <i title="favorite"
+            class="text-secondary-500 text-3xl far fa-heart cursor-pointer hover:font-bold hover:text-primary"></i>
+        </button>
+      </div>
+
+      <div class="mt-12">
+        <bra-accordion class="border-t" header="Kenmerken" *ngIf="product.features?.length > 0">
+          <ul body class="list-disc list-inside mt-4 ml-2 space-y-2">
+            <li *ngFor="let feature of product.features">
+              {{ feature }}
+            </li>
+          </ul>
+        </bra-accordion>
+
+        <bra-accordion class="border-t" header="Aankoopgegevens"
+          *ngIf="product.favorite && product.favorite[0].lastDateBought">
+          <div body class="flex flex-col mt-4 ml-2 space-y-2">
+            <div class="flex flex-row space-x-1">
+              <div class="w-36 font-bold">
+                {{ 'Datum laatste aankoop' | translate }}
+              </div>
+              <div>
+                {{ product.favorite[0].lastDateBought | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+            <div class="flex flex-row space-x-1" *ngIf="product.supplierId">
+              <div class="w-36 font-bold">
+                {{ 'Aantal laatste aankoop' | translate }}
+              </div>
+              <div>
+                {{ product.favorite[0].lastQuantityBought }}
+              </div>
+            </div>
+            <div class="flex flex-row space-x-1">
+              <div class="w-36 font-bold">
+                {{ 'Aantal keer gekocht' | translate }}
+              </div>
+              <div>
+                {{ product.favorite[0].frequencyBought }}
+              </div>
+            </div>
+            <div class="flex flex-row space-x-1">
+              <div class="w-36 font-bold">
+                {{ 'Aantal gekocht' | translate }}
+              </div>
+              <div>
+                {{ product.favorite[0].quantityBought }}
+              </div>
+            </div>
+          </div>
+        </bra-accordion>
+
+        <bra-accordion class="border-t" header="Details">
+          <div body class="flex flex-col mt-4 ml-2 space-y-2">
+            <div class="flex flex-row">
+              <div class="w-32 font-bold">
+                {{ 'itemNum' | translate }}
+              </div>
+              {{ product.itemNum }}
+            </div>
+            <div class="flex flex-row" *ngIf="product.supplierId">
+              <div class="w-32 font-bold">
+                {{ 'supplierItemNum' | translate }}
+              </div>
+              {{ product.supplierId }}
+            </div>
+            <div class="flex flex-row">
+              <div class="w-32 font-bold">
+                {{ 'packaging' | translate }}
+              </div>
+              {{ product.packingUnit }}
+            </div>
+            <div class="flex flex-row" *ngIf="product.ean">
+              <div class="w-32 font-bold">
+                {{ 'EAN' | translate }}
+              </div>
+              {{ product.ean }}
+            </div>
+            <div class="flex flex-row" *ngFor="let attribute of product.attributes">
+              <div class="w-32 font-bold">
+                {{ attribute.group }}
+              </div>
+              {{ attribute.value }}
+            </div>
+          </div>
+        </bra-accordion>
+
+        <bra-accordion class="border-t" header="Allergenen" *ngIf="isFood">
+          <div body class="mt-4 ml-2 space-y-2">
+            <div *ngIf="product.allergens && product.allergens[0].value !== null">
+              <div *ngFor="let allergen of product.allergens">
+                <b>{{ 'pages.product.allergen.' + allergen.code | lowercase | translate }}:</b>
+                <span>
+                  {{ 'pages.product.allergen.' + allergen.value | lowercase | translate }}</span>
+              </div>
+            </div>
+            <div *ngIf="product.allergens && product.allergens[0].value === null">
+              <span class="intend" translate="pages.product.allergen.nonePresent"></span>
+            </div>
+            <div *ngIf="!product.allergens">
+              <span class="intend" translate="pages.product.allergen.noneAvailable"></span>
+            </div>
+          </div>
+        </bra-accordion>
+
+        <bra-accordion class="border-t" header="Bijlagen" *ngIf="attachments.length > 0">
+          <div body class="mt-4 ml-2 space-y-2">
+            <div *ngFor="let attachment of attachments">
+              <a [href]="attachment.downloadUrl" class="flex flex-row space-x-1 items-center overflow-ellipsis"
+                target="_blank" rel="noreferrer noopener">
+                <img class="mr-1" src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg"
+                  height="24" width="24">
+                <span class="italic text-secondary-500">{{ attachment.documentType | translate }}</span>
+                <i class="fal text-sm fa-minus"></i>
+                <span class="truncate">{{ attachment.name }}</span>
+                <span class="w-20 text-secondary-300">
+                  ({{ attachment.size | bytes : 2 }})
+                </span>
+              </a>
+            </div>
+          </div>
+        </bra-accordion>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col col-span-2" *ngIf="product.relatedProducts">
+    <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
+      Wij bevelen aan
+    </div>
+
+    <div class="max-w-full overflow-x-scroll pb-2">
+      <div class="table-cell relative" *ngFor="let item of product.relatedProducts">
+        <a [routerLink]="['/product', item.id, itemName(item)] | localize"
+          class="flex flex-col w-40 m-1 p-2 rounded group">
+          <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
+            class="block w-40 h-40 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+          <div class="italic font-medium mt-4 h-16 line-clamp-3">
+            <span class="font-md lowercase">{{ item.name }}</span>
+          </div>
+          <div class="flex flex-row justify-between mt-2">
+            <div class="font-normal text-secondary-500">
+              {{ item.packingUnit }}
+            </div>
+            <span class="font-semibold">{{ 9.99 | currency:'EUR':'symbol-narrow':'0.2-2':culture }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col col-span-2" *ngIf="product.similarProducts">
+    <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
+      Soortgelijke artikels
+    </div>
+
+    <div class="max-w-full overflow-x-scroll pb-2">
+      <div class="table-cell relative" *ngFor="let item of product.similarProducts">
+        <a [routerLink]="['/product', item.id, itemName(item)] | localize"
+          class="flex flex-col w-40 m-1 p-2 rounded group">
+          <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
+            class="block w-40 h-36 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+          <div class="italic font-medium mt-4 h-16 line-clamp-3">
+            <span class="font-md lowercase">{{ item.name }}</span>
+          </div>
+          <div class="flex flex-row justify-between mt-2">
+            <div class="font-normal text-secondary-500">
+              {{ item.packingUnit }}
+            </div>
+            <span class="font-semibold">{{ 9.99 | currency:'EUR':'symbol-narrow':'0.2-2':culture }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

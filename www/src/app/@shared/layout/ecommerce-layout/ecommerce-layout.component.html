@@ -1,0 +1,66 @@
+<div class="w-full">
+  <div class="relative">
+    <p class="flex h-10 items-center justify-center bg-primary px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+      Gratis levering bij bestelling boven &euro; 150
+    </p>
+
+    <nav class="mx-auto max-w-7xl bg-white dark:bg-transparent px-4 sm:px-6 lg:px-8">
+      <!-- (mouseleave)="activateCategory(0)" -->
+      <div class="border-b">
+        <div class="flex h-16 items-center">
+          <!-- Mobile menu toggle, controls the 'mobileMenuOpen' state. -->
+
+          <!-- Logo -->
+          <div class="ml-4 flex lg:ml-0">
+            <a href="#">
+              <span class="sr-only">Brabopak</span>
+              <img class="h-14 w-auto dark:hidden" src="/assets/img/logo_primary.png" alt="Brabopak logo blauw">
+              <img class="h-14 w-auto hidden dark:block" src="/assets/img/logo_accent.png" alt="Brabopak logo geel">
+            </a>
+          </div>
+
+          <!-- Flyout menus -->
+          <bra-flyout-navigation class="hidden lg:ml-8 lg:block lg:self-stretch"></bra-flyout-navigation>
+
+          <div class="ml-auto flex items-center">
+            <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:mr-4">
+              <a href="#"
+                class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
+                {{ 'actions.login' | translate }}
+              </a>
+              <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+              <a href="#"
+                class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
+                {{ 'actions.newCustomer' | translate }}
+              </a>
+            </div>
+
+            <!-- <div class="hidden lg:ml-8 lg:mr-4 lg:flex">
+              <a href="#"
+                class="flex items-center text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
+                <img src="/assets/eu.svg" alt="" class="block h-auto w-5 flex-shrink-0">
+                <span class="ml-3 block text-sm font-medium">EUR</span>
+                <span class="sr-only">, change currency</span>
+              </a>
+            </div> -->
+
+            <claes-search></claes-search>
+
+            <!-- <claes-account></claes-account> -->
+            <claes-cart></claes-cart>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="flex flex-col flex-auto w-full mx-auto max-w-7xl bg-white dark:bg-transparent">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="mx-auto max-w-7xl bg-white px-4 sm:px-6 lg:px-8 dark:bg-transparent print:hidden">
+    <div class="border-t">
+      <claes-footer class="flex h-8 px-4 items-center sm:h-14 md:px-6"></claes-footer>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+@import './claes-navigation';
+
+.mat-primary.mat-chip {
+  background-color: var(--icon-color);
+  color: white
+}
+
+
+.viewer {
+  height: 100%;
+  width: 100%;
+}
+
+div.preview img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  width: auto;
+  max-height: calc(100vh - 64px);
+  max-width: 100%;
+}
+
+.context-menu {
+  display: none;
+  position: fixed;
+  overflow: visible;
+  top: 24px;
+  width: 160px;
+  z-index: 10;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  ul {
+    hr {
+      margin: 6px 10px
+    }
+
+    li {
+      padding: 3px 10px;
+      border-radius: var(--border-radius);
+
+      &[disabled="true"] {
+        pointer-events: none;
+        color: var(--disabled-color);
+      }
+
+      &:not([disabled="true"]) {
+
+        &:hover {
+          background-color: var(--icon-color);
+
+          span {
+            color: var(--background-color)
+          }
+        }
+
+        span {
+          display: block;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+.context-menu--active {
+  display: block;
+}
+
+/* Fix padding in material Menu */
+.mat-mdc-menu-content:not(:empty) {
+  padding: 0 !important
+}
+
+.mat-mdc-menu-panel {
+  min-height: 48px !important;
+  max-width: unset !important
+}

@@ -1,0 +1,28 @@
+<div class="flex flex-row justify-between items-center mb-6">
+  <div class="text-xl md:text-3xl font-semibold tracking-tight leading-8">
+    {{ header | translate }}
+  </div>
+  <div class="text-primary dark:text-accent">
+    Bekijk alles <i class="fal far fa-arrow-right"></i>
+  </div>
+</div>
+<div class="flex flex-row w-full font-serif">
+  <div class="flex justify-between space-x-2 w-full">
+    <a class="flex flex-col w-1/4 max-w-[15rem]" [routerLink]="['/product', item.id, itemName(item)] | localize"
+      *ngFor="let item of items">
+      <img [src]="item.url" [ngStyle]="{background: '#' + item.color}"
+        class="mx-auto w-60 h-60 border drop-shadow rounded-xl cursor-pointer hover:opacity-75" alt="">
+
+      <div class="flex flex-row justify-between space-x-4 mt-2 cursor-pointer group">
+        <div class="flex flex-col">
+          <div class="text-md group-hover:text-primary group-hover:underline group-hover:dark:text-accent">
+            {{ item.name }}</div>
+          <div class="text-sm text-secondary-500 font-light mt-1">{{ item.unit }}</div>
+        </div>
+        <div class="flex flex-col text-lg font-medium leading-tight">
+          {{ item.price | currency:'EUR':'symbol-narrow':'0.2-2':culture }}
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
