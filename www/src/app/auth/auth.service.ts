@@ -160,6 +160,7 @@ export class AuthService {
       "iss": "https://login.foodpartners-international.com",
       token: 'b52bc309-dea2-4e94-8a98-0785c206f56f',
       usercode: 9000003,
+      usertype: 1,
       "aud": [
         "OHlcC7vc2hEzNV"
       ],
@@ -235,6 +236,7 @@ export interface IdToken {
   preferred_username: string
 
   usercode: number
+  usertype: 1 | 2 | 3 | 4
   token: string
 
   picture: string

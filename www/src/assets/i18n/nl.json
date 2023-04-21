@@ -1,6 +1,23 @@
 {
   "components": {},
   "pages": {
+    "signin": {
+      "form": {
+        "title": "Inloggen",
+        "username": "E-mail",
+        "password": "Wachtwoord",
+        "remember": " Onthoud mij",
+        "button": "Inloggen",
+        "action1": "Wachtwoord vergeten?",
+        "action2": "Klant worden",
+        "errors": {
+          "username-required": "E-mailadres is een verplicht veld",
+          "username-email": "E-mailadres bevat een syntaxfout",
+          "password-required": "Wachtwoord is een verplicht veld",
+          "password-minLength": "Wachtwoord moet minimaal 8 tekens bevatten"
+        }
+      }
+    },
     "home": {
       "header": {
         "title": "Welkom terug {{name}}"

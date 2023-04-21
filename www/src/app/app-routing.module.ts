@@ -28,6 +28,12 @@ export const routes: Routes = [{
     layout: 'centered'
   }
 }, {
+  path: 'auth',
+  loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+  data: {
+    layout
+  }
+}, {
   path: 'products',
   loadChildren: () => import('./pages/products/products-page.module').then(m => m.ProductsPageModule),
   data: {
