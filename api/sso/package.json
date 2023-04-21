@@ -1,0 +1,29 @@
+{
+  "name": "webshop_api_sso",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild ./src/index.ts --bundle --platform=node --minify --packages=external --external:'./config' --external:'../config' --outfile=dist/index.min.js",
+    "publish": "npm run build && ./build.sh"
+  },
+  "author": {
+    "name": "Jamie Vangeysel",
+    "email": "vangeysel-jamie@hotmail.com",
+    "url": "https://jamievangeysel.be"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.2.1",
+    "@fastify/static": "^6.10.1",
+    "@groupclaes/fastify-authhandler": "^2.0.0-pre.1",
+    "@groupclaes/fastify-elastic": "^2.0.4",
+    "bcrypt": "^5.1.0",
+    "fastify": "^4.15.0",
+    "jose": "^4.14.1",
+    "mssql": "^7.3.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/mssql": "^8.1.2",
+    "@types/node": "^18.15.13"
+  }
+}
