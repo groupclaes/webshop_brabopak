@@ -46,7 +46,7 @@ export default class User {
       .sign(privateKey)
   }
 
-  async getAccessToken(authorization_code) {
+  async getAccessToken(authorization_code: { user_id: string, scope: string }) {
     const { audience, subject } = this.getAudSub(authorization_code.user_id)
 
     const privateKey = await jose.importJWK(config.key)

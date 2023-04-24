@@ -13,7 +13,7 @@ export class SSO {
     id: number,
     username: string,
     password: string,
-    email: string,
+    usercode: number,
     active: boolean
   }> {
     const r = new sql.Request(await db.get(DB_NAME))
@@ -171,6 +171,18 @@ export class SSO {
     return undefined
   }
 
+  async getMfaInfo(mfa_code: string): Promise<undefined | any> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('mfa_code', sql.VarChar, mfa_code)
+
+    const result = await r.execute(`${this.schema}[usp_getMfaInfo]`)
+
+    if (result.recordset.length > 0) {
+      return result.recordset[0]
+    }
+    return undefined
+  }
+
   /**
    * @param {number} user_id -- ID of the user
    * @param {boolean} success -- true if successful
@@ -185,6 +197,7 @@ export class SSO {
     const r = new sql.Request(await db.get(DB_NAME))
     if (user_id === undefined) user_id = null
     r.input('user_id', sql.Int, user_id)
+    r.input('client_id', sql.VarChar, 'hBK4c2uZK5')
     r.input('success', sql.Bit, success)
     r.input('result', sql.TinyInt, result)
     r.input('reason', sql.VarChar, reason)

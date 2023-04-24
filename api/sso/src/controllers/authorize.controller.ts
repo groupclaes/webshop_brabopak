@@ -2,9 +2,14 @@ import bcrypt from 'bcrypt'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { env } from 'process'
 
+import config from './config'
 import User from '../repositories/user.repository'
 
-// https://shop.brabopak.com/api/v1/sso/authorize?response_type=code&scope=openid&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
+import verify from '../providers/google-recaptcha'
+import { PasswordPolicy } from '../providers/password-policy'
+import { MFA } from '../providers/mfa'
+
+// https://shop.brabopak.com/api/v1/sso/authorize?response_type=code&scope=openid&client_id=hBK4c2uZK5&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
 /**
  *
  */
@@ -12,10 +17,12 @@ export const post = async (request: FastifyRequest<{
   Body: {
     username: string,
     password: string
+    mfa_code?: string
   },
   Querystring: {
     response_type: string,
-    scope: string
+    scope: string,
+    client_id: string // hBK4c2uZK5
   }
 }>, reply: FastifyReply) => {
   try {
@@ -23,9 +30,11 @@ export const post = async (request: FastifyRequest<{
 
     const username = request.body.username
     const password = request.body.password
+    const mfa_code = request.body.mfa_code
 
     const response_type = request.query.response_type
     const scope = request.query.scope
+    const client_id = request.query.client_id
 
     let ip_address = '127.0.0.1'
     let client_ip = request.headers['x-client-ip']
@@ -60,6 +69,27 @@ export const post = async (request: FastifyRequest<{
         })
     }
 
+    const recaptcha = request.headers['g-recaptcha-response']
+    if (recaptcha) {
+      try {
+        // Check recaptcha
+        const result = await verify(recaptcha.toString(), 'login')
+        if (!result) {
+          await repo.sso.addAuthLog(null, false, 0, 'Bot detected!', ip_address, rating, user_agent)
+          request.log.warn({ username, reason: 'Bot detected!' }, 'Failed to authenticate!')
+          return reply
+            .code(403)
+            .send({
+              error: 'Bot detected!'
+            })
+        }
+      } catch (err) {
+        request.log.warn({ username, reason: 'Failed to verify reCAPTCHA!', err }, 'Failed to authenticate!')
+      }
+    } else {
+      // recaptcha is not required for backwards compatibility, will enable in feature release
+    }
+
     let failedAttempts = await repo.sso.getFailedAuthAttempts(null, ip_address)
     if (failedAttempts.ip.length >= 20) {
       await repo.sso.addAuthLog(null, false, 3, 'too many failed attempts', ip_address, rating, user_agent)
@@ -71,7 +101,7 @@ export const post = async (request: FastifyRequest<{
     }
 
     const user = await repo.sso.get(username)
-    if (user === null) {
+    if (!user) {
       await repo.sso.addAuthLog(null, false, 0, 'wrong username', ip_address, rating, user_agent)
       request.log.warn({ username, reason: 'wrong username' }, 'Failed to authenticate!')
       return reply
@@ -81,7 +111,7 @@ export const post = async (request: FastifyRequest<{
         })
     }
 
-    failedAttempts = await repo.sso.getFailedAuthAttempts(user?.id.toString(), null)
+    failedAttempts = await repo.sso.getFailedAuthAttempts(user.id.toString(), null)
     if (failedAttempts.user.length >= 10) {
       await repo.sso.addAuthLog(user?.id.toString(), false, 2, 'too many failed attempts', ip_address, rating, user_agent)
       return reply
@@ -91,7 +121,7 @@ export const post = async (request: FastifyRequest<{
         })
     }
 
-    if (!user?.active) {
+    if (!user.active) {
       await repo.sso.addAuthLog(user?.id.toString(), false, 0, 'user is inactive', ip_address, rating, user_agent)
       request.log.warn({ username }, 'Inactive user tried to authenticate!')
       return reply
@@ -116,13 +146,51 @@ export const post = async (request: FastifyRequest<{
           error: 'Username or password is incorrect!'
         })
     }
+    let errors: any[] = []
+    if ('password_policy' in config) {
+      // Audit password
+      const policy = new PasswordPolicy(password, config.password_policy)
 
-    let errors = []
+      try {
+        policy.audit()
+      } catch (err) {
+        errors.push(err)
+      }
+    }
 
-    let authorization_code = await repo.sso.createAuthorizationCode(user.id.toString(), scope)
-
+    let authorization_code
+    let mfa_required
+    if (mfa_code === undefined) {
+      authorization_code = await repo.sso.createAuthorizationCode(user.id.toString(), scope)
+      const mfa = new MFA(user, client_id, { authorization_code })
+      if (mfa.challengeRequired() === true) {
+        mfa_required = true
+        await mfa.challenge()
+      }
+    } else {
+      // Get mfa info by code
+      const mfa_info = await repo.sso.getMfaInfo(mfa_code)
+      if (mfa_info) {
+        if (!mfa_info.used) {
+          const mfa = new MFA(user, client_id, mfa_info)
+          if (mfa.complete(mfa_code)) {
+            await mfa.use(mfa_code)
+            authorization_code = mfa_info.authorization_code
+          }
+        }
+      } else {
+        await repo.sso.addAuthLog(user.id.toString(), false, 0, 'mfa_info missing', ip_address, rating, user_agent)
+        request.log.warn({ username, reason: 'mfa_info not found' }, 'Failed to authenticate!')
+        return reply
+          .code(404)
+          .send({
+            error: 'Username or password is incorrect!'
+          })
+      }
+    }
     return {
-      authorization_code,
+      authorization_code: mfa_required === undefined ? authorization_code : undefined,
+      mfa_required,
       errors
     }
   } catch (err) {
