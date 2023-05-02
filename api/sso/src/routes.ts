@@ -13,6 +13,10 @@ export default [{
   handler: tokenController.get
 }, {
   method: 'POST',
+  url: '/users/signon',
+  handler: usersController.postSignOn
+}, {
+  method: 'POST',
   url: '/users/refresh-token',
   handler: usersController.postRefreshToken
 }, {

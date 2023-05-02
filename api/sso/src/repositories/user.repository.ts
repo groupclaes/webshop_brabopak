@@ -4,6 +4,7 @@ import db from '../db'
 
 import config from './config'
 import { SSO } from './sso.repository'
+import { IAppUser } from '../controllers/users.controller'
 
 const expiresIn = 900
 const DB_NAME = 'brabopak'
@@ -79,14 +80,34 @@ export default class User {
   /**
    *
    */
-  async create(email: string, password: string, given_name: string, family_name: string): Promise<boolean> {
+  async create(username: string, password: string, usercode: number): Promise<boolean> {
     const request = new sql.Request(await db.get(DB_NAME))
-    request.input('email', sql.VarChar, email)
+    request.input('username', sql.VarChar, username)
     request.input('password', sql.VarChar, password)
-    request.input('given_name', sql.VarChar, given_name)
-    request.input('family_name', sql.VarChar, family_name)
+    request.input('usercode', sql.Int, usercode)
 
     const result = await request.execute(`${this.schema}.[usp_createUser]`)
+
+    if (result.rowsAffected[0] > 0) {
+      return true
+    }
+    return false
+  }
+
+  async checkSettings(settings: IAppUser): Promise<boolean> {
+    const request = new sql.Request(await db.get(DB_NAME))
+    request.input('usercode', sql.Int, settings.usercode)
+    request.input('user_type', sql.Int, settings.user_type)
+    request.input('customer_id', sql.Int, settings.customer_id)
+    request.input('address_id', sql.Int, settings.address_id)
+    request.input('group_id', sql.Int, settings.group_id)
+    request.input('promo', sql.Bit, settings.promo)
+    request.input('bonus_percentage', sql.Numeric, settings.bonus_percentage)
+    request.input('fostplus', sql.Bit, settings.fostplus)
+    request.input('customer_type', sql.VarChar, settings.customer_type)
+    request.input('price_class', sql.Int, settings.price_class)
+
+    const result = await request.execute(`${this.schema}.[usp_createOrUpdateSettings]`)
 
     if (result.rowsAffected[0] > 0) {
       return true

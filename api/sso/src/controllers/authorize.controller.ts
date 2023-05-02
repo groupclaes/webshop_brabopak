@@ -136,7 +136,7 @@ export const post = async (request: FastifyRequest<{
       // user has bcrypt password
     } else if (password === user.password) {
       // user is using plaintext password
-      await repo.updatePassword(user.id.toString(), bcrypt.hashSync(password, env['BCRYPT_COST'] ?? 13))
+      await repo.updatePassword(user.id.toString(), bcrypt.hashSync(password, +((env['BCRYPT_COST']) ?? 13)))
     } else {
       await repo.sso.addAuthLog(user.id.toString(), false, 0, 'wrong password', ip_address, rating, user_agent)
       request.log.warn({ username, reason: 'wrong password' }, 'Failed to authenticate!')
@@ -161,7 +161,7 @@ export const post = async (request: FastifyRequest<{
     let authorization_code
     let mfa_required
     if (mfa_code === undefined) {
-      authorization_code = await repo.sso.createAuthorizationCode(user.id.toString(), scope)
+      authorization_code = await repo.sso.createAuthorizationCode(client_id, user.id.toString(), scope)
       const mfa = new MFA(user, client_id, { authorization_code })
       if (mfa.challengeRequired() === true) {
         mfa_required = true

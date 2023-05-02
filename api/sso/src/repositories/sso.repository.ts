@@ -72,11 +72,13 @@ export class SSO {
 
   /**
    * Create AuthorizationCode
+   * @param {string} client_id
    * @param {number} user_id
    * @param {string} scope
    */
-  async createAuthorizationCode(user_id: string, scope: string) {
+  async createAuthorizationCode(client_id: string, user_id: string, scope: string) {
     const r = new sql.Request(await db.get(DB_NAME))
+    r.input('client_id', sql.VarChar, client_id)
     r.input('user_id', sql.Int, user_id)
     r.input('scope', sql.VarChar, scope)
 

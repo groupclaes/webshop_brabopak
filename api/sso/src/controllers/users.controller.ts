@@ -2,8 +2,88 @@ import bcrypt from 'bcrypt'
 import { JWTPayload } from 'jose'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { env } from 'process'
+import oe from '@groupclaes/oe-connector'
 
 import User from '../repositories/user.repository'
+// SGWQVXPQWZEM
+
+/**
+ * Create new user if it exists in azure
+ * @param {FastifyRequest} request
+ * @param {FastifyReply} reply
+ */
+export const postSignOn = async (request: FastifyRequest<{
+  Body: {
+    username: string,
+    password: string,
+    code: string
+  }
+}>, reply: FastifyReply) => {
+  try {
+    const repo = new User()
+    const {
+      username,
+      password,
+      code
+    } = request.body
+
+    console.log(username, password, code)
+
+    oe.configure({
+      c: false
+    })
+
+    const oeResponse = await oe.run('signon', [
+      username,
+      code,
+      'BRA',
+      undefined
+    ], {
+      tw: -1,
+      simpleParameters: true
+    })
+
+    if (oeResponse && oeResponse.status === 200 && oeResponse.result) {
+      const result = (oeResponse.result.settings as IAppUser[])
+      if (result && result.length > 0) {
+        const appuser = result[0]
+        if (await repo.create(username, bcrypt.hashSync(password, +(env['BCRYPT_COST'] ?? 13)), appuser.usercode)) {
+          // insert/update user.settings
+          await repo.checkSettings(appuser)
+          return {
+            success: true
+          }
+        }
+        return reply
+          .status(500)
+          .send({
+            status: 'Internal Server Error',
+            statusCode: 500,
+            message: 'Error while creating new user entry!'
+          })
+      }
+      return reply
+        .status(500)
+        .send({
+          status: 'Internal Server Error',
+          statusCode: 500,
+          message: 'Error with usersettings!'
+        })
+    } else {
+      return reply
+        .status(500)
+        .send({
+          status: 'Internal Server Error',
+          statusCode: 500,
+          message: 'Error while retrieving registration info!'
+        })
+    }
+  } catch (err) {
+    return reply
+      .status(500)
+      .send(err)
+  }
+}
 
 /**
  * Revoke current or supplied refreshToken
@@ -87,11 +167,24 @@ export const postUpdatePassword = async (request: FastifyRequest<{
       const body = request.body
       let _pass = body.password
 
-      _pass = bcrypt.hashSync(_pass, env['BCRYPT_COST'] ?? 13)
+      _pass = bcrypt.hashSync(_pass, +(env['BCRYPT_COST'] ?? 13))
       return await repo.updatePassword(token.sub, _pass)
     }
     return
   } catch (err) {
     throw err
   }
+}
+
+export interface IAppUser {
+  usercode: number
+  user_type: 1 | 2 | 3 | 4
+  customer_id: number
+  address_id: number
+  group_id: number
+  promo: boolean
+  bonus_percentage: number
+  fostplus: boolean
+  customer_type: string
+  price_class: number
 }

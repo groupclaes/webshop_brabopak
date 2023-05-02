@@ -23,7 +23,7 @@ export class MFA {
    * @returns boolean
    */
   challengeRequired() {
-    return this._client_id === 'hBK4c2uZK5' /* Brabopak shop */
+    return false // this._client_id === 'hBK4c2uZK5' /* Brabopak shop */
   }
 
   /**
