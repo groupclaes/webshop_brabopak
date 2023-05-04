@@ -24,15 +24,28 @@
 
           <div class="ml-auto flex items-center">
             <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:mr-4">
-              <a href="#"
+              <ng-template [ngIf]="!authenticated">
+              <a [routerLink]="[ '/auth/sign-in' ] | localize"
                 class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
-                {{ 'actions.login' | translate }}
+                {{ 'actions.sign-in' | translate }}
               </a>
               <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-              <a href="#"
+              <a [routerLink]="[ '/auth/sign-up' ] | localize"
                 class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
                 {{ 'actions.newCustomer' | translate }}
               </a>
+              </ng-template>
+              <ng-template [ngIf]="authenticated">
+                <a [routerLink]="[ '/account' ] | localize"
+                  class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
+                  {{ 'actions.account' | translate }}
+                </a>
+                <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+                <a (click)="logout()"
+                  class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
+                  {{ 'actions.sign-out' | translate }}
+                </a>
+              </ng-template>
             </div>
 
             <!-- <div class="hidden lg:ml-8 lg:mr-4 lg:flex">

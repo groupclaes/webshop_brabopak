@@ -4,7 +4,8 @@
       <div class="text-4xl font-extrabold tracking-tight leading-tight" translate="pages.signin.form.title"></div>
       <div class="flex items-baseline mt-0.5 font-medium">
         <div>Heb je nog geen account?</div>
-        <a class="ml-1 text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-on']">Aanmelden</a>
+        <a class="ml-1 text-primary dark:text-accent hover:underline"
+          [routerLink]="['/auth/sign-on'] | localize">Aanmelden</a>
       </div>
       <form class="mt-8" [formGroup]="signinForm" *ngIf="signinForm" (submit)="signin()" #myform="ngForm">
         <div class="form-control w-full">
@@ -46,7 +47,7 @@
 
         <div class="flex flex-col space-y-1 mt-4">
           <a class="text-md font-medium text-primary dark:text-accent hover:underline"
-            [routerLink]="['/auth/forgot-password']" [queryParams]="{ username: currentUsername }"
+            [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ username: currentUsername }"
             translate="pages.signin.form.action1"></a>
           <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/new-up']"
             translate="pages.signin.form.action2"></a>

@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common'
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
@@ -31,16 +32,15 @@ export class ProductPageComponent {
     private translate: TranslateService,
     private products: ProductsApiService,
     private pcm: PcmApiService,
-    private auth: AuthService
+    private auth: AuthService,
+    private currencyPipe: CurrencyPipe
   ) {
     this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
         const id = +params['id']
-        const name = params['name'].replace(/-/g, ' ')
+        // const name = params['name'].replace(/---/g, ' - ').replace(/-/g, ' ')
 
         this.load(id)
-
-        console.log(id, name)
       }
     })
   }
@@ -117,6 +117,18 @@ export class ProductPageComponent {
 
   get product(): any {
     return this._product
+  }
+
+  get basePrice(): string | null {
+    if (this.auth.isAuthenticated()) {
+      if (this._product.prices && this._product.prices.some((e: any) => e.amount > 0)) {
+        let myprice: any = this._product.prices.find((e: any) => e.quantity === 1)
+        return this.currencyPipe.transform(myprice.basePrice, 'EUR', 'symbol-narrow', '0.2-2', 'nl-BE')
+      } else if (this._product.prices.some((e: any) => e.amount === -1)) {
+        return this.translate.instant('price.request')
+      }
+    }
+    return null
   }
 
   get images(): any[] {

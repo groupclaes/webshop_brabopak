@@ -17,14 +17,14 @@
   </div>
 
   <div class="flex flex-col" id="details">
-    <h1 class="text-3xl md:text-6xl font-semibold italic leading-8 mb-2">
+    <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2">
       {{ product.name }}
     </h1>
 
     <div class="mx-1">
       <div class="flex flex-row items-center space-x-2">
         <span class="text-xl md:text-4xl font-light">
-          {{ product.prices[0].basePrice | currency:'EUR':'symbol-narrow':'0.2-2':culture }}
+          {{ basePrice }}
         </span>
         <span *ngIf="product.prices[0].isPromo && product.prices[0].discount > 0" class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300
           dark:text-red-900">Promotie

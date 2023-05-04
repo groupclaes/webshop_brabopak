@@ -13,7 +13,15 @@ export class HomePageComponent {
   constructor(
     private auth: AuthService
   ) {
-
+    this.auth.change.subscribe({
+      next: (token) => {
+        console.log(token)
+        if (token) {
+          console.log(this.auth.id_token)
+        }
+      }
+    })
+    console.log(this.auth.id_token)
   }
 
   get dashboard(): any {

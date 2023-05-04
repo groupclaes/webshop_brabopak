@@ -4,6 +4,8 @@ import { firstValueFrom, Subject } from 'rxjs'
 import { shareReplay } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { isPlatformBrowser } from '@angular/common'
+import { Router } from '@angular/router'
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 const api_url = environment.sso.url
 const client_id = environment.sso.client_id
@@ -27,15 +29,10 @@ export class AuthService {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
+    private router: Router,
+    private localize: LocalizeRouterService,
     private http: HttpClient
   ) {
-    if (!environment.production) {
-      this.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({
-        access_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0WGFRRUdGS3U2Zk8xWTFJa282TW5WOTY4R3lVVWxUWlRNY0dhTjdOZEUiLCJqa3UiOiJodHRwczovL3Nzby5ncm91cGNsYWVzLmJlL3YxLy53ZWxsLWtub3duL2p3a3MuanNvbiJ9.eyJyb2xlcyI6WyJhZG1pbjpHcm91cENsYWVzLlBDTS8qIl0sImlzcyI6Imh0dHBzOi8vc3NvLmdvdXBjbGFlcy5iZSIsImF1ZCI6WyJPSGxjQzd2YzJoRXpOViIsImh0dHBzOi8vcGNtLmdyb3VwY2xhZXMuYmUvdWkiXSwiZXhwIjoxNjc4MTE1OTcyLCJzdWIiOiIxIn0.BQmqBp_6L_X8CepmwMt6Or7ghI5GSmAeUWPe98urEXIDk3Zqsu786JpwsqusiecWa0OYFmDOLq2Sr3-S-Q9MEj7c3zUZGLgoL2epRfSaCIhr4LVwjBNe5IR7o3coaBcsPFIF5eFyylXBOc_absvMsUQV0BzylHBkJuVCffQIju_RnDHrFWewnOk3PSZRplrBliQL3apZlAiIzRTLbMDLUo1gkBsB7qP7Zrsv-o_ktRtWNz-uH86MaN5YQp9XLJKHDplXBvLUb9HpWn1So6s8YzkWAO8_XF4k-AwZsGwkJuCwAiEgfBZZID_zfX8y8knslzQbV1l_wJ0UWHIQu2p1Gg',
-        id_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0WGFRRUdGS3U2Zk8xWTFJa282TW5WOTY4R3lVVWxUWlRNY0dhTjdOZEUiLCJqa3UiOiJodHRwczovL3Nzby5ncm91cGNsYWVzLmJlL3YxLy53ZWxsLWtub3duL2p3a3MuanNvbiJ9.eyJyb2xlcyI6WyJhZG1pbjpHcm91cENsYWVzLlBDTS8qIl0sImlzcyI6Imh0dHBzOi8vc3NvLmdvdXBjbGFlcy5iZSIsImF1ZCI6WyJPSGxjQzd2YzJoRXpOViIsImh0dHBzOi8vcGNtLmdyb3VwY2xhZXMuYmUvdWkiXSwiZXhwIjoxNjc4MTE1OTcyLCJzdWIiOiIxIn0.BQmqBp_6L_X8CepmwMt6Or7ghI5GSmAeUWPe98urEXIDk3Zqsu786JpwsqusiecWa0OYFmDOLq2Sr3-S-Q9MEj7c3zUZGLgoL2epRfSaCIhr4LVwjBNe5IR7o3coaBcsPFIF5eFyylXBOc_absvMsUQV0BzylHBkJuVCffQIju_RnDHrFWewnOk3PSZRplrBliQL3apZlAiIzRTLbMDLUo1gkBsB7qP7Zrsv-o_ktRtWNz-uH86MaN5YQp9XLJKHDplXBvLUb9HpWn1So6s8YzkWAO8_XF4k-AwZsGwkJuCwAiEgfBZZID_zfX8y8knslzQbV1l_wJ0UWHIQu2p1Gg'
-      }))
-    }
-
     this.change.subscribe(response => {
       if (response) {
         this._id_token = response.id_token
@@ -51,6 +48,24 @@ export class AuthService {
       const response = JSON.parse(old_session)
       this.change.next(response)
     }
+  }
+
+  public authorize(credentials: { username: string, password: string }, token?: string): Promise<any> {
+    return this.http.post<any>(`${api_url}authorize`, credentials, {
+      params: {
+        response_type: 'code',
+        scope: scope,
+        client_id: client_id
+      },
+      headers: token ? {
+        'g-recaptcha-response': token
+      } : {}
+    })
+      .toPromise()
+  }
+
+  public signon(credentials: { username: string, password: string, code: string }): Promise<any> {
+    return firstValueFrom(this.http.post<any>(`${api_url}users/signon`, credentials))
   }
 
   public getToken(authorization_code: string) {
@@ -117,8 +132,8 @@ export class AuthService {
     this.sessionStorage.removeItem(REFRESH_STORAGE_KEY)
     this.storage.removeItem(REFRESH_STORAGE_KEY)
     this.change.next(undefined)
-    if (window)
-      window.location.href = `https://login.groupclaes.be?client_id=${client_id}&scope=${scope}&redirect_url=https%3A%2F%2F${location.hostname}${encodeURIComponent(location.pathname)}%3Fauthorization_code%3D`
+
+    this.router.navigate([this.localize.translateRoute('/auth/sign-in')])
   }
 
   public isAuthenticated(): boolean {
@@ -150,23 +165,9 @@ export class AuthService {
   }
 
   get id_token(): IdToken | undefined {
-    return {
-      "name": "Jamie Vangeysel",
-      "given_name": "Jamie",
-      "surname": "Vangeysel",
-      "preferred_username": "vangeyja",
-      "email": "jamie.vangeysel@groupclaes.be",
-      "picture": "https://www.gravatar.com/avatar/6ddd5b2d3650d9a76c66c631ea4dd4f2?r=pg&d=mp",
-      "iss": "https://login.foodpartners-international.com",
-      token: 'b52bc309-dea2-4e94-8a98-0785c206f56f',
-      usercode: 9000003,
-      usertype: 1,
-      "aud": [
-        "OHlcC7vc2hEzNV"
-      ],
-      "exp": 16078115972,
-      "sub": "1"
-    }
+    if (this._id_token)
+      return JSON.parse(window.atob(this._id_token.split('.')[1]))
+    return undefined
   }
 
   get username(): string {

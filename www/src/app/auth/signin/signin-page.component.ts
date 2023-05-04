@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
+import { ReCaptchaV3Service } from 'ng-recaptcha'
+import { firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth.service'
 
 @Component({
@@ -11,6 +14,7 @@ import { AuthService } from '../auth.service'
   ]
 })
 export class SigninPageComponent implements OnInit {
+  mfaRequired = false
   isLoading = false
   signinForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.email]],
@@ -24,7 +28,9 @@ export class SigninPageComponent implements OnInit {
     private auth: AuthService,
     private translate: TranslateService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private recaptchaV3Service: ReCaptchaV3Service
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(q => {
@@ -69,42 +75,86 @@ export class SigninPageComponent implements OnInit {
     }
   }
 
-  signin() {
-    if (!this.signinForm.valid) return
+  async signin() {
+    if (!this.signinForm.valid)
+      return
 
-    this.isLoading = true
-    this.ref.markForCheck()
+    await this.loginSso()
+  }
 
-    // this.auth.login(this.loginForm.value).pipe(finalize(() => {
-    //   this.loginForm.markAsPristine()
-    //   console.debug('loginForm.markAsPristine()')
-    // })).subscribe((token: any) => {
-    //   if (token) {
-    //     console.debug(`successfully logged in`)
-    //   }
-    //   this.isLoading = false
-    //   this.ref.markForCheck()
-    // }, (error: any) => {
-    //   console.debug(`Login error: ${error}`)
-    //   switch (error.status) {
-    //     case 401:
-    //       console.warn('wrongCredentials')
-    //       alert(this.translate.instant('wrongCredentials'))
-    //       break
+  async loginSso() {
+    const token = await firstValueFrom(this.recaptchaV3Service.execute('login'))
 
-    //     case 404:
-    //       console.warn('accountNotFound')
-    //       alert(this.translate.instant('accountNotFound'))
-    //       break
+    try {
+      const authorizeResponse: IAuthorizeResponse = await this.auth.authorize(this.signinForm.value, token)
 
-    //     default:
-    //       console.warn('unknownServerError')
-    //       alert(this.translate.instant('unknownServerError'))
-    //       break
-    //   }
-    //   this.isLoading = false
-    //   this.ref.markForCheck()
-    // })
+      let authorization_code = authorizeResponse.authorization_code
+
+      if (authorizeResponse.mfa_required) {
+        this.enableMfa()
+        return
+      }
+
+      if (!authorization_code) return
+
+      await this.auth.getToken(authorization_code).toPromise()
+      if (this.hasError(authorizeResponse)) {
+        this.handleError(authorizeResponse)
+      } else {
+        this.goToDashboard()
+      }
+    } catch (err: any) {
+      console.log(err)
+      if (err.status && err.message) {
+        const errRes = (err as HttpErrorResponse)
+
+        switch (errRes.status) {
+          case 0:
+            alert(errRes.statusText)
+            break
+
+          case 404:
+            if (errRes.error.error === 'Username or password is incorrect!') {
+              alert(this.translate.instant('errors.incorrect_credentials'))
+            }
+            break
+
+          case 429:
+            alert(errRes.error.reason)
+            break
+
+          default:
+            alert(errRes.error.reason)
+            break
+        }
+      }
+    } finally {
+      this.ref.markForCheck()
+    }
+  }
+
+  hasError(authorizeResponse: IAuthorizeResponse) {
+    return authorizeResponse.errors.length > 0
+  }
+
+  handleError(authorizeResponse: IAuthorizeResponse) {
+    const error = authorizeResponse.errors.find(err => err.error === 'PasswordPolicy')
+    if (error) {
+      // if (confirm(this.translate.instant(`errors.PasswordPolicy-${error.error_code}`, { length: error.args?.length }))) {
+      //   this.router.navigate(['/account/password-change'])
+      //   return
+      // }
+    }
+    this.goToDashboard()
+  }
+
+  goToDashboard() {
+    this.router.navigate(['/home'])
+  }
+
+  private enableMfa() {
+    this.mfaRequired = true
+    this.signinForm.addControl('mfa_code', this.fb.control('', Validators.required))
   }
 
   get currentUsername(): string | undefined {
@@ -114,4 +164,17 @@ export class SigninPageComponent implements OnInit {
     }
     return undefined
   }
+}
+
+export interface IAuthorizeResponse {
+  authorization_code?: string
+  mfa_required?: boolean
+  errors: IAuthorizeError[]
+}
+
+export interface IAuthorizeError {
+  error: 'PasswordPolicy' | 'Unknown'
+  error_code: number
+  message: string
+  args: any
 }

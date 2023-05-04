@@ -18,9 +18,28 @@
         }
       }
     },
+    "signon": {
+      "form": {
+        "title": "Aanmelden",
+        "username": "E-mail",
+        "password": "Wachtwoord",
+        "code": "Registratiecode",
+        "button": "Aanmelden",
+        "action1": "Wachtwoord vergeten?",
+        "action2": "Inloggen",
+        "errors": {
+          "username-required": "E-mailadres is een verplicht veld",
+          "username-email": "E-mailadres bevat een syntaxfout",
+          "password-required": "Wachtwoord is een verplicht veld",
+          "password-minLength": "Wachtwoord moet minimaal 8 tekens bevatten",
+          "code-required": "Registratiecode is een verplicht veld",
+          "code-minLength": "Registratiecode moet 12 tekens lang zijn en bevat enkel letters"
+        }
+      }
+    },
     "home": {
       "header": {
-        "title": "Welkom terug {{name}}"
+        "title": "Welkom terug"
       }
     },
     "product": {
@@ -75,10 +94,11 @@
     }
   },
   "actions": {
-    "login": "Aanmelden",
-    "logout": "Afmelden",
-    "register": "Registreren",
-    "newCustomer": "Klant worden",
+    "account": "Account",
+    "sign-in": "Aanmelden",
+    "sign-out": "Afmelden",
+    "sign-on": "Registreren",
+    "sign-up": "Klant worden",
     "close": "Sluiten",
     "search": "Zoeken",
     "edit": "Wijzigen",
@@ -88,5 +108,6 @@
   "languages": {
     "nl-BE": "Nederlands",
     "fr-BE": "Français"
-  }
+  },
+  "price.request": "Prijs op aanvraag"
 }

@@ -3,10 +3,11 @@ export const environment = {
   api: 'https://shop.brabopak.com/api/v1/',
   pcm: 'https://pcm.groupclaes.be/v3/',
   sso: {
-    url: 'https://sso.groupclaes.be/v1/',
-    client_id: 'OHlcC7vc2hEzNV',
-    scope: 'openid offline_access name email preferred_username picture permissions',
+    url: 'https://shop.brabopak.com/api/v1/sso/',
+    client_id: 'hBK4c2uZK5',
+    scope: 'openid offline_access email email_verified usercode customer_id address_id promo fostplus user_type customer_type',
   },
+  google_recaptcha: '6LcfW7MlAAAAAMkukyyfMYsVg4xuAf0eS6KhjHPv',
   storageKey: 'com.brabopak.shop',
   defaultLanguage: 'nl-BE',
   supportedLanguages: [

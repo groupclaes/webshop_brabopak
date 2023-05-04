@@ -27,8 +27,6 @@ export const postSignOn = async (request: FastifyRequest<{
       code
     } = request.body
 
-    console.log(username, password, code)
-
     oe.configure({
       c: false
     })
