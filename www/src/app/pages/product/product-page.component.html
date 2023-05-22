@@ -1,4 +1,15 @@
 <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8" *ngIf="product">
+  <div class="flex flex-row md:col-span-2">
+    <div class="flex flex-row flex-auto items-center space-x-2 text-gray-500 overflow-hidden">
+      <ng-container *ngFor="let breadcrumb of breadcrumbs; let isLast = last">
+        <div class="truncate whitespace-nowrap" [title]="breadcrumb">{{ breadcrumb }}</div>
+        <i class="fal fa-lg fa-fw fa-angle-right" *ngIf="!isLast"></i>
+      </ng-container>
+    </div>
+    <div class="w-8">
+      <i class="fal fa-fw fa-times fa-lg cursor-pointer hover:text-primary" onclick="history.back()"></i>
+    </div>
+  </div>
   <div id="images space-y-8" *ngIf="images.length > 0">
     <div class="rounded-xl ring  ring-gray-50 dark:ring-gray-700">
       <img [ngStyle]="{background: '#' + product.color}"
@@ -22,7 +33,7 @@
     </h1>
 
     <div class="mx-1">
-      <div class="flex flex-row items-center space-x-2">
+      <div class="flex flex-row items-center space-x-2" *ngIf="product.prices">
         <span class="text-xl md:text-4xl font-light">
           {{ basePrice }}
         </span>
@@ -32,11 +43,11 @@
       </div>
 
       <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
-        <i class="fas fa-star text-lg text-primary"></i>
-        <i class="fas fa-star text-lg text-primary"></i>
-        <i class="fas fa-star text-lg text-primary"></i>
-        <i class="fas fa-star text-lg text-primary"></i>
-        <i class="fas fa-star text-lg text-secondary-300"></i>
+        <i class="fas fa-star text-lg text-info"></i>
+        <i class="fas fa-star text-lg text-info"></i>
+        <i class="fas fa-star text-lg text-info"></i>
+        <i class="fas fa-star text-lg text-info"></i>
+        <i class="far fa-star text-lg text-secondary-300"></i>
       </div> -->
 
       <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line"
@@ -47,9 +58,10 @@
           title="Plaats in winkelwagen">Plaats in winkelwagen</button>
         <button type="menu" tabindex="-1"
           class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
-          disabled="true">
-          <i title="favorite"
-            class="text-secondary-500 text-3xl far fa-heart cursor-pointer hover:font-bold hover:text-primary"></i>
+          (click)="toggleFavorite()">
+          <i title="favorite" [ngClass]="{ 'text-info font-bold hover:font-normal': product.favorite && product.favorite[0].is_favorite,
+            'text-secondary-500 hover:font-bold':
+            !product.favorite || !product.favorite[0].is_favorite }" class="text-3xl far fa-heart cursor-pointer"></i>
         </button>
       </div>
 
@@ -63,68 +75,56 @@
         </bra-accordion>
 
         <bra-accordion class="border-t" header="Aankoopgegevens"
-          *ngIf="product.favorite && product.favorite[0].lastDateBought">
+          *ngIf="product.favorite && product.favorite[0].last_bought_date">
           <div body class="flex flex-col mt-4 ml-2 space-y-2">
             <div class="flex flex-row space-x-1">
               <div class="w-36 font-bold">
-                {{ 'Datum laatste aankoop' | translate }}
+                {{ 'pages.product.lastBought' | translate }}
               </div>
               <div>
-                {{ product.favorite[0].lastDateBought | date: 'dd/MM/yyyy' }}
-              </div>
-            </div>
-            <div class="flex flex-row space-x-1" *ngIf="product.supplierId">
-              <div class="w-36 font-bold">
-                {{ 'Aantal laatste aankoop' | translate }}
-              </div>
-              <div>
-                {{ product.favorite[0].lastQuantityBought }}
+                {{ product.favorite[0].last_bought_date | date: 'dd/MM/yyyy' }}:
+                {{ product.favorite[0].last_bought_quantity }}x
+                {{ product.unit }}
               </div>
             </div>
             <div class="flex flex-row space-x-1">
               <div class="w-36 font-bold">
-                {{ 'Aantal keer gekocht' | translate }}
+                {{ 'pages.product.timesBought' | translate }}
               </div>
               <div>
-                {{ product.favorite[0].frequencyBought }}
+                {{ product.favorite[0].frequency_bought }}
               </div>
             </div>
             <div class="flex flex-row space-x-1">
               <div class="w-36 font-bold">
-                {{ 'Aantal gekocht' | translate }}
+                {{ 'pages.product.quantityBought' | translate }}
               </div>
               <div>
-                {{ product.favorite[0].quantityBought }}
+                {{ product.favorite[0].quantity_bought }}
               </div>
             </div>
           </div>
         </bra-accordion>
 
-        <bra-accordion class="border-t" header="Details">
+        <bra-accordion class="border-t" header="Details" [expanded]="true">
           <div body class="flex flex-col mt-4 ml-2 space-y-2">
             <div class="flex flex-row">
               <div class="w-32 font-bold">
-                {{ 'itemNum' | translate }}
+                {{ 'pages.product.itemnum' | translate }}
               </div>
-              {{ product.itemNum }}
+              {{ product.itemnum }}
             </div>
-            <div class="flex flex-row" *ngIf="product.supplierId">
+            <div class="flex flex-row" *ngIf="product.supplier_id && product.itemnum !== product.supplier_id">
               <div class="w-32 font-bold">
-                {{ 'supplierItemNum' | translate }}
+                {{ 'pages.product.supplier_id' | translate }}
               </div>
-              {{ product.supplierId }}
+              {{ product.supplier_id }}
             </div>
             <div class="flex flex-row">
               <div class="w-32 font-bold">
-                {{ 'packaging' | translate }}
+                {{ 'pages.product.unit' | translate }}
               </div>
-              {{ product.packingUnit }}
-            </div>
-            <div class="flex flex-row" *ngIf="product.ean">
-              <div class="w-32 font-bold">
-                {{ 'EAN' | translate }}
-              </div>
-              {{ product.ean }}
+              {{ product.unit }}
             </div>
             <div class="flex flex-row" *ngFor="let attribute of product.attributes">
               <div class="w-32 font-bold">
@@ -176,7 +176,7 @@
 
   <div class="flex flex-col col-span-2" *ngIf="product.relatedProducts">
     <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
-      Wij bevelen aan
+      {{ 'pages.product.related_products' | translate }}
     </div>
 
     <div class="max-w-full overflow-x-scroll pb-2">
@@ -201,7 +201,7 @@
 
   <div class="flex flex-col col-span-2" *ngIf="product.similarProducts">
     <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
-      Soortgelijke artikels
+      {{ 'pages.product.similar_products' | translate }}
     </div>
 
     <div class="max-w-full overflow-x-scroll pb-2">

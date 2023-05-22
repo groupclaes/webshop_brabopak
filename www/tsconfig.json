@@ -21,6 +21,12 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
     "lib": [
       "ES2022",
       "dom"

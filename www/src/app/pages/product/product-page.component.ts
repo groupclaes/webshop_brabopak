@@ -7,6 +7,9 @@ import { PcmApiService } from 'src/app/core/api/pcm-api.service'
 import { ProductsApiService } from 'src/app/core/api/products-api.service'
 import { environment } from 'src/environments/environment'
 
+declare var require: any
+const capitalize = require('capitalize')
+
 @Component({
   selector: 'bra-product-page',
   templateUrl: './product-page.component.html',
@@ -22,6 +25,7 @@ export class ProductPageComponent {
 
   private _active_image: number = 0
 
+  breadcrumbs: string[] = ['Producten']
 
   availableLimit: Date = new Date(2050, 11, 31)
   loading: boolean = true
@@ -55,6 +59,8 @@ export class ProductPageComponent {
       })
 
       this._product = response.product
+      this.breadcrumbs = this.breadcrumbs.concat(this._product.breadcrumbs.map((e: any) => this.capitalize(e.name)))
+      this.breadcrumbs.push(this._product.name)
       // this._product.features = [
       //   "Haal meer uit elk servet: deze papierservetten voor eenmalig gebruik zijn groter als ze uitgevouwen zijn.",
       //   "Verbeter de hygiëne: dankzij de volledig gesloten servetdispenser raken gasten alleen de servetten aan die ze gebruiken.",
@@ -74,7 +80,7 @@ export class ProductPageComponent {
 
   async loadResources() {
     try {
-      const requests = Promise.all([this.pcm.getProductImagesList(this.product.itemNum, this.culture.split('-')[0]), this.pcm.getObjectList(this._product.itemNum)])
+      const requests = Promise.all([this.pcm.getProductImagesList(this.product.itemnum, this.culture.split('-')[0]), this.pcm.getObjectList(this._product.itemnum)])
       const resources = await requests
       this._images = resources[0].results
 
@@ -90,6 +96,13 @@ export class ProductPageComponent {
     }
   }
 
+  async toggleFavorite() {
+    if (this._product.favorite) {
+      this._product.favorite[0].is_favorite = !this._product.favorite[0].is_favorite
+    }
+    this.ref.markForCheck()
+  }
+
   activateImage(index: number) {
     this._active_image = index
     this.ref.markForCheck()
@@ -99,14 +112,20 @@ export class ProductPageComponent {
     return item.name.replace(/ /g, '-').toLowerCase()
   }
 
+  capitalize(text: string) {
+    return capitalize.words(text, {
+      skipWord: /^(en|de|het|et|a|pour|voor|om|van)$/
+    })
+  }
+
   get featuresExpanded(): boolean {
     return true
   }
 
   get isFood(): boolean {
     if (this._product) {
-      if (this._product.itemNum) {
-        const itemnum = parseInt(this._product.itemNum.toString().substring(0, 3), 10)
+      if (this._product.itemnum) {
+        const itemnum = parseInt(this._product.itemnum.toString().substring(0, 3), 10)
         if (itemnum <= 136) {
           return true
         }
@@ -120,8 +139,8 @@ export class ProductPageComponent {
   }
 
   get basePrice(): string | null {
-    if (this.auth.isAuthenticated()) {
-      if (this._product.prices && this._product.prices.some((e: any) => e.amount > 0)) {
+    if (this.auth.isAuthenticated() && this._product.prices) {
+      if (this._product.prices.some((e: any) => e.amount > 0)) {
         let myprice: any = this._product.prices.find((e: any) => e.quantity === 1)
         return this.currencyPipe.transform(myprice.basePrice, 'EUR', 'symbol-narrow', '0.2-2', 'nl-BE')
       } else if (this._product.prices.some((e: any) => e.amount === -1)) {

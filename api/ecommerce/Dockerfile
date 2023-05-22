@@ -8,7 +8,7 @@ USER node
 WORKDIR /usr/src/app
 
 # copy package file
-COPY package.json ./src ./
+COPY package.json ./
 
 # install node packages
 RUN yarn

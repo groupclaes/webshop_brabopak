@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
 import { Router } from '@angular/router'
+import { SearchService } from './search.service'
 // import { ManageApiService } from 'src/app/core/api/manage-api.service'
-// import { SearchService } from 'src/app/core/components/search/search.service'
 
 @Component({
   selector: 'claes-search',
@@ -20,19 +20,19 @@ export class SearchComponent {
   constructor(
     private ref: ChangeDetectorRef,
     private router: Router,
-    // private searchService: SearchService,
+    private searchService: SearchService
     // private manageApi: ManageApiService
   ) {
-    // this.query = (this.searchService.currentQuery.onlyInvalid ? '##' : '') + (this.searchService.currentQuery.query ?? '')
-    // this.lastEvent = this.query
-    // this.ref.markForCheck()
+    this.query = this.searchService.current ?? ''
+    this.lastEvent = this.query
+    this.ref.markForCheck()
 
-    // this.searchService.queryChange.subscribe(query => {
-    //   if (query.query) {
-    //     this.query = (query.onlyInvalid ? '##' : '') + query.query
-    //     this.ref.markForCheck()
-    //   }
-    // })
+    this.searchService.change.subscribe(query => {
+      if (query) {
+        this.query = query
+        this.ref.markForCheck()
+      }
+    })
   }
 
   private async updateSuggestions() {
@@ -78,8 +78,8 @@ export class SearchComponent {
 
   search() {
     this.hideFilters()
-    // if (this.lastEvent != this.query)
-    // this.searchService.set(this.query)
+    if (this.lastEvent != this.query)
+      this.searchService.set(this.query)
     this.lastEvent = this.query
     this.ref.markForCheck()
   }

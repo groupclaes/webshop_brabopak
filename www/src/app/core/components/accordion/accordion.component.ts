@@ -9,5 +9,5 @@ import { Component, Input } from '@angular/core'
 })
 export class AccordionComponent {
   @Input() header: string = ''
-  expanded: boolean = false
+  @Input() expanded: boolean = false
 }

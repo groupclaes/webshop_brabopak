@@ -1,7 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core'
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { firstValueFrom, Subject } from 'rxjs'
-import { shareReplay } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http'
+import { firstValueFrom, Observable, of, Subject } from 'rxjs'
+import { map, shareReplay } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { isPlatformBrowser } from '@angular/common'
 import { Router } from '@angular/router'
@@ -43,10 +43,12 @@ export class AuthService {
       }
     })
 
-    const old_session = this.sessionStorage.getItem(SESSION_STORAGE_KEY)
-    if (old_session) {
-      const response = JSON.parse(old_session)
+    if (window.sessionStorage.getItem(SESSION_STORAGE_KEY)) {
+      const response = JSON.parse(window.sessionStorage.getItem(SESSION_STORAGE_KEY) || '')
       this.change.next(response)
+      setTimeout(() => {
+        this.refresh()
+      }, 100)
     }
   }
 
@@ -79,52 +81,35 @@ export class AuthService {
     return getTokenSub
   }
 
-  public async refresh(): Promise<boolean> {
-    const old_session = this.sessionStorage.getItem(SESSION_STORAGE_KEY)
-    // check if there is a session and check if the refreshToken is still valid
+  public refresh(): Observable<string | undefined> {
+    if (!this.isAuthenticated() && this.refresh_token) {
+      if (this.refresh_token === undefined) {
+        console.warn('There is no refresh token defined!')
+        return of(undefined)
+      }
 
-    if (!this.isAuthenticated()) {
-      if (old_session) {
-        const response = JSON.parse(old_session)
-        if (new Date(response.id_token.exp * 1000) >= new Date()) {
-          return true
+      const r = this.http.post<IGetTokenResponse>(`${api_url}users/refresh-token`, undefined, {
+        params: {
+          token: `${this.refresh_token}`
         }
-      }
-      if (this.refresh_token && !this.authenticating) {
-        // try to renew token
-        try {
-          this.authenticating = true
-          const resp = await firstValueFrom(this.http.post<IGetTokenResponse>(`${api_url}users/refresh-token`, undefined, {
-            params: {
-              token: this.refresh_token
-            }
-          }))
-          this.saveTokens(resp)
-          return true
-        } catch (err) {
-          if (err instanceof HttpErrorResponse) {
-            console.log(JSON.stringify(err))
-            if (err.status === 403) {
-              this.logout()
-            }
-          }
-        } finally {
-          this.authenticating = false
-        }
-      } else if (this.authenticating) {
-        // If the user is already waiting for a new token, dont resend request but await the current one
-        return await new Promise((resolve) => {
-          setInterval(() => {
-            if (!this.authenticating) {
-              resolve(this.isAuthenticated())
-            }
-          }, 18)
-        })
-      }
-    } else if (this.isAuthenticated()) {
-      return true
+      }).pipe(shareReplay())
+      r.subscribe(resp => {
+        const refresh_token = resp.refresh_token
+        delete resp.refresh_token
+
+        if (!refresh_token) return
+
+        if (window.localStorage.getItem(REFRESH_STORAGE_KEY))
+          window.localStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
+        else
+          window.sessionStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
+        window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(resp))
+        this.change.next(resp)
+      })
+      return r.pipe<string | undefined>(map(resp => resp.refresh_token))
     }
-    return false
+
+    return of(undefined)
   }
 
   public logout() {
@@ -138,19 +123,11 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     if (this.id_token) {
-      if (new Date(this.id_token.exp * 1000) > new Date() || this.refresh_token) {
+      if (new Date(this.id_token.exp * 1000) > new Date()) {
         return true
       }
+      // must renew the id_token because it's expired
     }
-
-    return false
-  }
-
-  async validate(): Promise<boolean> {
-    if (this.id_token) {
-      return new Date(this.id_token.exp * 1000) > new Date() ? true : await this.refresh()
-    }
-
     return false
   }
 
@@ -174,6 +151,12 @@ export class AuthService {
     if (this.isAuthenticated() && this.id_token)
       return this.id_token.preferred_username
     return 'unknown'
+  }
+
+  get expired(): boolean {
+    if (this.id_token)
+      return new Date(this.id_token.exp * 1000) < new Date()
+    return false
   }
 
   get refresh_token(): string | undefined {

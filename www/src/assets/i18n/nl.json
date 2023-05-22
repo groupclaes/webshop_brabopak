@@ -43,6 +43,15 @@
       }
     },
     "product": {
+      "lastBought": "Laatste aankoop",
+      "timesBought": "Aantal keer gekocht",
+      "quantityBought": "Totaal aantal gekocht",
+      "itemnum": "Artikelnummer",
+      "supplier_id": "Artikelnummer leverancier",
+      "unit": "Verpakking",
+      "related_products": "Wij bevelen aan",
+      "Soortgelijke artikels": "Verpakking",
+      "promo_products": "Verpakking",
       "allergen": {
         "nonePresent": "Geen van de verplicht te vermelden allergenen aanwezig.",
         "noneAvailable": "Niet beschikbaar voor dit artikel.",

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core'
 import { Observable, retryWhen, delay, take, firstValueFrom } from 'rxjs'
 import { environment } from 'src/environments/environment'
 import { trimParameters } from '.'
-const url = 'https://api.groupclaes.be/v1/distribution/shop/products'
 
 @Injectable({
   providedIn: 'root'
@@ -13,40 +12,36 @@ export class ProductsApiService {
     private http: HttpClient
   ) { }
 
-  get({ id, token, usercode, department, culture, ux }: any): Promise<any> {
+  get({ id, usercode, department, culture }: any): Promise<any> {
     const params = trimParameters({
-      token,
       usercode,
       department,
-      culture,
-      ux
+      culture
     })
 
-    return firstValueFrom(this.http.get(`${url}/${id}`, { params })
+    return firstValueFrom(this.http.get(`${environment.api}products/${id}`, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
 
-  getBase({ id, token, usercode }: any): Promise<any> {
+  getBase({ id, usercode }: any): Promise<any> {
     const params = trimParameters({
-      token,
       usercode
     })
 
-    return firstValueFrom(this.http.get(`${url}/${id}/base`, { params })
+    return firstValueFrom(this.http.get(`${environment.api}products/${id}/base`, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
 
-  search(token?: string, userCode?: number, filters?: IProductSearchFilters, ux?: string): Promise<any> {
+  search(usercode?: number, filters?: IProductSearchFilters, ux?: string): Promise<any> {
     const params = trimParameters({
-      token,
-      userCode,
+      usercode,
       culture: filters?.culture,
       ux
     })
 
-    return firstValueFrom(this.http.post(`${url}/search`, filters, {
+    return firstValueFrom(this.http.post(`${environment.api}products/search`, filters, {
       params
     }))
   }
@@ -55,11 +50,10 @@ export class ProductsApiService {
 export interface IProductSearchFilters {
   culture?: string,
   query?: string,
-  oFavorites?: boolean,
-  oPromo?: boolean,
-  oNew?: boolean,
+  only_favorites?: boolean,
+  only_promo?: boolean,
+  only_new?: boolean,
   page?: number,
-  perPage?: number,
-  category?: number,
-  department?: number
+  per_page?: number,
+  category_id?: number
 }

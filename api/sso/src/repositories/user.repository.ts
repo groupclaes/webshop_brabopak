@@ -39,7 +39,7 @@ export default class User {
 
     const privateKey = await jose.importJWK(config.key)
     return await new jose.SignJWT(payload)
-      .setProtectedHeader({ alg: config.key.alg, kid: config.key.kid, jku: config.key.jku })
+      .setProtectedHeader({ alg: config.key.alg, kid: config.key.kid, jku: config.key.iss })
       .setIssuer(config.key.iss)
       .setAudience(audience)
       .setExpirationTime(expiresIn + 's')
@@ -51,8 +51,8 @@ export default class User {
     const { audience, subject } = this.getAudSub(authorization_code.user_id)
 
     const privateKey = await jose.importJWK(config.key)
-    return await new jose.SignJWT({ roles: ['*'] })
-      .setProtectedHeader({ alg: config.key.alg, kid: config.key.kid, jku: config.key.jku })
+    return await new jose.SignJWT({})
+      .setProtectedHeader({ alg: config.key.alg, kid: config.key.kid, jku: config.key.iss })
       .setIssuer(config.key.iss)
       .setAudience(audience)
       .setExpirationTime(expiresIn + 's')
@@ -122,7 +122,7 @@ export default class User {
    */
   getAudSub = (user_id: number | string) => ({
     audience: [
-      config.key.iss
+      process.env.CLIENT_ID
     ],
     subject: user_id.toString()
   })
