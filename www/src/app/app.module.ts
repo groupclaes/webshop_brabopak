@@ -8,7 +8,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { LayoutModule } from './@shared/layout/layout.module'
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core'
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { AuthGuard } from './auth/auth.guard'
 import { AuthInterceptor } from './auth/auth.interceptor'
 import { AtSharedModule } from './@shared/@shared.module'
 import { HttpLoaderFactory } from './@shared/loaders/translate-browser.loader'
@@ -48,8 +47,7 @@ export function localizeLoaderFactory(translate: TranslateService, location: Loc
     NoopAnimationsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    AuthGuard
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

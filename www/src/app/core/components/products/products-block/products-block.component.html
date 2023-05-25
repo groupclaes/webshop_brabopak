@@ -2,7 +2,7 @@
   <div class="text-xl md:text-3xl font-semibold tracking-tight leading-8">
     {{ header | translate }}
   </div>
-  <div class="text-primary dark:text-accent">
+  <div class="text-primary dark:text-accent" [routerLink]="url" [queryParams]="params">
     Bekijk alles <i class="fal far fa-arrow-right"></i>
   </div>
 </div>

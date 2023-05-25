@@ -13,8 +13,8 @@
   </div>
 
   <ng-container *ngFor="let block of dashboard; let is_last = last">
-    <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block[0].title" [items]="block[0].products"
-      *ngIf="block[0].products && block[0].products.length > 0">
+    <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block[0].title" [link]="block[0].link"
+      [items]="block[0].products" *ngIf="block[0].products && block[0].products.length > 0">
     </bra-products-block>
   </ng-container>
 

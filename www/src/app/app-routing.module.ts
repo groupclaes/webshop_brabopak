@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core'
 import { NoPreloading, RouterModule, Routes } from '@angular/router'
+import { authGuard } from './auth/auth.guard'
 
 const layout = 'ecommerce'
 
 export const routes: Routes = [{
   path: '',
   loadChildren: () => import('./pages/home/home-page.module').then(m => m.HomePageModule),
+  canActivate: [authGuard],
   data: {
     layout
   }

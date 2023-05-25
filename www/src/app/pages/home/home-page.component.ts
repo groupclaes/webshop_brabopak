@@ -12,6 +12,7 @@ import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 })
 export class HomePageComponent {
   dashboard: any[] = []
+  loading: boolean = true
 
   constructor(
     private auth: AuthService,
@@ -21,17 +22,30 @@ export class HomePageComponent {
     this.auth.change.subscribe({
       next: (token) => {
         console.log(token)
+        if (this.auth.isAuthenticated())
+          this.load()
       }
     })
-    this.load()
+    if (this.auth.isAuthenticated())
+      this.load()
   }
 
   async load() {
-    const resp = await this.api.dashboard()
+    try {
+      this.loading = true
+      this.ref.markForCheck()
 
-    this.dashboard = resp
-    this.ref.markForCheck()
-    console.log(resp)
+      const resp = await this.api.dashboard()
+
+      this.dashboard = resp
+      this.ref.markForCheck()
+      console.log(resp)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      this.loading = false
+      this.ref.markForCheck()
+    }
   }
 
   get name(): string | undefined {
