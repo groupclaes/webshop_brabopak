@@ -33,6 +33,10 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   breadcrumbs: string[] = ['Producten']
   category_id: number | undefined
 
+  filters: any = {
+
+  }
+
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
@@ -56,6 +60,28 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       if (params['id']) {
         this.category_id = +params['id']
       }
+
+      if (params['is_promo'] === 'true') {
+        console.debug('we need promo products')
+        this.filters.only_promo = true
+      } else {
+        delete this.filters.only_promo
+      }
+
+      if (params['is_new'] === 'true') {
+        console.debug('we need new products')
+        this.filters.only_new = true
+      } else {
+        delete this.filters.only_new
+      }
+
+      if (params['is_favorite'] === 'true') {
+        console.debug('we need favorites products')
+        this.filters.only_favorites = true
+      } else {
+        delete this.filters.only_favorites
+      }
+
       if (params['page']) {
         this.load(+params['page'])
         return
@@ -81,6 +107,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       const response = await this.products.search(
         this.auth.id_token?.usercode,
         {
+          ...this.filters,
           page,
           per_page: this.per_page,
           category_id,

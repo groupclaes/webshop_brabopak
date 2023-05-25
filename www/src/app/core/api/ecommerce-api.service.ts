@@ -13,11 +13,16 @@ export class EcommerceApiService {
 
   get urls() {
     return {
-      menu: () => `${environment.api}ecommerce/menu`
+      menu: () => `${environment.api}ecommerce/menu`,
+      dashboard: () => `${environment.api}ecommerce/dashboard`
     }
   }
 
   menu(): Promise<any> {
     return firstValueFrom(this.http.get<any>(this.urls.menu()))
+  }
+
+  dashboard(): Promise<any> {
+    return firstValueFrom(this.http.get<any>(this.urls.dashboard()))
   }
 }

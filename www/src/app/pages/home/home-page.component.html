@@ -12,7 +12,13 @@
     </div>
   </div>
 
-  <bra-products-block class="border-b" header="Uitgelichte producten" [items]="dashboard.spotlight">
+  <ng-container *ngFor="let block of dashboard; let is_last = last">
+    <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block[0].title" [items]="block[0].products"
+      *ngIf="block[0].products && block[0].products.length > 0">
+    </bra-products-block>
+  </ng-container>
+
+  <!-- <bra-products-block class="border-b" header="Uitgelichte producten" [items]="dashboard.spotlight">
   </bra-products-block>
   <bra-products-block class="border-b" header="Toppers van deze maand" [items]="dashboard.bestSelling">
   </bra-products-block>
@@ -26,7 +32,7 @@
       </div>
     </div>
     <div class="flex flex-row w-full font-serif">
-      <!-- <div class="flex justify-between space-x-2 w-full">
+      <div class="flex justify-between space-x-2 w-full">
         <a class="flex flex-col w-1/4 max-w-[15rem]" [routerLink]="['/product', item.id, itemName(item)] | localize"
           *ngFor="let item of items">
           <img [src]="item.url" [ngStyle]="{background: '#' + item.color}"
@@ -43,12 +49,12 @@
             </div>
           </div>
         </a>
-      </div> -->
+      </div>
     </div>
 
   </div>
   <bra-products-block class="border-b" header="Nieuw in ons gamma" [items]="dashboard.newP"></bra-products-block>
   <bra-products-block class="border-b" header="Recent door jouw bekeken" [items]="dashboard.recent">
   </bra-products-block>
-  <bra-products-block class="" header="Aanbevolen voor jouw" [items]="dashboard.favorites"></bra-products-block>
+  <bra-products-block class="" header="Aanbevolen voor jouw" [items]="dashboard.favorites"></bra-products-block> -->
 </div>

@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment'
   templateUrl: './product-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'flex flex-col w-full mx-auto max-w-[15rem] cursor-pointer'
+    class: 'flex flex-col w-full cursor-pointer group'
   }
 })
 export class ProductItemComponent implements OnInit, OnDestroy {
