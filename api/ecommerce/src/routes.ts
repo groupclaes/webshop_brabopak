@@ -9,9 +9,11 @@ export default [{
 }, {
   method: 'GET',
   url: '/carts',
-  handler: cartsController.get
+  handler: cartsController.get,
+  requiredPermissions: []
 }, {
   method: 'GET',
   url: '/dashboard',
-  handler: dashboardController.get
+  handler: dashboardController.get,
+  requiredPermissions: []
 }]
