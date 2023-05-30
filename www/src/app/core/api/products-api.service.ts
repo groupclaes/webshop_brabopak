@@ -34,16 +34,16 @@ export class ProductsApiService {
       .pipe(delay(environment.performance.delay_medium)))
   }
 
-  search(usercode?: number, filters?: IProductSearchFilters, ux?: string): Promise<any> {
+  search(usercode?: number, filters?: IProductSearchFilters, ux?: string): Observable<any> {
     const params = trimParameters({
       usercode,
       culture: filters?.culture,
       ux
     })
 
-    return firstValueFrom(this.http.post(`${environment.api}products/search`, filters, {
+    return this.http.post(`${environment.api}products/search`, filters, {
       params
-    }))
+    })
   }
 }
 

@@ -21,6 +21,7 @@ const capitalize = require('capitalize')
 export class ProductsPageComponent implements OnInit, OnDestroy {
   private _subs: Subscription[] = []
   private _products: any[] | undefined
+  private subscriber: Subscription | undefined
 
   loading: boolean = true
 
@@ -33,18 +34,13 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   breadcrumbs: string[] = ['Producten']
   category_id: number | undefined
 
-  filters: any = {
-
-  }
-
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
     private products: ProductsApiService,
     private translate: TranslateService,
     private ref: ChangeDetectorRef,
-    private searchService: SearchService,
-    // private filterService: FilterService
+    public searchService: SearchService
   ) {
   }
 
@@ -54,44 +50,22 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       Object.keys(params).forEach((key: string) => {
         this.breadcrumbs.push(this.capitalize(params[key].replace(/-/g, ' ')))
       })
+      this.load(this.searchService.current)
       this.ref.markForCheck()
     }))
-    this._subs.push(this.route.queryParams.subscribe((params: Params) => {
-      if (params['id']) {
-        this.category_id = +params['id']
-      }
 
-      if (params['is_promo'] === 'true') {
-        console.debug('we need promo products')
-        this.filters.only_promo = true
-      } else {
-        delete this.filters.only_promo
+    this._subs.push(this.searchService.Refresh.subscribe((reload: boolean) => {
+      if (reload) {
+        this.load(this.searchService.current)
+        this.ref.markForCheck()
       }
-
-      if (params['is_new'] === 'true') {
-        console.debug('we need new products')
-        this.filters.only_new = true
-      } else {
-        delete this.filters.only_new
-      }
-
-      if (params['is_favorite'] === 'true') {
-        console.debug('we need favorites products')
-        this.filters.only_favorites = true
-      } else {
-        delete this.filters.only_favorites
-      }
-
-      if (params['page']) {
-        this.load(+params['page'])
-        return
-      }
-      this.load()
     }))
 
-    this.searchService.change.subscribe(() => {
-      this.load()
-    })
+    // this._subs.push(this.searchService.change.subscribe({
+    //   next: () => {
+    //     this.load()
+    //   }
+    // }))
   }
 
   ngOnDestroy(): void {
@@ -100,23 +74,29 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       this._subs.forEach(s => s.unsubscribe())
   }
 
-  async load(page: number = 0) {
+  async load(filters: any) {
     try {
       const category_id = this.category_id
-      const query = this.searchService.current
-      const response = await this.products.search(
+
+      if (this.subscriber && !this.subscriber.closed) {
+        this.subscriber.unsubscribe()
+      }
+
+      this.subscriber = this.products.search(
         this.auth.id_token?.usercode,
         {
-          ...this.filters,
-          page,
+          ...filters,
           per_page: this.per_page,
           category_id,
-          query
-          // oFavorites: true
+        }).subscribe({
+          next: (response) => {
+            this._products = response.products
+            this.calcpages(response.productCount)
+            this.searchService.calculatePages(response.productCount)
+            this.ref.markForCheck()
+          }
         })
 
-      this._products = response.products
-      this.calcpages(response.productCount)
       // this._product.features = [
       //   "Haal meer uit elk servet: deze papierservetten voor eenmalig gebruik zijn groter als ze uitgevouwen zijn.",
       //   "Verbeter de hygiëne: dankzij de volledig gesloten servetdispenser raken gasten alleen de servetten aan die ze gebruiken.",
@@ -138,7 +118,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
 
   calcpages(itemCount: number) {
     // page is a 0 based value => add 1
-    let page = /* this.filterService.Page || */ 0
+    let page = this.searchService.page || 0
     page++
     this.pages = []
     this.pages.push(page)
@@ -149,13 +129,13 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     }
 
     if (page > maxPagesCount) {
-      // this.filterService.Page = undefined
+      this.searchService.page = undefined
       page = 1
     } else if (page < 1) {
-      // if (!this.filterService.Page) {
-      //   return
-      // }
-      // this.filterService.Page = undefined
+      if (!this.searchService.page) {
+        return
+      }
+      this.searchService.page = undefined
       page = 1
     }
 
@@ -236,8 +216,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
 
   changePage(page: number) {
     page--
-    // this.filterService.setPage(page)
-    this.load(page)
+    this.searchService.setPage(page)
   }
 
   capitalize(text: string) {

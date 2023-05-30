@@ -29,7 +29,7 @@ export class AppComponent {
     @Inject(DOCUMENT) document: Document,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private metaService: MetaService,
+    private metaService: MetaService
   ) {
     document.documentElement.lang = translate.currentLang
     _elementRef.nativeElement.removeAttribute('ng-version')

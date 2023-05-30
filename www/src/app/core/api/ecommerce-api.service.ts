@@ -14,7 +14,8 @@ export class EcommerceApiService {
   get urls() {
     return {
       menu: () => `${environment.api}ecommerce/menu`,
-      dashboard: () => `${environment.api}ecommerce/dashboard`
+      dashboard: () => `${environment.api}ecommerce/dashboard`,
+      carts: () => `${environment.api}ecommerce/carts`
     }
   }
 
@@ -24,5 +25,9 @@ export class EcommerceApiService {
 
   dashboard(): Promise<any> {
     return firstValueFrom(this.http.get<any>(this.urls.dashboard()))
+  }
+
+  carts(): Promise<any> {
+    return firstValueFrom(this.http.get<any>(this.urls.carts()))
   }
 }

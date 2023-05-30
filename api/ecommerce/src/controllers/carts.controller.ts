@@ -13,10 +13,10 @@ export const get = async (request: FastifyRequest<{
   try {
     const repo = new Cart()
     const token: JWTPayload = request['token'] || { sub: null }
+    const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
-
-
+    return await repo.get(usercode, token.sub, culture)
   } catch (err) {
     return reply
       .status(500)
@@ -29,11 +29,16 @@ export const put = async (request: FastifyRequest<{
   Querystring: {
     usercode: number
     culture?: string
-  }
+  },
+  Body: {
+    product_id: number,
+    quantity: number
+  }[]
 }>, reply: FastifyReply) => {
   try {
     const repo = new Cart()
     const token: JWTPayload = request['token'] || { sub: null }
+    const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
 
@@ -55,6 +60,7 @@ export const post = async (request: FastifyRequest<{
   try {
     const repo = new Cart()
     const token: JWTPayload = request['token'] || { sub: null }
+    const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
 

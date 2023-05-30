@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'claes-cart',
@@ -6,5 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent {
-  constructor() { }
+  constructor(public service: CartService) {
+    console.debug('CartComponent -- service', this.service)
+  }
 }

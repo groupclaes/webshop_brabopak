@@ -13,20 +13,24 @@
     </div>
   </div>
 
-  <div class="content-extra" *ngIf="pages && pages.length > 1">
+  <div class="flex mx-auto px-4 md:px-6 flex-row items-center content-extra space-x-1"
+    *ngIf="pages && pages.length > 1">
     <!-- [hidden]="!loading || (!items && items.length <= 47) || !filterService.enabled" -->
-    <i class="fal fa-angle-double-left page-selector icon-color" [attr.disabled]="!has_first"></i>
-    <!-- (click)="filterService.firstPage()" -->
-    <i class="fal fa-angle-left page-selector icon-color" [attr.disabled]="!has_previous"></i>
-    <!-- (click)="filterService.previousPage()" -->
-    <span class="page-selector" (click)="changePage( pageNum )" *ngFor="let pageNum of pages">
+    <i class="fal px-1 text-2xl fa-angle-double-left cursor-pointer hover:text-primary hover:underline"
+      [attr.disabled]="!has_first" (click)="searchService.firstPage()"></i>
+    <i class="fal px-1 text-2xl fa-angle-left cursor-pointer hover:text-primary hover:underline"
+      [attr.disabled]="!has_previous" (click)="searchService.previousPage()"></i>
+    <span class="px-1 cursor-pointer hover:text-primary hover:underline"
+      [ngClass]="{ 'underline': searchService.page === pageNum - 1 || (pageNum === 1 && !searchService.page) }"
+      (click)="changePage(pageNum)"
+      *ngFor="let pageNum of pages">
       {{ pageNum }}
     </span>
     <!-- [ngClass]="{ selected: (filterService.Page+1 === pageNum || (!filterService.Page && pageNum === 1))}" -->
-    <i class="fal fa-angle-right page-selector icon-color" [attr.disabled]="!has_next"></i>
-    <!-- (click)="filterService.nextPage()" -->
-    <i class="fal fa-angle-double-right page-selector icon-color" [attr.disabled]="!has_last"></i>
-    <!-- (click)="filterService.lastPage()" -->
+    <i class="fal px-1 text-2xl fa-angle-right cursor-pointer hover:text-primary hover:underline"
+      [attr.disabled]="!has_next" (click)="searchService.nextPage()"></i>
+    <i class="fal px-1 text-2xl fa-angle-double-right cursor-pointer hover:text-primary hover:underline"
+      [attr.disabled]="!has_last" (click)="searchService.lastPage()"></i>
   </div>
 
   <!-- <div>

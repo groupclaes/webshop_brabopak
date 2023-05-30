@@ -9,8 +9,8 @@ import { SearchService } from './search.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent {
-  query: string = ''
-  lastEvent: string = ''
+  query: string | undefined
+  lastEvent: string | undefined
 
   public active: boolean = false
   public filtersShown: boolean = false
@@ -23,15 +23,13 @@ export class SearchComponent {
     private searchService: SearchService
     // private manageApi: ManageApiService
   ) {
-    this.query = this.searchService.current ?? ''
+    this.query = this.searchService.query ?? ''
     this.lastEvent = this.query
     this.ref.markForCheck()
 
-    this.searchService.change.subscribe(query => {
-      if (query) {
-        this.query = query
-        this.ref.markForCheck()
-      }
+    this.searchService.Refresh.subscribe(() => {
+      this.query = this.searchService.query
+      this.ref.markForCheck()
     })
   }
 
@@ -79,7 +77,7 @@ export class SearchComponent {
   search() {
     this.hideFilters()
     if (this.lastEvent != this.query)
-      this.searchService.set(this.query)
+      this.searchService.query = this.query
     this.lastEvent = this.query
     this.ref.markForCheck()
   }
