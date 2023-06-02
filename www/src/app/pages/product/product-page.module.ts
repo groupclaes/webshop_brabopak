@@ -6,6 +6,7 @@ import { CoreComponentsModule } from 'src/app/core/components/components.module'
 import { NgBytesPipeModule } from 'angular-pipes'
 import { TranslateModule } from '@ngx-translate/core'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
+import { CartComponentsModule } from 'src/app/core/components/cart/cart.module'
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
   imports: [
     CommonModule,
     CoreComponentsModule,
+    CartComponentsModule,
     TranslateModule.forChild(),
     NgBytesPipeModule,
     LocalizeRouterModule,

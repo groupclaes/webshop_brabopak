@@ -72,6 +72,7 @@ module.exports = {
         '50': '12.5rem',
         '80': '20rem',
         '100': '25rem',
+        '128': '32rem',
         'nav': '280px'
       },
       zIndex: {

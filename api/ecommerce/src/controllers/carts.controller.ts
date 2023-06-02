@@ -33,7 +33,7 @@ export const put = async (request: FastifyRequest<{
   Body: {
     product_id: number,
     quantity: number
-  }[]
+  }
 }>, reply: FastifyReply) => {
   try {
     const repo = new Cart()
@@ -41,8 +41,11 @@ export const put = async (request: FastifyRequest<{
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
+    if (token.sub) {
+      const resp = await repo.updateProduct(usercode, token.sub, request.body.product_id, request.body.quantity)
+    }
 
-
+    return await repo.get(usercode, token.sub, culture)
   } catch (err) {
     return reply
       .status(500)

@@ -2,9 +2,10 @@ import { CurrencyPipe } from '@angular/common'
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
+import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { PcmApiService } from 'src/app/core/api/pcm-api.service'
-import { ProductsApiService } from 'src/app/core/api/products-api.service'
+import { IProduct, ProductsApiService } from 'src/app/core/api/products-api.service'
 import { environment } from 'src/environments/environment'
 
 declare var require: any
@@ -19,7 +20,7 @@ const capitalize = require('capitalize')
   }
 })
 export class ProductPageComponent {
-  private _product: any
+  private _product: IProduct | undefined
   private _images: any[] | undefined
   private _attachments: any[] | undefined
 
@@ -37,7 +38,8 @@ export class ProductPageComponent {
     private products: ProductsApiService,
     private pcm: PcmApiService,
     private auth: AuthService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private cart: CartService
   ) {
     this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
@@ -79,8 +81,9 @@ export class ProductPageComponent {
   }
 
   async loadResources() {
+    if (!this._product) return
     try {
-      const requests = Promise.all([this.pcm.getProductImagesList(this.product.itemnum, this.culture.split('-')[0]), this.pcm.getObjectList(this._product.itemnum)])
+      const requests = Promise.all([this.pcm.getProductImagesList(this._product.itemnum, this.culture.split('-')[0]), this.pcm.getObjectList(this._product.itemnum)])
       const resources = await requests
       this._images = resources[0].results
 
@@ -97,7 +100,7 @@ export class ProductPageComponent {
   }
 
   async toggleFavorite() {
-    if (this._product.favorite) {
+    if (this._product?.favorite) {
       this._product.favorite[0].is_favorite = !this._product.favorite[0].is_favorite
     }
     this.ref.markForCheck()
@@ -134,11 +137,12 @@ export class ProductPageComponent {
     return false
   }
 
-  get product(): any {
+  get product(): IProduct | undefined {
     return this._product
   }
 
   get basePrice(): string | null {
+    if (!this._product) return null
     if (this.auth.isAuthenticated() && this._product.prices) {
       if (this._product.prices.some((e: any) => e.amount > 0)) {
         let myprice: any = this._product.prices.find((e: any) => e.quantity === 1)

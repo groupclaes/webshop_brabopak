@@ -4,6 +4,7 @@ import { HomePageComponent } from './home-page.component'
 import { RouterModule } from '@angular/router'
 import { TranslateModule } from '@ngx-translate/core'
 import { ProductsModule } from 'src/app/core/components/products/products.module'
+import { PipesModule } from 'src/app/core/pipes/pipes.module'
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { ProductsModule } from 'src/app/core/components/products/products.module
   imports: [
     CommonModule,
     ProductsModule,
+    PipesModule,
     TranslateModule.forChild(),
     RouterModule.forChild([{
       path: '',

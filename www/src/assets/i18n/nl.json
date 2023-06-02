@@ -50,8 +50,10 @@
       "supplier_id": "Artikelnummer leverancier",
       "unit": "Verpakking",
       "related_products": "Wij bevelen aan",
-      "Soortgelijke artikels": "Verpakking",
-      "promo_products": "Verpakking",
+      "similar_products": "Soortgelijke artikels",
+      "promo_products": "Promo producten",
+      "minimum_order_quantity": "Minimum bestel aantal",
+      "stack_size": "Bestellen per",
       "allergen": {
         "nonePresent": "Geen van de verplicht te vermelden allergenen aanwezig.",
         "noneAvailable": "Niet beschikbaar voor dit artikel.",
@@ -100,6 +102,33 @@
         "fa": "Farnesol",
         "gb": "Gerst en gerstproducten"
       }
+    },
+    "cart": {
+      "productCosts": "Productkosten",
+      "taxCosts": "Recyclagekosten",
+      "shippingCosts": "Leveringskosten",
+      "totalDiscount": "Korting",
+      "totalCosts": "Totaalbedrag",
+      "priceDisclaimerTransport": "Exclusief BTW, inclusief Recupel, FostPlus en verzendkosten",
+      "priceDisclaimer": "Exclusief BTW, inclusief Recupel en FostPlus",
+      "priceOnDemand": "Op aanvraag",
+      "empty": "Je hebt nog geen producten in je winkelwagen.",
+      "filled": "Je hebt momenteel {{count}} artikel(s) in je winkelwagen.",
+      "steps": {
+        "1": {
+          "backButton": " Verder winkelen",
+          "asideButton": "Ik ga bestellen"
+        },
+        "2": {
+          "backButton": " Terug naar productoverzicht",
+          "asideButton": "Bestelling controleren"
+        },
+        "3": {
+          "backButton": " Terug naar leveringsgegevens",
+          "freeShipping": "Gratis levering!",
+          "asideButton": "Bestelling plaatsen"
+        }
+      }
     }
   },
   "actions": {
@@ -118,5 +147,9 @@
     "nl-BE": "Nederlands",
     "fr-BE": "Français"
   },
-  "price.request": "Prijs op aanvraag"
+  "price.request": "Prijs op aanvraag",
+  "errors": {
+    "minimum_order_quantity": "Minimale bestelhoeveelheid is {{correctqty}}. Wil je deze hoeveelheid bestellen?",
+    "stack_size": "Je moet per {{stack_size}} bestellen. Wil je {{correctqty}} bestellen?"
+  }
 }

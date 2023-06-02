@@ -18,7 +18,7 @@ export class SearchService {
   private _only_best_selling?: boolean = false
   private _only_spotlight?: boolean = false
   private _only_recent?: boolean = false
-  private _category_id: number | undefined = 0
+  private _category_id: number | undefined
   private _page_count: number | undefined
   private _itemNum: string | undefined
   private _salUnit: string | undefined
@@ -35,8 +35,8 @@ export class SearchService {
   ) {
     this.route.queryParams.subscribe(params => {
       let filters: any = {}
-      if (params['category_id']) {
-        filters.category_id = +params['category_id']
+      if (params['id']) {
+        filters.category_id = +params['id']
       }
 
       if (params['is_promo'] === 'true') {
@@ -110,6 +110,8 @@ export class SearchService {
 
         this._itemNum = filters.itemNum
         this._salUnit = filters.salUnit
+
+        console.log('filters have changed')
 
         if (this._refreshSub !== undefined) {
           this._refreshSub.next(true)
@@ -315,7 +317,7 @@ export class SearchService {
 
   get current(): any {
     return {
-      id: this._category_id,
+      category_id: this._category_id,
       page: this._page,
       only_favorites: this._only_favorites,
       only_promo: this._only_promo,

@@ -6,6 +6,7 @@ import { AtSharedModule } from 'src/app/@shared/@shared.module'
 import { RouterModule } from '@angular/router'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router';
 import { ProductItemComponent } from './product-item/product-item.component'
+import { CartComponentsModule } from '../cart/cart.module'
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ProductItemComponent } from './product-item/product-item.component'
     CommonModule,
     AtSharedModule,
     RouterModule,
+    CartComponentsModule,
     LocalizeRouterModule,
     TranslateModule.forChild()
   ],

@@ -24,6 +24,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   private subscriber: Subscription | undefined
 
   loading: boolean = true
+  init: boolean = false
 
   per_page: number = 16
   pages: any
@@ -32,7 +33,6 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   has_next: boolean = false
   has_last: boolean = false
   breadcrumbs: string[] = ['Producten']
-  category_id: number | undefined
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +50,10 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       Object.keys(params).forEach((key: string) => {
         this.breadcrumbs.push(this.capitalize(params[key].replace(/-/g, ' ')))
       })
-      this.load(this.searchService.current)
+      if (!this.init) {
+        this.load(this.searchService.current)
+        this.init = true
+      }
       this.ref.markForCheck()
     }))
 
@@ -76,8 +79,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
 
   async load(filters: any) {
     try {
-      const category_id = this.category_id
-
+      console.debug('ProductsPageComponent.load() -- try', filters)
       if (this.subscriber && !this.subscriber.closed) {
         this.subscriber.unsubscribe()
       }
@@ -86,8 +88,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         this.auth.id_token?.usercode,
         {
           ...filters,
-          per_page: this.per_page,
-          category_id,
+          per_page: this.per_page
         }).subscribe({
           next: (response) => {
             this._products = response.products

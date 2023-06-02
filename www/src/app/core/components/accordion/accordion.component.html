@@ -5,6 +5,6 @@
   <span class="font-medium">{{ header }}</span>
   <i class="fal fa-fw text-2xl" [ngClass]="{ 'fa-minus text-secondary-500': !expanded, 'fa-plus': expanded }"></i>
 </div>
-<div *ngIf="expanded" class="text-md text-secondary-700">
+<div *ngIf="expanded" class="text-md text-secondary-700 dark:text-secondary-500">
   <ng-content select="[body]"></ng-content>
 </div>

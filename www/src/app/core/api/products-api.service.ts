@@ -12,14 +12,14 @@ export class ProductsApiService {
     private http: HttpClient
   ) { }
 
-  get({ id, usercode, department, culture }: any): Promise<any> {
+  get({ id, usercode, department, culture }: any): Promise<{ product: IProduct }> {
     const params = trimParameters({
       usercode,
       department,
       culture
     })
 
-    return firstValueFrom(this.http.get(`${environment.api}products/${id}`, { params })
+    return firstValueFrom(this.http.get<{ product: IProduct }>(`${environment.api}products/${id}`, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
@@ -45,6 +45,34 @@ export class ProductsApiService {
       params
     })
   }
+}
+
+export interface IProductBase {
+  id: number
+  name: string
+  unit: string
+  itemnum: string
+  prices?: any[]
+  taxes?: any[]
+  type: string
+  stack_size: number
+  minimum_order_quantity: number
+  color: string
+}
+
+export interface IProduct extends IProductBase {
+  description: string
+  favorite?: any[]
+  supplier_id: string
+  attributes?: any[]
+  breadcrumbs: any[]
+  features?: any[]
+  allergens?: {
+    code: string
+    value: string
+  }[]
+  relatedProducts: any[]
+  similarProducts: any[]
 }
 
 export interface IProductSearchFilters {

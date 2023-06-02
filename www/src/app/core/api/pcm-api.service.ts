@@ -15,18 +15,18 @@ export class PcmApiService {
   get urls() {
     return {
       file: (uuid: string) => `${environment.pcm}webshop/file/${uuid}`,
-      datasheet: (itemNum: number, culture: string) => `${environment.pcm}webshop/file/datasheet/${itemNum}/${culture}`,
-      images: (itemNum: number, culture: string) => `${environment.pcm}webshop/list/images/${itemNum}/${culture}`,
-      objects: (itemNum: number) => `${environment.pcm}webshop/list/objects/${itemNum}`,
+      datasheet: (itemNum: string, culture: string) => `${environment.pcm}webshop/file/datasheet/${itemNum}/${culture}`,
+      images: (itemNum: string, culture: string) => `${environment.pcm}webshop/list/images/${itemNum}/${culture}`,
+      objects: (itemNum: string) => `${environment.pcm}webshop/list/objects/${itemNum}`,
       documents: (type: string) => `${environment.pcm}webshop/list/documents/${type}`,
     }
   }
 
-  getObjectList(itemNum: number): Promise<PcmApiObjectListResult> {
+  getObjectList(itemNum: string): Promise<PcmApiObjectListResult> {
     return firstValueFrom(this.http.get<PcmApiObjectListResult>(this.urls.objects(itemNum)))
   }
 
-  getProductImagesList(itemNum: number, language: string): Promise<PcmApiResult> {
+  getProductImagesList(itemNum: string, language: string): Promise<PcmApiResult> {
     return firstValueFrom(this.http.get<PcmApiResult>(this.urls.images(itemNum, language)))
   }
 
@@ -34,7 +34,7 @@ export class PcmApiService {
     return firstValueFrom(this.http.get<PcmApiResult>(this.urls.documents('recept')))
   }
 
-  checkDatasheetHead(itemNum: number, culture: string): Promise<any> {
+  checkDatasheetHead(itemNum: string, culture: string): Promise<any> {
     const params = trimParameters({
       retry: false
     })

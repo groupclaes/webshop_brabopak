@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core'
+import { EventEmitter, Injectable } from '@angular/core'
+import { TranslateService } from '@ngx-translate/core'
 import { AuthService } from 'src/app/auth/auth.service'
-import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
+import { EcommerceApiService, ICartProduct } from 'src/app/core/api/ecommerce-api.service'
+import { IProductBase } from 'src/app/core/api/products-api.service'
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +10,14 @@ import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 export class CartService {
   private _initialized: boolean = false
 
-  private _products: {
-    product_id: number,
-    quantity: number
-  }[] = []
+  private _products: ICartProduct[] = []
+
+  changes: EventEmitter<void> = new EventEmitter<void>()
 
   constructor(
     private auth: AuthService,
-    private api: EcommerceApiService
+    private api: EcommerceApiService,
+    private translate: TranslateService
   ) {
     console.log('CartService')
     this.auth.change.subscribe({
@@ -33,8 +35,12 @@ export class CartService {
     try {
       console.debug('CartService.init() -- try')
       // get carts from api
-      const response = await this.api.carts()
+      const response = await this.api.cart(this.auth.id_token?.usercode)
       this._initialized = true
+
+      this._products = response[0].products
+
+      this.changes.emit()
     } catch (err) {
       console.debug('CartService.init() -- catch')
       console.error(err)
@@ -43,32 +49,47 @@ export class CartService {
     }
   }
 
-  update(product_id: number, quantity: number): void {
-    // all logic will be server side, on update the server return the complete product list again
-    if (quantity < 1) {
-      console.debug('CartService.update() -- remove product', product_id)
-      this._products.forEach((product, index) => {
-        if (product.product_id === product_id) {
-          this._products.splice(index, 1)
-        }
-      })
+  async update(product: IProductBase, quantity: number): Promise<void> {
+    if (quantity > 0 && !(this.validateQuantity(product, quantity) || product.type !== 'B')) {
+      return
     }
 
-    else if (quantity > 0) {
-      console.debug('CartService.update() -- update product quantity', product_id, quantity)
-      const record = this._products.find(e => e.product_id === product_id)
-      if (record)
-        record.quantity = quantity
-      else
-        this._products.push({ product_id, quantity })
-    }
+    const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.id_token?.usercode)
+    this._products = response[0].products
+    this.changes.emit()
+  }
 
-    else {
-      console.debug('CartService.update() -- nothing to do')
+  private validateQuantity(product: IProductBase, quantity: number): boolean {
+    if (quantity < product.minimum_order_quantity) {
+      const correctqty = product.minimum_order_quantity
+      this.openDialog(this.translate.instant('errors.minimum_order_quantity', { correctqty: correctqty }), product, correctqty)
+      return false
+    } else if (((quantity - product.minimum_order_quantity) % product.stack_size) !== 0) {
+      const correctqty = quantity + product.stack_size - ((quantity - product.minimum_order_quantity) % product.stack_size)
+      this.openDialog(this.translate.instant('errors.stack_size', { stack_size: product.stack_size, correctqty: correctqty }), product, correctqty)
+      return false
+    }
+    return true
+  }
+
+  openDialog(bodytext: string, product: IProductBase, correctqty: number): void {
+    const result = window.confirm(bodytext)
+
+    if (result === true) {
+      this.update(product, correctqty)
+      return
     }
   }
 
   get initialized(): boolean {
     return this._initialized
+  }
+
+  get productCount(): number {
+    return this._products.length
+  }
+
+  get products(): ICartProduct[] {
+    return this._products
   }
 }
