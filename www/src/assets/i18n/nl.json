@@ -104,6 +104,9 @@
       }
     },
     "cart": {
+      "header": {
+        "title": "Winkelmandje"
+      },
       "productCosts": "Productkosten",
       "taxCosts": "Recyclagekosten",
       "shippingCosts": "Leveringskosten",
@@ -120,10 +123,43 @@
           "asideButton": "Ik ga bestellen"
         },
         "2": {
+          "form": {
+            "customerReference": "Klantreferentie",
+            "deliverOption": "Opties van de levering van je bestelling",
+            "deliverImmediately": "Lever mijn bestelling onmiddellijk",
+            "deliverNextDate": "Wacht met leveren tot mijn volgende bestelling",
+            "deliveryMethod": "Wijze van je levering",
+            "deliveryMethodDelivery": "Levering",
+            "deliveryMethodPickup": "Afhaling",
+            "deliveryOption": "Opties bij je levering",
+            "deliveryOptionParts": "Indien niet volledig, lever de hoeveelheid in voorraad.",
+            "deliveryOptionComplete": "Het order mag enkel uitgeleverd worden als het volledig is.",
+            "comments": "Opmerkingen"
+          },
           "backButton": " Terug naar productoverzicht",
           "asideButton": "Bestelling controleren"
         },
         "3": {
+          "form": {
+            "invoiceInfo": "Facturatie",
+            "deliveryInfo": "Levering",
+            "name": "Naam:",
+            "address": "Straat:",
+            "city": "Gemeente:",
+            "country": "Land:",
+            "deliveryMethod": {
+              "title": "Wijze van je levering:",
+              "transport": "Levering",
+              "selfservice": "Afhaling"
+            },
+            "deliveryOption": {
+              "title": "Opties bij je levering:",
+              "parts": "Indien niet volledig, lever de hoeveelheid in voorraad.",
+              "complete": "Het order mag enkel uitgeleverd worden als het volledig is."
+            },
+            "acceptTerms": " Ik aanvaard de <a target=\"_blank\" class=\"text-primary hover:underline\" rel=\"noopener noreferer\" href=\"https://pcm.groupclaes.be/v3/content/dis/website/content-document/9990\">verkoopvoorwaarden</a>.",
+            "acceptTermsOrderitem": "Ik ben op de hoogte dat bestelartikelen niet geruild of retour genomen worden."
+          },
           "backButton": " Terug naar leveringsgegevens",
           "freeShipping": "Gratis levering!",
           "asideButton": "Bestelling plaatsen"

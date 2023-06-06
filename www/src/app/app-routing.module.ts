@@ -12,26 +12,15 @@ export const routes: Routes = [{
     layout
   }
 }, {
-  path: 'material',
-  loadChildren: () => import('./pages/home/home-page.module').then(m => m.HomePageModule),
-  data: {
-    layout: 'material'
-  }
-}, {
-  path: 'modern',
-  loadChildren: () => import('./pages/home/home-page.module').then(m => m.HomePageModule),
-  data: {
-    layout: 'modern'
-  }
-}, {
-  path: 'centered',
-  loadChildren: () => import('./pages/home/home-page.module').then(m => m.HomePageModule),
-  data: {
-    layout: 'centered'
-  }
-}, {
   path: 'auth',
   loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+  data: {
+    layout
+  }
+}, {
+  path: 'cart',
+  loadChildren: () => import('./pages/cart/cart-page.module').then(m => m.CartPageModule),
+  canActivate: [authGuard],
   data: {
     layout
   }

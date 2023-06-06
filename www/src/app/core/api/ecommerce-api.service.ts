@@ -26,25 +26,29 @@ export class EcommerceApiService {
     return firstValueFrom(this.http.get<any>(this.urls.menu()))
   }
 
-  dashboard(usercode?: number): Promise<any> {
+  dashboard(usercode: number): Promise<any> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<any>(this.urls.dashboard(), { params }))
   }
 
-  cart(usercode?: number): Promise<ICart[]> {
+  cart(usercode: number): Promise<ICart[]> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<ICart[]>(this.urls.cart(), { params }))
   }
 
-  putCartProduct(product: any, usercode?: number): Promise<ICart[]> {
-    const params = trimParameters({
+  putCartProduct(product: any, usercode: number): Promise<ICart[]> {
+    const params = {
       usercode
-    })
+    }
     return firstValueFrom(this.http.put<ICart[]>(this.urls.cartProduct(), product, { params }))
+  }
+
+  postCart(form: any) {
+    return firstValueFrom(this.http.post<any>(this.urls.cart(), form))
   }
 }
 

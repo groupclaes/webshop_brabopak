@@ -55,7 +55,7 @@ export class SigninPageComponent implements OnInit {
     })
 
     this.auth.change.subscribe((auth) => {
-      if (auth && this.auth.id_token?.usertype === 1) {
+      if (auth && this.auth.id_token?.user_type === 1) {
         console.info(`user is now authenticated, go to home page.`)
         this.router.navigate(['/home'])
       } else if (auth) {
@@ -65,10 +65,10 @@ export class SigninPageComponent implements OnInit {
     })
 
     if (this.auth.isAuthenticated() && this.auth.id_token && this.auth.id_token.usercode !== 0) {
-      if (this.auth.id_token.usertype === 1) {
+      if (this.auth.id_token.user_type === 1) {
         // console.info(`user is logged in and authenticated, go to home page.`)
         // this.router.navigate(['/home'])
-      } else if (this.auth.id_token.usertype > 1 && this.auth.id_token.usertype < 5) {
+      } else if (this.auth.id_token.user_type > 1 && this.auth.id_token.user_type < 5) {
         // console.info(`user is logged in and authenticated, go to customers page.`)
         // this.router.navigate(['/customers'])
       }

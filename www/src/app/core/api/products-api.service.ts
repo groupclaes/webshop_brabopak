@@ -58,6 +58,7 @@ export interface IProductBase {
   stack_size: number
   minimum_order_quantity: number
   color: string
+  url: string
 }
 
 export interface IProduct extends IProductBase {

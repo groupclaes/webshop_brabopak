@@ -11,7 +11,12 @@ export default [{
   url: '/carts',
   handler: cartsController.get,
   requiredPermissions: []
-  }, {
+}, {
+  method: 'POST',
+  url: '/carts',
+  handler: cartsController.post,
+  requiredPermissions: []
+}, {
   method: 'PUT',
   url: '/carts/products',
   handler: cartsController.put,

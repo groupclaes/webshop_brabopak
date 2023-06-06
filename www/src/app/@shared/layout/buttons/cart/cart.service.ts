@@ -32,10 +32,11 @@ export class CartService {
   }
 
   async init() {
+    if (!this.auth.id_token) return
     try {
       console.debug('CartService.init() -- try')
       // get carts from api
-      const response = await this.api.cart(this.auth.id_token?.usercode)
+      const response = await this.api.cart(this.auth.id_token.usercode)
       this._initialized = true
 
       this._products = response[0].products
@@ -50,13 +51,23 @@ export class CartService {
   }
 
   async update(product: IProductBase, quantity: number): Promise<void> {
-    if (quantity > 0 && !(this.validateQuantity(product, quantity) || product.type !== 'B')) {
+    if (quantity > 0 && !(this.validateQuantity(product, quantity) || product.type !== 'B') || !this.auth.id_token) {
       return
     }
 
-    const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.id_token?.usercode)
+    const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.id_token.usercode)
     this._products = response[0].products
     this.changes.emit()
+  }
+
+  async send(form: any): Promise<boolean> {
+    const response = await this.api.postCart(form)
+
+    if (response.status === 200) {
+      this.init()
+    }
+
+    return response.status === 200
   }
 
   private validateQuantity(product: IProductBase, quantity: number): boolean {
@@ -72,7 +83,7 @@ export class CartService {
     return true
   }
 
-  openDialog(bodytext: string, product: IProductBase, correctqty: number): void {
+  private openDialog(bodytext: string, product: IProductBase, correctqty: number): void {
     const result = window.confirm(bodytext)
 
     if (result === true) {

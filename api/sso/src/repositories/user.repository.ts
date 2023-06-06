@@ -122,7 +122,7 @@ export default class User {
    */
   getAudSub = (user_id: number | string) => ({
     audience: [
-      process.env.CLIENT_ID
+      process.env.CLIENT_ID ?? 'unknown'
     ],
     subject: user_id.toString()
   })

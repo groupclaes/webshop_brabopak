@@ -34,7 +34,7 @@ export class SSO {
     const result = await r.execute(`${this.schema}.[usp_getUserInfo]`)
 
     if (result.recordset.length > 0) {
-      return result.recordset[0]
+      return result.recordset[0][0]
     }
     return undefined
   }

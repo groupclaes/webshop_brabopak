@@ -11,7 +11,7 @@
 <div class="top-10 mt-3 absolute w-64 md:w-96 lg:w-128 z-40 flex flex-col right-0 p-4 backdrop-blur border drop-shadow-lg bg-[#ffffffcc]
   dark:bg-[#1118278f] rounded-b-xl" *ngIf="expanded">
   <div class="empty" *ngIf="!service.products || service.products.length === 0">
-    <small class="text-gray-400 font-italic" translate>pages.cart.empty</small>
+    <small class="text-gray-400 italic" translate>pages.cart.empty</small>
   </div>
   <div class="overflow-scroll" id="menu-basket-products" *ngIf="service.products.length > 0">
     <div class="flex px-1 pb-2 border-b last:border-none mb-2" [id]="'menu-basket-product-' + product.quantity"
@@ -21,7 +21,7 @@
           {{ product.name }}
         </a>
         <br>
-        <small class="product-unit text-gray-400 font-italic">
+        <small class="product-unit text-gray-400 italic">
           {{ product.quantity }}x
           {{ product.unit }}
         </small>
@@ -38,7 +38,8 @@
   <div class="border-t pt-3 mb-4" *ngIf="service.products && service.products.length > 0">
     <div class="flex" id="menu-basket-shipping-cost">
       <small translate>pages.cart.shippingCosts</small>
-      <span class="flex-auto text-right font-bold inline-block" [ngClass]="{ success: calcTotalPrice.totalDelivery === 0 }">
+      <span class="flex-auto text-right font-bold inline-block"
+        [ngClass]="{ success: calcTotalPrice.totalDelivery === 0 }">
         {{ calcTotalPrice.totalDelivery > 0 ? (calcTotalPrice.totalDelivery | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : ('pages.cart.steps.3.freeShipping' | translate) }}
       </span>
     </div>
@@ -59,7 +60,7 @@
   </div>
   <div class="flex" *ngIf="service.products.length > 0">
     <button class="block text-white rounded px-5 h-10 border border-primary bg-info hover:bg-primary"
-      id="btn-menu-basket-step-1" [routerLink]="['/basket']" (click)="toggle()"
+      id="btn-menu-basket-step-1" [routerLink]="['/cart'] | localize" (click)="toggle()"
       [disabled]="!service.products || service.products.length < 1" translate>
       pages.cart.steps.1.asideButton
     </button>

@@ -6,7 +6,7 @@ import { IProductBase } from 'src/app/core/api/products-api.service'
   selector: 'bra-cart-button',
   templateUrl: './cart-button.component.html',
   host: {
-    class: 'w-full'
+    class: 'flex'
   }
 })
 export class CartButtonComponent {
@@ -36,6 +36,12 @@ export class CartButtonComponent {
 
   removeOne() {
     if (!this.product || !this.currentQuantity) return
+
+    if (this.currentQuantity === 1) {
+      const confirmed = confirm('Are you sure you want to remove this product from cart?')
+      if (!confirmed) return
+    }
+
     this.service.update(this.product, this.currentQuantity - 1)
   }
 

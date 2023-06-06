@@ -13,6 +13,7 @@ const scope = environment.sso.scope
 
 const SESSION_STORAGE_KEY = environment.storageKey + '.session'
 const REFRESH_STORAGE_KEY = environment.storageKey + '.refresh_token'
+const CUSTOMER_STORAGE_KEY = environment.storageKey + '.customer'
 
 @Injectable({
   providedIn: 'root'
@@ -196,6 +197,41 @@ export class AuthService {
       }
     }
   }
+
+  get customers(): ICustomer[] {
+    if (this.isAuthenticated() && this.id_token) {
+      switch (this.id_token.user_type) {
+        case 1:
+          return this.id_token.customers
+
+        case 2:
+        case 3:
+        case 4:
+          break
+      }
+    }
+    return []
+  }
+
+  get currentCustomer(): ICustomer | undefined {
+    if (this.isAuthenticated() && this.id_token) {
+      console.log(this.id_token)
+      switch (this.id_token.user_type) {
+        case 1:
+          return this.customers[0]
+
+        case 2:
+        case 3:
+        case 4:
+          const selectedCustomerKey = window.localStorage.getItem(CUSTOMER_STORAGE_KEY)
+          if (selectedCustomerKey) {
+            // return selectedCustomerKey
+          }
+        // return this.id_token.usercode
+      }
+    }
+    return undefined
+  }
 }
 
 export interface IGetTokenResponse {
@@ -220,8 +256,28 @@ export interface IdToken {
   preferred_username: string
 
   usercode: number
-  usertype: 1 | 2 | 3 | 4
+  user_type: 1 | 2 | 3 | 4
   token: string
 
+  customers: ICustomer[]
+
   picture: string
+}
+
+export interface ICustomer {
+  id: number
+  name: string
+  address: string
+  street_number: string
+  city: string
+  zip_code: string
+  country: string
+
+  address_id: number
+  address_name: string
+  address_address: string
+  address_street_number: string
+  address_city: string
+  address_zip_code: string
+  address_country: string
 }

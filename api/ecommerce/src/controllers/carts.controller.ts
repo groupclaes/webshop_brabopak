@@ -1,6 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { JWTPayload } from 'jose'
 
+import oe from '@groupclaes/oe-connector'
+
 import Cart from '../repositories/carts.repository'
 
 // get current cart
@@ -55,20 +57,68 @@ export const put = async (request: FastifyRequest<{
 
 // send cart
 export const post = async (request: FastifyRequest<{
-  Querystring: {
-    usercode: number
-    culture?: string
-  }
+  Body: any
 }>, reply: FastifyReply) => {
+
   try {
-    const repo = new Cart()
     const token: JWTPayload = request['token'] || { sub: null }
-    const usercode = request.query.usercode
-    const culture = request.query.culture ?? 'nl'
 
+    if (token.sub) {
+      const order: any = request.body
+      // get user info from db
+      // get cart info from db
+      console.debug(order)
 
+      const oe_payload = {
+        dsOrders: {
+          ttOrdMst: [{
+            CustNum: order.customer.id,
+            DelvAdr: order.customer.address_id,
+            CustCol: order.deliveryInfo.method !== 'transport',
+            ComplDelv: order.deliveryInfo.option !== 'parts',
+            CustRef: order.invoiceInfo.reference,
+            DelvDate: undefined,
+            NextDelv: order.invoiceInfo.nextDate,
+            OrdWay: 'B2B',
+            //Username: user.username
+          }],
+          ttOrdDtl: order.products.map((product, i) => ({
+            ItemNum: product.itemnum,
+            Qty: product.quantity,
+            SalUnit: product.unit,
+            TmpOrdLine: i
+          })),
+          ttOrdMstText: [{
+            InfoText: order.invoiceInfo.comment
+          }]
+        }
+      }
 
+      oe.configure({
+        c: false
+      })
+
+      const oeResponse = await oe.run('post_order.p', [
+        'bra',
+        oe_payload,
+        undefined
+      ], {
+        tw: -1,
+        simpleParameters: true
+      })
+
+      if (oeResponse && oeResponse.status === 200 && oeResponse.result) {
+        return {
+          success: true
+        }
+      }
+    }
+
+    return reply
+      .status(401)
+      .send({ error: 'Unauthorized!' })
   } catch (err) {
+    request.log.fatal(request.body, 'failed to send order!')
     return reply
       .status(500)
       .send(err)

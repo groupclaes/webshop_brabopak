@@ -36,12 +36,10 @@ export class HomePageComponent {
       this.loading = true
       this.ref.markForCheck()
 
-      console.log(this.auth.id_token)
-      const resp = await this.api.dashboard(this.auth.id_token?.usercode)
-
-      this.dashboard = resp
-      this.ref.markForCheck()
-      console.log(resp)
+      if (this.auth.id_token) {
+        const resp = await this.api.dashboard(this.auth.id_token?.usercode)
+        this.dashboard = resp
+      }
     } catch (err) {
       console.error(err)
     } finally {
