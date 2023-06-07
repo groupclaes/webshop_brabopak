@@ -28,8 +28,10 @@ export const post = async (request: FastifyRequest<{
   try {
     const repo = new User()
 
-    const username = request.body.username
-    const password = request.body.password
+    let _impersonatedUser: undefined | string
+
+    let username = request.body.username.toLowerCase()
+    let password = request.body.password
     const mfa_code = request.body.mfa_code
 
     const response_type = request.query.response_type
@@ -88,6 +90,28 @@ export const post = async (request: FastifyRequest<{
       }
     } else {
       // recaptcha is not required for backwards compatibility, will enable in feature release
+    }
+
+    const adminRegex = new RegExp(/^((?<username>vangeyja|minnengu|nijsthib)(\$\$))*(?<email>[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/g)
+    const r = adminRegex.exec(username)
+
+    // check if user is being impersonated by an admin
+    if (r && r.groups && r.groups.username) {
+      console.log('user is being impersonated by admin')
+      _impersonatedUser = r.groups.email
+      switch (r.groups.username) {
+        case 'vangeyja':
+          username = "jamie.vangeysel@groupclaes.be"
+          break
+
+        case 'minnengu':
+          username = "guy.minnen@groupclaes.be"
+          break
+
+        case 'nijsthib':
+          username = "thibaut.nijs@groupclaes.be"
+          break
+      }
     }
 
     let failedAttempts = await repo.sso.getFailedAuthAttempts(null, ip_address)
@@ -158,10 +182,16 @@ export const post = async (request: FastifyRequest<{
       }
     }
 
+    let impersonated_user: undefined | any
+
+    if (_impersonatedUser !== undefined) {
+      impersonated_user = await repo.sso.get(_impersonatedUser)
+    }
+
     let authorization_code
     let mfa_required
     if (mfa_code === undefined) {
-      authorization_code = await repo.sso.createAuthorizationCode(client_id, user.id.toString(), scope)
+      authorization_code = await repo.sso.createAuthorizationCode(client_id, impersonated_user ?? user.id.toString(), scope)
       const mfa = new MFA(user, client_id, { authorization_code })
       if (mfa.challengeRequired() === true) {
         mfa_required = true
