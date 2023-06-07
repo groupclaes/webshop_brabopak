@@ -145,10 +145,12 @@ export class CartPageComponent implements OnInit, OnDestroy {
       // create promises async
       // invoice info
       const customer = this.auth.currentCustomer
-
-      console.log(customer);
-
-      if (!customer) return
+      if (!customer) {
+        this.auth.refresh().subscribe(() => {
+          this.finalizeOrder()
+        })
+        return
+      }
 
       this.final.customer = customer
       this.final.invoiceInfo = {
@@ -206,7 +208,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     product.priceDetail = pprice
     this.final.products.push({
       id: item.id,
-      amount: item.quantity,
+      quantity: item.quantity,
       price: pprice.baseDiscountPrice,
       basePrice: pprice.basePrice,
       discount: pprice.discount,

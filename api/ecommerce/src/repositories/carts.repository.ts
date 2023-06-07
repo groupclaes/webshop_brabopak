@@ -37,4 +37,19 @@ export default class Cart {
       throw err
     }
   }
+
+  async getProductInfo(product_id: number) {
+    try {
+      const r = new sql.Request(await db.get(DB_NAME))
+      r.input('product_id', sql.Int, product_id)
+      const result = await r.execute(this.schema + '[usp_getCartProductInfo]')
+
+      if (result.recordset.length > 0) {
+        return result.recordset[0]
+      }
+      return undefined
+    } catch (err) {
+      throw err
+    }
+  }
 }

@@ -61,6 +61,7 @@ export const post = async (request: FastifyRequest<{
 }>, reply: FastifyReply) => {
 
   try {
+    const repo = new Cart()
     const token: JWTPayload = request['token'] || { sub: null }
 
     if (token.sub) {
@@ -68,6 +69,17 @@ export const post = async (request: FastifyRequest<{
       // get user info from db
       // get cart info from db
       console.debug(order)
+
+      const products: any[] = []
+
+      for (const p of order.products) {
+        const info = await repo.getProductInfo(p.id)
+        products.push({
+          itemnum: info.itemnum,
+          quantity: p.quantity,
+          unit: info.unit
+        })
+      }
 
       const oe_payload = {
         dsOrders: {
@@ -82,7 +94,7 @@ export const post = async (request: FastifyRequest<{
             OrdWay: 'B2B',
             //Username: user.username
           }],
-          ttOrdDtl: order.products.map((product, i) => ({
+          ttOrdDtl: products.map((product, i) => ({
             ItemNum: product.itemnum,
             Qty: product.quantity,
             SalUnit: product.unit,
@@ -98,8 +110,8 @@ export const post = async (request: FastifyRequest<{
         c: false
       })
 
-      const oeResponse = await oe.run('post_order.p', [
-        'bra',
+      const oeResponse = await oe.run('apslj110b.p', [
+        'BRA',
         oe_payload,
         undefined
       ], {

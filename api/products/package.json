@@ -16,7 +16,7 @@
     "@groupclaes/fastify-elastic": "^2.0.4",
     "fastify": "^4.16.3",
     "jose": "^4.14.1",
-    "mssql": "^7.3.5"
+    "mssql": "^8.1.4"
   },
   "devDependencies": {
     "@types/mssql": "^8.1.2",
