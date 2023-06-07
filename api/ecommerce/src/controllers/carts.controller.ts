@@ -67,6 +67,7 @@ export const post = async (request: FastifyRequest<{
     if (token.sub) {
       const order: any = request.body
       // get user info from db
+      const user = await repo.getUserInfo(token.sub)
       // get cart info from db
       console.debug(order)
 
@@ -113,11 +114,18 @@ export const post = async (request: FastifyRequest<{
       const oeResponse = await oe.run('apslj110b.p', [
         'BRA',
         oe_payload,
+        user.usercode,
         undefined
       ], {
         tw: -1,
-        simpleParameters: true
+        simpleParameters: true,
+        parameterDefaults: {
+          in: 'string',
+          out: 'string'
+        }
       })
+
+      console.debug(oeResponse)
 
       if (oeResponse && oeResponse.status === 200 && oeResponse.result) {
         return {

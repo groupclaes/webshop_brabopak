@@ -33,6 +33,8 @@ export class SSO {
 
     const result = await r.execute(`${this.schema}.[usp_getUserInfo]`)
 
+    console.debug('SSO.getUserInfo(' + user_id + ') -- ', JSON.stringify(result))
+
     if (result.recordset.length > 0) {
       return result.recordset[0][0]
     }
