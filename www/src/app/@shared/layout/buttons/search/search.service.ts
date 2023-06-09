@@ -96,7 +96,7 @@ export class SearchService {
         (filters.only_best_selling && filters.only_best_selling === this._only_best_selling) &&
         (filters.only_recent && filters.only_recent === this._only_recent)
       ) {
-        console.debug('filters have not changed, ignore update request')
+        // console.debug('filters have not changed, ignore update request')
       } else {
         this._page = filters.page
         this._query = filters.query
@@ -110,8 +110,6 @@ export class SearchService {
 
         this._itemNum = filters.itemNum
         this._salUnit = filters.salUnit
-
-        console.log('filters have changed')
 
         if (this._refreshSub !== undefined) {
           this._refreshSub.next(true)
@@ -228,6 +226,10 @@ export class SearchService {
     }
   }
 
+  get items(): number {
+    return this._items
+  }
+
   get page(): number | undefined {
     return this._page
   }
@@ -237,6 +239,10 @@ export class SearchService {
       this._page = value
       this.apply()
     }
+  }
+
+  get page_count(): number {
+    return this._page_count ?? 0
   }
 
   get query(): string | undefined {
@@ -268,7 +274,6 @@ export class SearchService {
     this._page = undefined
     this.apply()
   }
-
 
   get only_new(): boolean | undefined {
     return this._only_new

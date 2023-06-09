@@ -14,6 +14,7 @@ const scope = environment.sso.scope
 const SESSION_STORAGE_KEY = environment.storageKey + '.session'
 const REFRESH_STORAGE_KEY = environment.storageKey + '.refresh_token'
 const CUSTOMER_STORAGE_KEY = environment.storageKey + '.customer'
+const CUSTOMERS_STORAGE_KEY = environment.storageKey + '.customers'
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,10 @@ export class AuthService {
 
   private _id_token: string | undefined
   private _access_token: string | undefined
+  private _customer_cache: ICustomer[] = []
 
   change: Subject<IGetTokenResponse | undefined> = new Subject<IGetTokenResponse | undefined>()
+  customerChange: Subject<void> = new Subject<void>()
 
   authenticating: boolean = false
 
@@ -51,10 +54,19 @@ export class AuthService {
         this.refresh()
       }, 100)
     }
+
+    if (window.sessionStorage.getItem(CUSTOMERS_STORAGE_KEY)) {
+      this._customer_cache = JSON.parse(window.sessionStorage.getItem(CUSTOMERS_STORAGE_KEY) || '[]')
+    }
+
+    // check each minute if session is still valid
+    setInterval(() => {
+      this.refresh()
+    }, 60000)
   }
 
   public authorize(credentials: { username: string, password: string }, token?: string): Promise<any> {
-    return this.http.post<any>(`${api_url}authorize`, credentials, {
+    return firstValueFrom(this.http.post<any>(`${api_url}authorize`, credentials, {
       params: {
         response_type: 'code',
         scope: scope,
@@ -63,8 +75,7 @@ export class AuthService {
       headers: token ? {
         'g-recaptcha-response': token
       } : {}
-    })
-      .toPromise()
+    }))
   }
 
   public signon(credentials: { username: string, password: string, code: string }): Promise<any> {
@@ -116,6 +127,8 @@ export class AuthService {
   public logout() {
     this.sessionStorage.removeItem(SESSION_STORAGE_KEY)
     this.sessionStorage.removeItem(REFRESH_STORAGE_KEY)
+    this.sessionStorage.removeItem(CUSTOMERS_STORAGE_KEY)
+    this.storage.removeItem(CUSTOMER_STORAGE_KEY)
     this.storage.removeItem(REFRESH_STORAGE_KEY)
     this.change.next(undefined)
 
@@ -132,7 +145,14 @@ export class AuthService {
     return false
   }
 
-  saveTokens(tokens: IGetTokenResponse): void {
+  public isMultiUser(): boolean {
+    if (this.id_token) {
+      return this.id_token.user_type > 1
+    }
+    return false
+  }
+
+  private saveTokens(tokens: IGetTokenResponse): void {
     const refresh_token = tokens.refresh_token
     delete tokens.refresh_token
 
@@ -140,6 +160,15 @@ export class AuthService {
     if (refresh_token)
       this.storage.setItem(REFRESH_STORAGE_KEY, refresh_token)
     this.change.next(tokens)
+  }
+
+  private async syncCustomers() {
+    const result = await firstValueFrom(this.http.get<any[] | undefined>(`${api_url}users/customers`))
+    if (result && result.length > 0) {
+      this._customer_cache = result
+      window.sessionStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(result))
+      this.customerChange.next()
+    }
   }
 
   get id_token(): IdToken | undefined {
@@ -207,15 +236,25 @@ export class AuthService {
         case 2:
         case 3:
         case 4:
-          break
+          if (this._customer_cache.length === 0) this.syncCustomers()
+          return this._customer_cache
       }
     }
     return []
   }
 
+  set currentCustomer(customer: ICustomer | undefined) {
+    console.log('set current customer', customer)
+    if (!customer) {
+      window.localStorage.removeItem(CUSTOMER_STORAGE_KEY)
+      return
+    }
+    window.localStorage.setItem(CUSTOMER_STORAGE_KEY, `${customer.id}_${customer.address_id}`)
+    this.customerChange.next()
+  }
+
   get currentCustomer(): ICustomer | undefined {
     if (this.isAuthenticated() && this.id_token) {
-      console.log(this.id_token)
       switch (this.id_token.user_type) {
         case 1:
           return this.customers[0]
@@ -224,10 +263,19 @@ export class AuthService {
         case 3:
         case 4:
           const selectedCustomerKey = window.localStorage.getItem(CUSTOMER_STORAGE_KEY)
-          if (selectedCustomerKey) {
-            // return selectedCustomerKey
+          if (selectedCustomerKey && this.customers.length > 0) {
+            const customer_id = parseInt(selectedCustomerKey.split('_')[0], 10)
+            const address_id = parseInt(selectedCustomerKey.split('_')[1], 10)
+            const customer = this.customers.find(c => c.id === customer_id && c.address_id === address_id)
+
+            if (!customer) {
+              this.storage.removeItem(CUSTOMER_STORAGE_KEY)
+              return undefined
+            }
+
+            return customer
           }
-        // return this.id_token.usercode
+          return undefined
       }
     }
     return undefined
@@ -280,4 +328,6 @@ export interface ICustomer {
   address_city: string
   address_zip_code: string
   address_country: string
+
+  usercode: number
 }

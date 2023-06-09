@@ -86,7 +86,6 @@ export const get = async (request: FastifyRequest<{
 
     return payload
   } catch (err) {
-    console.error(err)
     request.log.error({ error: err, authorizationCode: request.query.code, grantType: request.query.grant_type, redirectUri: request.query.redirect_uri }, 'Couldn\'t retrieve token, something unexpected happened')
     return reply
       .code(500)

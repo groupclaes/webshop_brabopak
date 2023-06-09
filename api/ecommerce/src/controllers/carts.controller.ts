@@ -69,7 +69,6 @@ export const post = async (request: FastifyRequest<{
       // get user info from db
       const user = await repo.getUserInfo(token.sub)
       // get cart info from db
-      console.debug(order)
 
       const products: any[] = []
 
@@ -124,8 +123,6 @@ export const post = async (request: FastifyRequest<{
           out: 'string'
         }
       })
-
-      console.debug(oeResponse)
 
       if (oeResponse && oeResponse.status === 200 && oeResponse.result) {
         return {

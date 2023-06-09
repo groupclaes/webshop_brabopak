@@ -12,6 +12,10 @@
     </div>
   </div>
 
+<div class="p-4 mx-auto text-center align-center" *ngIf="loading">
+  <bra-loader></bra-loader>
+</div>
+
   <ng-container *ngFor="let block of dashboard | filterEmpty; let is_last = last">
     <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block[0].title" [link]="block[0].link"
       [items]="block[0].products">

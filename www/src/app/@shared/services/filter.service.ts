@@ -103,7 +103,6 @@ export class FilterService {
   }
 
   applyFilter() {
-    console.log('applyFilter()')
     let route = ''
     if (!this.router.url.startsWith('/products')) {
       route = '/products'

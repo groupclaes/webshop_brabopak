@@ -5,6 +5,7 @@ import { env } from 'process'
 import oe from '@groupclaes/oe-connector'
 
 import User from '../repositories/user.repository'
+import { request } from 'http'
 // SGWQVXPQWZEM
 
 /**
@@ -30,6 +31,18 @@ export const postSignOn = async (request: FastifyRequest<{
     oe.configure({
       c: false
     })
+
+    const user = await repo.sso.get(username)
+    if (user) {
+      return reply
+        .status(403)
+        .send({
+          status: 'Forbidden',
+          statusCode: 403,
+          message: 'User already exists',
+          success: false
+        })
+    }
 
     const oeResponse = await oe.run('signon', [
       username,
@@ -171,6 +184,24 @@ export const postUpdatePassword = async (request: FastifyRequest<{
     return
   } catch (err) {
     throw err
+  }
+}
+
+export const getCustomers = async (request: FastifyRequest<any>, reply: FastifyReply) => {
+  try {
+    const repo = new User()
+    const token: JWTPayload = request['token'] || { sub: null }
+
+    if (token.sub) {
+      return await repo.getCustomers(token.sub)
+    }
+    return reply
+      .status(401)
+      .send({ error: 'Unauthorized!' })
+  } catch (err) {
+    return reply
+      .status(500)
+      .send(err)
   }
 }
 

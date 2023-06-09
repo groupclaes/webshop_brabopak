@@ -49,14 +49,16 @@ export class HomePageComponent {
   }
 
   get name(): string | undefined {
-    return this.auth.id_token?.given_name
+    return this.auth.currentCustomer?.name
+    // return this.auth.id_token?.given_name
   }
 
   get abandonedCart(): { count: number } | undefined {
-    if (this.cart.productCount > 0)
-      return {
-        count: this.cart.productCount
-      }
+    if (this.cart.productCount > 0 && this.cart.modified)
+      if (new Date(this.cart.modified).getTime() < new Date().getTime() - 86400000)
+        return {
+          count: this.cart.productCount
+        }
     return undefined
   }
 }

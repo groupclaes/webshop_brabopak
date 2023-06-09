@@ -73,7 +73,8 @@ export default class Product {
 
       return {
         count: result.recordset[0]?.count,
-        results: result.recordsets[1][0] ?? []
+        results: result.recordsets[1][0] ?? [],
+        breadcrumbs: result.recordsets[2] ?? [],
       }
     } catch (err) {
       throw err

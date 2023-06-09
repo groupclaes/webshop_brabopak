@@ -40,7 +40,6 @@ export function app(): express.Express {
 
     //   res.redirect(301, `/${definedLang}${req.url}`)
     // }
-    // console.log(req.baseUrl, req.url)
     res.render(
       indexHtml,
       { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] },
@@ -78,7 +77,6 @@ export function app(): express.Express {
 
   // oad translated routes used by LocalizeRouter
   languages.forEach((route: string) => {
-    console.log('registering', `/${route}`)
     server.get(`/${route}`, ngApp)
     server.get(`/${route}/*`, ngApp)
   })
@@ -95,7 +93,7 @@ function run(): void {
   // Start up the Node server
   const server = app()
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`)
+    console.debug(`Node Express server listening on http://localhost:${port}`)
   })
 }
 

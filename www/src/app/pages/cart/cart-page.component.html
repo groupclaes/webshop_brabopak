@@ -24,6 +24,10 @@
         {{ 'pages.cart.steps.3.backButton' | translate }}
       </a>
     </ng-container>
+    
+    <div class="p-4 mx-auto text-center align-center" *ngIf="!service.initialized">
+      <bra-loader></bra-loader>
+    </div>
 
     <div *ngIf="service.initialized" role="tablist">
       <div class="flex flex-row w-full mt-4 space-x-4" role="tab">

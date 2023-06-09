@@ -67,4 +67,8 @@ export class CartButtonComponent {
   get amountName(): string {
     return 'product-amount-' + this.product?.id
   }
+
+  get ready(): boolean {
+    return this.service.initialized
+  }
 }

@@ -12,6 +12,11 @@ export default [{
   url: '/token',
   handler: tokenController.get
 }, {
+  method: 'GET',
+  url: '/users/customers',
+  handler: usersController.getCustomers,
+  requiredPermissions: []
+}, {
   method: 'POST',
   url: '/users/signon',
   handler: usersController.postSignOn

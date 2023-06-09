@@ -46,7 +46,6 @@ export const get = async (request: FastifyRequest<{
 
     // if (oeResponse && oeResponse.status === 200) {
     //   resp = oeResponse.result
-    //   console.log(resp)
     // }
 
     const response = {
@@ -169,6 +168,7 @@ export const postSearch = async (request: FastifyRequest<{
     // Get a list of itemNums
     const response = await repo.search(userCode, culture, query, oFavorites, oPromo, oNew, page, perPage, category, token.sub)
     const products = response.results
+    console.log(response)
 
     if (userCode !== 0) {
       //   // get oeInfo
@@ -207,6 +207,7 @@ export const postSearch = async (request: FastifyRequest<{
     return {
       productCount: response.count,
       products,
+      breadcrumbs: response.breadcrumbs,
       executionTime: performance.now() - start
     }
   } catch (err) {

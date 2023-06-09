@@ -51,6 +51,11 @@ export class CartPageComponent implements OnInit, OnDestroy {
         }, 180)
       }
     }))
+    this.subs.push(this.auth.customerChange.subscribe({
+      next: () => {
+        this.proceedCheckout(1)
+      }
+    }))
   }
 
   ngOnDestroy(): void {
@@ -71,6 +76,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     }
     this.isLoading = false
     this.currentStep = stepIndex
+    this.ref.markForCheck()
   }
 
   calcPrice(product: IProductBase, count: number): myPriceEntry {

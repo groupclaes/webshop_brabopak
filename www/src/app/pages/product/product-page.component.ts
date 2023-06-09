@@ -1,11 +1,12 @@
 import { CurrencyPipe } from '@angular/common'
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { TranslateService } from '@ngx-translate/core'
-import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { PcmApiService } from 'src/app/core/api/pcm-api.service'
 import { IProduct, ProductsApiService } from 'src/app/core/api/products-api.service'
+import { IBreadcrumb } from 'src/app/core/components/breadcrumbs/breadcrumbs.component'
 import { environment } from 'src/environments/environment'
 
 declare var require: any
@@ -26,7 +27,7 @@ export class ProductPageComponent {
 
   private _active_image: number = 0
 
-  breadcrumbs: string[] = ['Producten']
+  breadcrumbs: IBreadcrumb[] = [{ name: 'Producten' }]
 
   availableLimit: Date = new Date(2050, 11, 31)
   loading: boolean = true
@@ -39,7 +40,8 @@ export class ProductPageComponent {
     private pcm: PcmApiService,
     private auth: AuthService,
     private currencyPipe: CurrencyPipe,
-    private cart: CartService
+    private router: Router,
+    private localize: LocalizeRouterService
   ) {
     this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
@@ -61,8 +63,9 @@ export class ProductPageComponent {
       })
 
       this._product = response.product
-      this.breadcrumbs = this.breadcrumbs.concat(this._product.breadcrumbs.map((e: any) => this.capitalize(e.name)))
-      this.breadcrumbs.push(this._product.name)
+      this.breadcrumbs = [{ name: 'Producten' }]
+      this.breadcrumbs = this.breadcrumbs.concat(this._product.breadcrumbs.map((e: any) => ({ name: this.capitalize(e.name), id: e.id })))
+      this.breadcrumbs.push({ name: this._product.name, product_id: id })
       // this._product.features = [
       //   "Haal meer uit elk servet: deze papierservetten voor eenmalig gebruik zijn groter als ze uitgevouwen zijn.",
       //   "Verbeter de hygiëne: dankzij de volledig gesloten servetdispenser raken gasten alleen de servetten aan die ze gebruiken.",
@@ -119,6 +122,32 @@ export class ProductPageComponent {
     return capitalize.words(text, {
       skipWord: /^(en|de|het|et|a|pour|voor|om|van)$/
     })
+  }
+
+  goto(breadcrumb: any) {
+    if (!breadcrumb.id && !breadcrumb.product_id) {
+      this.router.navigate([this.localize.translateRoute('/products')])
+      return
+    }
+
+    if (breadcrumb.product_id) {
+      this.router.navigate([this.localize.translateRoute('/product'), breadcrumb.product_id, breadcrumb.name.replace(/ /g, '-').toLowerCase()])
+      return
+    }
+
+    if (breadcrumb.id) {
+      const breadcrumb_index = this.breadcrumbs.findIndex(b => b.id === breadcrumb.id)
+      console.log(breadcrumb_index)
+      const names = []
+      for (let i = 1; i <= breadcrumb_index; i++) {
+        names.push(this.breadcrumbs[i].name.replace(/ /g, '-').toLowerCase())
+      }
+      this.router.navigate([this.localize.translateRoute('/products'), ...names], { queryParams: { id: breadcrumb.id } })
+      return
+    }
+
+
+    this.router.navigate([this.localize.translateRoute('/')])
   }
 
   get featuresExpanded(): boolean {

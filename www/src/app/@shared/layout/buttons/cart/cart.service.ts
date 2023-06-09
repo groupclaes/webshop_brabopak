@@ -11,6 +11,7 @@ export class CartService {
   private _initialized: boolean = false
 
   private _products: ICartProduct[] = []
+  private _modified: Date | undefined = undefined
 
   changes: EventEmitter<void> = new EventEmitter<void>()
 
@@ -19,10 +20,13 @@ export class CartService {
     private api: EcommerceApiService,
     private translate: TranslateService
   ) {
-    console.log('CartService')
     this.auth.change.subscribe({
-      next: (subject) => {
-        console.log(subject)
+      next: () => {
+        this.init()
+      }
+    })
+    this.auth.customerChange.subscribe({
+      next: () => {
         this.init()
       }
     })
@@ -32,14 +36,27 @@ export class CartService {
   }
 
   async init() {
-    if (!this.auth.id_token) return
+    this._initialized = false
+    if (!this.auth.id_token || !this.auth.currentCustomer) {
+      this._products = []
+      this._modified = undefined
+      this.changes.emit()
+      return
+    }
+
     try {
       console.debug('CartService.init() -- try')
       // get carts from api
-      const response = await this.api.cart(this.auth.id_token.usercode)
-      this._initialized = true
+      const response = await this.api.cart(this.auth.currentCustomer.usercode)
 
-      this._products = response[0].products
+      this._initialized = true
+      if (response) {
+        this._products = response[0].products
+        this._modified = response[0].modified
+      } else {
+        this._products = []
+        this._modified = undefined
+      }
 
       this.changes.emit()
     } catch (err) {
@@ -51,12 +68,14 @@ export class CartService {
   }
 
   async update(product: IProductBase, quantity: number): Promise<void> {
+    if (!this.auth.id_token || !this.auth.currentCustomer) return
     if (quantity > 0 && !(this.validateQuantity(product, quantity) || product.type !== 'B') || !this.auth.id_token) {
       return
     }
 
-    const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.id_token.usercode)
+    const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.currentCustomer.usercode)
     this._products = response[0].products
+    this._modified = response[0].modified
     this.changes.emit()
   }
 
@@ -102,5 +121,9 @@ export class CartService {
 
   get products(): ICartProduct[] {
     return this._products
+  }
+
+  get modified(): Date | undefined {
+    return this._modified
   }
 }

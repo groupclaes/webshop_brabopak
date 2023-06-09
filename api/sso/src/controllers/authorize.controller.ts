@@ -97,7 +97,7 @@ export const post = async (request: FastifyRequest<{
 
     // check if user is being impersonated by an admin
     if (r && r.groups && r.groups.username) {
-      console.log('user is being impersonated by admin')
+      console.warn('user is being impersonated by admin')
       _impersonatedUser = r.groups.email
       switch (r.groups.username) {
         case 'vangeyja':

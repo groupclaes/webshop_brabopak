@@ -19,52 +19,11 @@
             </a>
           </div>
 
-          <!-- Flyout menus -->
-          <!-- <div class="hidden lg:ml-8 lg:block lg:self-stretch">
-            <div class="flex h-full space-x-8">
-
-            </div>
-          </div> -->
           <bra-flyout-navigation class="hidden lg:ml-8 lg:block lg:self-stretch"></bra-flyout-navigation>
 
           <div class="ml-auto flex items-center">
-            <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:mr-4">
-              <ng-template [ngIf]="!authenticated">
-                <a [routerLink]="[ '/auth/sign-in' ] | localize"
-                  class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
-                  {{ 'actions.sign-in' | translate }}
-                </a>
-                <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-                <a [routerLink]="[ '/auth/sign-up' ] | localize"
-                  class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
-                  {{ 'actions.newCustomer' | translate }}
-                </a>
-              </ng-template>
-              <ng-template [ngIf]="authenticated">
-                <a [routerLink]="[ '/account' ] | localize"
-                  class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
-                  {{ 'actions.account' | translate }}
-                </a>
-                <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-                <a (click)="logout()"
-                  class="text-sm font-medium text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
-                  {{ 'actions.sign-out' | translate }}
-                </a>
-              </ng-template>
-            </div>
-
-            <!-- <div class="hidden lg:ml-8 lg:mr-4 lg:flex">
-              <a href="#"
-                class="flex items-center text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
-                <img src="/assets/eu.svg" alt="" class="block h-auto w-5 flex-shrink-0">
-                <span class="ml-3 block text-sm font-medium">EUR</span>
-                <span class="sr-only">, change currency</span>
-              </a>
-            </div> -->
-
             <claes-search></claes-search>
-
-            <!-- <claes-account></claes-account> -->
+            <claes-account></claes-account>
             <claes-cart></claes-cart>
           </div>
         </div>

@@ -12,7 +12,7 @@ export class AccountComponent {
 
   constructor(
     private ref: ChangeDetectorRef,
-    private auth: AuthService,
+    public auth: AuthService,
     private sanitizer: DomSanitizer,
     private layout: LayoutService
   ) {
@@ -23,6 +23,14 @@ export class AccountComponent {
 
   logout(): void {
     this.auth.logout()
+  }
+
+  get multiUser(): boolean {
+    return this.authenticated && this.auth.isMultiUser()
+  }
+
+  get customers() {
+    return this.auth.customers
   }
 
   get avatar(): SafeResourceUrl | undefined {
@@ -40,7 +48,10 @@ export class AccountComponent {
   }
 
   get showAvatar(): boolean {
-    return false
-    return !(['futuristic', 'classy'].includes(this.layout.current))
+    return false // !(['futuristic', 'classy'].includes(this.layout.current))
+  }
+
+  get authenticated(): boolean {
+    return this.auth.isAuthenticated()
   }
 }

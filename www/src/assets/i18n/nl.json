@@ -39,7 +39,7 @@
     },
     "home": {
       "header": {
-        "title": "Welkom terug"
+        "title": "Welkom terug {{name}}"
       }
     },
     "product": {
@@ -117,6 +117,7 @@
       "priceOnDemand": "Op aanvraag",
       "empty": "Je hebt nog geen producten in je winkelwagen.",
       "filled": "Je hebt momenteel {{count}} artikel(s) in je winkelwagen.",
+      "view": "Naar mijn winkelmandje",
       "steps": {
         "1": {
           "backButton": " Verder winkelen",

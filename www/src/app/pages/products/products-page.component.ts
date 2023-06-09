@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs'
 import { SearchService } from 'src/app/@shared/layout/buttons/search/search.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { ProductsApiService } from 'src/app/core/api/products-api.service'
+import { IBreadcrumb } from 'src/app/core/components/breadcrumbs/breadcrumbs.component'
 import { environment } from 'src/environments/environment'
 
 declare var require: any
@@ -27,12 +28,13 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   init: boolean = false
 
   per_page: number = 16
+  count: number = 0
   pages: any
   has_first: boolean = false
   has_previous: boolean = false
   has_next: boolean = false
   has_last: boolean = false
-  breadcrumbs: string[] = ['Producten']
+  breadcrumbs: IBreadcrumb[] = [{ name: 'Producten' }]
 
   constructor(
     private route: ActivatedRoute,
@@ -46,10 +48,6 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._subs.push(this.route.params.subscribe((params: Params) => {
-      this.breadcrumbs = ['Producten']
-      Object.keys(params).forEach((key: string) => {
-        this.breadcrumbs.push(this.capitalize(params[key].replace(/-/g, ' ')))
-      })
       if (!this.init) {
         this.load(this.searchService.current)
         this.init = true
@@ -63,12 +61,6 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         this.ref.markForCheck()
       }
     }))
-
-    // this._subs.push(this.searchService.change.subscribe({
-    //   next: () => {
-    //     this.load()
-    //   }
-    // }))
   }
 
   ngOnDestroy(): void {
@@ -92,8 +84,12 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         }).subscribe({
           next: (response) => {
             this._products = response.products
+            this.breadcrumbs = [{ name: 'Producten' }]
+            this.breadcrumbs = this.breadcrumbs.concat(response.breadcrumbs.map((e: any) => ({ name: this.capitalize(e.name), id: e.id })))
+            this.count = response.productCount
             this.calcpages(response.productCount)
             this.searchService.calculatePages(response.productCount)
+            this.loading = false
             this.ref.markForCheck()
           }
         })
@@ -106,9 +102,9 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       //   "Leveringsomvang: 8 bundels à 1125 servetten, 1-laags, Universal- kwaliteit.Geschikt voor Tork N4- servettendispensers."
       // ]
     } catch (err) {
+      this.loading = false
       console.log('Error loading product data', err)
     } finally {
-      this.loading = false
       this.ref.markForCheck()
     }
   }

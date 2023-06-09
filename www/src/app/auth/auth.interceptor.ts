@@ -45,7 +45,6 @@ export class AuthInterceptor implements HttpInterceptor {
         })
       )
     }
-    console.log('removing intercept header')
     return next.handle(request)
   }
 

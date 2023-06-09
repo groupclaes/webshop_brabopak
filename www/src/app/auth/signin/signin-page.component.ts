@@ -1,11 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core'
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { ReCaptchaV3Service } from 'ng-recaptcha'
-import { firstValueFrom } from 'rxjs'
+import { Subscription, firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth.service'
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 @Component({
   selector: 'bra-signin-page',
@@ -13,7 +14,7 @@ import { AuthService } from '../auth.service'
   styles: [
   ]
 })
-export class SigninPageComponent implements OnInit {
+export class SigninPageComponent implements OnInit, OnDestroy {
   mfaRequired = false
   isLoading = false
   signinForm: FormGroup = this.fb.group({
@@ -22,6 +23,8 @@ export class SigninPageComponent implements OnInit {
     remember: [true, [Validators.required]]
   })
 
+  subs: Subscription[] = []
+
   constructor(
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
@@ -29,50 +32,49 @@ export class SigninPageComponent implements OnInit {
     private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute,
+    private localize: LocalizeRouterService,
     private recaptchaV3Service: ReCaptchaV3Service
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(q => {
+    this.subs.push(this.route.queryParams.subscribe(q => {
       const { action, username, email, regcode } = q
       if (action) {
-        if (action === 'signon') {
+        if (action === 'signon')
           this.router.navigate(['/register'], {
             queryParams: {
               username: email,
               code: regcode
             }
           })
-        } else if (action === 'signup') {
+        else if (action === 'signup')
           this.router.navigate(['/new-customer'])
-        } else {
+        else
           this.router.navigate(['/login'], { queryParams: { username } })
-        }
       }
       if (username) {
         this.signinForm.controls['username'].setValue(username)
       }
-    })
+    }))
 
-    this.auth.change.subscribe((auth) => {
-      if (auth && this.auth.id_token?.user_type === 1) {
-        console.info(`user is now authenticated, go to home page.`)
-        this.router.navigate(['/home'])
-      } else if (auth) {
-        console.info(`user is now authenticated, go to customers page.`)
-        this.router.navigate(['/customers'])
-      }
-    })
+    this.subs.push(this.auth.change.subscribe((auth) => {
+      if (auth && this.auth.id_token)
+        this.navigateByUserType(this.auth.id_token.user_type)
+    }))
 
-    if (this.auth.isAuthenticated() && this.auth.id_token && this.auth.id_token.usercode !== 0) {
-      if (this.auth.id_token.user_type === 1) {
-        // console.info(`user is logged in and authenticated, go to home page.`)
-        // this.router.navigate(['/home'])
-      } else if (this.auth.id_token.user_type > 1 && this.auth.id_token.user_type < 5) {
-        // console.info(`user is logged in and authenticated, go to customers page.`)
-        // this.router.navigate(['/customers'])
-      }
-    }
+    if (this.auth.isAuthenticated() && this.auth.id_token && this.auth.id_token.usercode !== 0)
+      this.navigateByUserType(this.auth.id_token.user_type)
+  }
+
+  navigateByUserType(user_type: number) {
+    if (user_type === 1)
+      this.router.navigate([this.localize.translateRoute('/')])
+    else if (user_type > 1 && user_type < 5)
+      this.router.navigate([this.localize.translateRoute('/')])
+  }
+
+  async ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe())
   }
 
   async signin() {

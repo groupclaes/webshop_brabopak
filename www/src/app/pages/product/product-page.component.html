@@ -1,11 +1,10 @@
+<div class="p-4 mx-auto text-center align-center" *ngIf="loading">
+  <bra-loader></bra-loader>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8" *ngIf="product">
   <div class="flex flex-row md:col-span-2">
-    <div class="flex flex-row flex-auto items-center space-x-2 text-gray-500 overflow-hidden">
-      <ng-container *ngFor="let breadcrumb of breadcrumbs; let isLast = last">
-        <div class="truncate whitespace-nowrap" [title]="breadcrumb">{{ breadcrumb }}</div>
-        <i class="fal fa-lg fa-fw fa-angle-right" *ngIf="!isLast"></i>
-      </ng-container>
-    </div>
+    <bra-breadcrumbs class="w-full" [breadcrumbs]="breadcrumbs"></bra-breadcrumbs>
     <div class="w-8">
       <i class="fal fa-fw fa-times fa-lg cursor-pointer hover:text-primary dark:hover:text-accent"
         onclick="history.back()"></i>
@@ -55,7 +54,7 @@
         [innerHTML]="product.description"></p>
 
       <div id="actions" class="flex flex-row mt-8 gap-4">
-        <bra-cart-button [product]="product"></bra-cart-button>
+        <bra-cart-button class="w-full max-w-sm" [product]="product"></bra-cart-button>
         <button type="menu" tabindex="-1"
           class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
           (click)="toggleFavorite()">
@@ -109,37 +108,37 @@
         <bra-accordion class="border-t" header="Details" [expanded]="true">
           <div body class="flex flex-col mt-4 ml-2 space-y-2">
             <div class="flex flex-row">
-              <div class="w-32 font-bold">
+              <div class="w-40 font-bold">
                 {{ 'pages.product.itemnum' | translate }}
               </div>
               {{ product.itemnum }}
             </div>
             <div class="flex flex-row">
-              <div class="w-32 font-bold">
+              <div class="w-40 font-bold">
                 {{ 'pages.product.unit' | translate }}
               </div>
               {{ product.unit }}
             </div>
-            <div class="flex flex-row">
-              <div class="w-32 font-bold">
-                {{ 'pages.product.unit' | translate }}
+            <div class="flex flex-row" *ngIf="product.type === 'B'">
+              <div class="w-40 font-bold">
+                {{ 'pages.product.minimum_order_quantity' | translate }}
               </div>
               {{ product.minimum_order_quantity }}
             </div>
-            <div class="flex flex-row">
-              <div class="w-32 font-bold">
-                {{ 'pages.product.unit' | translate }}
+            <div class="flex flex-row" *ngIf="product.type === 'B'">
+              <div class="w-40 font-bold">
+                {{ 'pages.product.stack_size' | translate }}
               </div>
-              {{ product.unit }}
+              {{ product.stack_size }}
             </div>
             <div class="flex flex-row" *ngIf="product.supplier_id && product.itemnum !== product.supplier_id">
-              <div class="w-32 font-bold">
+              <div class="w-40 font-bold">
                 {{ 'pages.product.supplier_id' | translate }}
               </div>
               {{ product.supplier_id }}
             </div>
             <div class="flex flex-row" *ngFor="let attribute of product.attributes">
-              <div class="w-32 font-bold">
+              <div class="w-40 font-bold">
                 {{ attribute.group }}
               </div>
               {{ attribute.value }}

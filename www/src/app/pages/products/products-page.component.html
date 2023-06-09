@@ -1,43 +1,16 @@
 <div class="flex flex-col w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8">
-  <div class="flex flex-row items-center space-x-2 text-gray-500  overflow-hidden">
-    <ng-container *ngFor="let breadcrumb of breadcrumbs; let isLast = last">
-      <div class="truncate whitespace-nowrap" [title]="breadcrumb">{{ breadcrumb }}</div>
-      <i class="fal fa-lg fa-fw fa-angle-right" *ngIf="!isLast"></i>
-    </ng-container>
+  <bra-breadcrumbs [breadcrumbs]="breadcrumbs" *ngIf="!loading"></bra-breadcrumbs>
+
+  <div class="p-4 mx-auto text-center align-center" *ngIf="loading">
+    <bra-loader></bra-loader>
   </div>
 
-  <div class="flex flex-row w-full font-serif">
+  <div class="flex flex-row w-full font-serif" *ngIf="!loading">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-between gap-4 gap-y-8 w-full">
       <bra-product-item [item]="item" class="flex flex-col w-full mx-auto max-w-[15rem] cursor-pointer"
         [routerLink]="['/product', item.id, itemName(item)] | localize" *ngFor="let item of items"></bra-product-item>
     </div>
   </div>
 
-  <div class="flex mx-auto px-4 md:px-6 flex-row items-center content-extra space-x-1"
-    *ngIf="pages && pages.length > 1">
-    <!-- [hidden]="!loading || (!items && items.length <= 47) || !filterService.enabled" -->
-    <i class="fal px-1 text-2xl fa-angle-double-left cursor-pointer hover:text-primary hover:underline"
-      [attr.disabled]="!has_first" (click)="searchService.firstPage()"></i>
-    <i class="fal px-1 text-2xl fa-angle-left cursor-pointer hover:text-primary hover:underline"
-      [attr.disabled]="!has_previous" (click)="searchService.previousPage()"></i>
-    <span class="px-1 cursor-pointer hover:text-primary hover:underline"
-      [ngClass]="{ 'underline': searchService.page === pageNum - 1 || (pageNum === 1 && !searchService.page) }"
-      (click)="changePage(pageNum)"
-      *ngFor="let pageNum of pages">
-      {{ pageNum }}
-    </span>
-    <!-- [ngClass]="{ selected: (filterService.Page+1 === pageNum || (!filterService.Page && pageNum === 1))}" -->
-    <i class="fal px-1 text-2xl fa-angle-right cursor-pointer hover:text-primary hover:underline"
-      [attr.disabled]="!has_next" (click)="searchService.nextPage()"></i>
-    <i class="fal px-1 text-2xl fa-angle-double-right cursor-pointer hover:text-primary hover:underline"
-      [attr.disabled]="!has_last" (click)="searchService.lastPage()"></i>
-  </div>
-
-  <!-- <div>
-    <a [routerLink]="['./']" [queryParams]="{ page: 0, id: category_id }">1</a>
-    <a [routerLink]="['./']" [queryParams]="{ page: 1, id: category_id }">2</a>
-    <a [routerLink]="['./']" [queryParams]="{ page: 2, id: category_id }">3</a>
-    <a [routerLink]="['./']" [queryParams]="{ page: 3, id: category_id }">4</a>
-    <a [routerLink]="['./']" [queryParams]="{ page: 4, id: category_id }">5</a>
-  </div> -->
+  <bra-pagination class="-mb-6 lg:-mb-8" [count]="count" *ngIf="!loading"></bra-pagination>
 </div>

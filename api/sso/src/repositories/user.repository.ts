@@ -115,6 +115,17 @@ export default class User {
     return false
   }
 
+  async getCustomers(user_id: string): Promise<any[] | undefined> {
+    const request = new sql.Request(await db.get(DB_NAME))
+    request.input('user_id', sql.Int, user_id)
+
+    const result = await request.execute(`${this.schema}.[usp_getCustomers]`)
+    if (result.recordset.length > 0) {
+      return result.recordset[0]
+    }
+    return undefined
+  }
+
   /**
    * get audience and subject for jwt
    * @param user_id id of the user

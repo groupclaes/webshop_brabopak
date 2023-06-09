@@ -1,12 +1,12 @@
 <button type="menu" tabindex="1" [matMenuTriggerFor]="account"
-  class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent">
+  class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 hover:text-primary dark:hover:text-accent">
   <div class="relative">
     <img class="w-7 h-7 rounded-full" loading="lazy" [src]="avatar" *ngIf="showAvatar">
     <i title="account" class="text-2xl fal fa-user-circle" *ngIf="!showAvatar"></i>
     <span class="absolute right-0 bottom-0 w-2 h-2 rounded-full mr-px mb-px bg-green-500"></span>
   </div>
 
-  <mat-menu #account class="shadow-xl border">
+  <mat-menu #account class="shadow-xl border w-64">
     <ng-template matMenuContent>
       <div class="flex flex-col bg-white dark:bg-gray-900 rounded">
         <div class="rounded p-4 text-sm dark:text-white">
@@ -14,10 +14,36 @@
           <br>
           {{ email }}
         </div>
-        <!-- <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item translate="actions.viewProfile"
-          [routerLink]="['/profile']"></button> -->
-        <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item translate="actions.logout"
-          (click)="logout()"></button>
+
+        <div *ngIf="multiUser" class="px-4 mb-2">
+          <label for="customer" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
+            Geselecteerde klant
+          </label>
+          <select id="customer" class="appearance-none block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+            focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600
+            dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            [(ngModel)]="auth.currentCustomer">
+            <option [value]="undefined" disabled>Select a customer</option>
+            <option [ngValue]="customer" *ngFor="let customer of customers">
+              {{ customer.id }} - {{ customer.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item> -->
+        <ng-template [ngIf]="!authenticated">
+          <a [routerLink]="[ '/auth/sign-in' ] | localize" mat-menu-item class="mat-menu-item text-sm font-semibold text-secondary-500 hover:text-secondary-700
+            dark:hover:text-secondary-300">
+            {{ 'actions.sign-in' | translate }}
+          </a>
+        </ng-template>
+        <ng-template [ngIf]="authenticated">
+          <a (click)="logout()" mat-menu-item class="mat-menu-item text-sm font-semibold text-secondary-500 hover:text-secondary-700
+            dark:hover:text-secondary-300">
+            {{ 'actions.sign-out' | translate }}
+          </a>
+        </ng-template>
+        <!-- </button> -->
       </div>
     </ng-template>
   </mat-menu>

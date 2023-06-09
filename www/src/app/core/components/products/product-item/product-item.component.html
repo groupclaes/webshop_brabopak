@@ -1,6 +1,10 @@
 <div class="relative mx-auto w-60 h-60 border rounded-xl drop-shadow hover:opacity-75 overflow-hidden"
-  [ngStyle]="{background: '#' + item.color}" [ngClass]="{ 'border-success': item.type === 'B' }">
+  [ngStyle]="{background: '#' + item.color}">
   <img [src]="item.url.replace('small', 'thumb_l')" [ngStyle]="{background: '#' + item.color}" alt="">
+
+  <div class="absolute top-2 right-2 space-x-4" *ngIf="item.type === 'B'">
+    <div class="w-5 h-5 leading-5 text-center rounded-md bg-success text-white">B</div>
+  </div>
 
   <div id="cart-controlls" class="hidden absolute bottom-4 left-4 right-4 group-hover:block z-10">
     <bra-cart-button [product]="item"></bra-cart-button>

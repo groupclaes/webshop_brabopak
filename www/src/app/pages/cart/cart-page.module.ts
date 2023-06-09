@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { PipesModule } from 'src/app/core/pipes/pipes.module'
 import { CartComponentsModule } from 'src/app/core/components/cart/cart.module'
+import { CoreComponentsModule } from 'src/app/core/components/components.module'
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { CartComponentsModule } from 'src/app/core/components/cart/cart.module'
   ],
   imports: [
     CommonModule,
+    CoreComponentsModule,
     ReactiveFormsModule,
     TranslateModule.forChild(),
     LocalizeRouterModule,
