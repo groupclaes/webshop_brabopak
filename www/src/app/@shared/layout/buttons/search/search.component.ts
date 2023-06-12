@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
 import { Router } from '@angular/router'
 import { SearchService } from './search.service'
+import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 // import { ManageApiService } from 'src/app/core/api/manage-api.service'
 
 @Component({
@@ -20,34 +21,34 @@ export class SearchComponent {
   constructor(
     private ref: ChangeDetectorRef,
     private router: Router,
-    private searchService: SearchService
-    // private manageApi: ManageApiService
+    private service: SearchService,
+    private ecommerceApi: EcommerceApiService
   ) {
-    this.query = this.searchService.query ?? ''
+    this.query = this.service.query ?? ''
     this.lastEvent = this.query
     this.ref.markForCheck()
 
-    this.searchService.Refresh.subscribe(() => {
-      this.query = this.searchService.query
+    this.service.Refresh.subscribe(() => {
+      this.query = this.service.query
       this.ref.markForCheck()
     })
   }
 
   private async updateSuggestions() {
-    // try {
-    // const result = await this.manageApi.search(this.query)
-    // if (result) {
-    // this.suggestions = result.result
-    // }
-    // } catch (err) {
-    // if (err.status !== 404) {
-    // console.trace(err)
-    // }
-    // } finally {
-    // setTimeout(_ => {
-    // this.ref.markForCheck()
-    // })
-    // }
+    try {
+      const result = await this.ecommerceApi.search(this.query ?? '', this.service.culture, this.service.category_id)
+      if (result) {
+        this.suggestions = result.result
+      }
+    } catch (err: any) {
+      if (err.status !== 404) {
+        console.trace(err)
+      }
+    } finally {
+      setTimeout(() => {
+        this.ref.markForCheck()
+      })
+    }
   }
 
   doKeyDown($event: any) {
@@ -77,7 +78,7 @@ export class SearchComponent {
   search() {
     this.hideFilters()
     if (this.lastEvent != this.query)
-      this.searchService.query = this.query
+      this.service.query = this.query
     this.lastEvent = this.query
     this.ref.markForCheck()
   }
@@ -118,7 +119,7 @@ export class SearchComponent {
   hideFilters() {
     setTimeout(() => {
       this.filtersShown = false
-      // this.updateSuggestions()
+      this.updateSuggestions()
       this.ref.markForCheck()
     }, 80)
   }
