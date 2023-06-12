@@ -4,7 +4,7 @@ import db from '../db'
 const DB_NAME = 'brabopak'
 
 export default class Search {
-  schema: string = '[ecommerce].'
+  schema: string = '[search].'
 
   async getQueries(args: { user_id?: string, query: string, culture: string, category_id?: number }) {
     try {
@@ -13,7 +13,7 @@ export default class Search {
       r.input('query', sql.VarChar, args.query)
       r.input('culture', sql.Char, args.culture)
       r.input('category_id', sql.Int, args.category_id)
-      const result = await r.execute(this.schema + '[usp_getSearch]')
+      const result = await r.execute(this.schema + '[usp_get]')
 
 
       const results = result.recordsets[0].map(r => r.query)

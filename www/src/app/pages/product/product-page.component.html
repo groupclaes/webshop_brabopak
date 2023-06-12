@@ -4,11 +4,7 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8" *ngIf="product">
   <div class="flex flex-row md:col-span-2">
-    <bra-breadcrumbs class="w-full" [breadcrumbs]="breadcrumbs"></bra-breadcrumbs>
-    <div class="w-8">
-      <i class="fal fa-fw fa-times fa-lg cursor-pointer hover:text-primary dark:hover:text-accent"
-        onclick="history.back()"></i>
-    </div>
+    <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
   </div>
   <div id="images space-y-8" *ngIf="images.length > 0">
     <div class="rounded-xl ring  ring-gray-50 dark:ring-gray-700">

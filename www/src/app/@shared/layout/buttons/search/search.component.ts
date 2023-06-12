@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
-import { Router } from '@angular/router'
 import { SearchService } from './search.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
-// import { ManageApiService } from 'src/app/core/api/manage-api.service'
+import { AuthService } from 'src/app/auth/auth.service'
 
 @Component({
   selector: 'claes-search',
@@ -16,12 +15,13 @@ export class SearchComponent {
   public active: boolean = false
   public filtersShown: boolean = false
 
-  suggestions: ISuggestedAction[] = []
+  suggested: string[] = []
+  popular: string[] = []
 
   constructor(
     private ref: ChangeDetectorRef,
-    private router: Router,
-    private service: SearchService,
+    public service: SearchService,
+    private auth: AuthService,
     private ecommerceApi: EcommerceApiService
   ) {
     this.query = this.service.query ?? ''
@@ -30,15 +30,21 @@ export class SearchComponent {
 
     this.service.Refresh.subscribe(() => {
       this.query = this.service.query
+      this.updateSuggestions()
       this.ref.markForCheck()
+
+      setTimeout(() => {
+        document.getElementById('search_field')?.focus()
+      }, 80)
     })
   }
 
   private async updateSuggestions() {
     try {
-      const result = await this.ecommerceApi.search(this.query ?? '', this.service.culture, this.service.category_id)
+      const result = await this.ecommerceApi.search(this.query ?? '', this.service.culture, this.service.id)
       if (result) {
-        this.suggestions = result.result
+        this.suggested = result.results ?? []
+        this.popular = result.popular ?? []
       }
     } catch (err: any) {
       if (err.status !== 404) {
@@ -73,6 +79,17 @@ export class SearchComponent {
 
   toggle(): void {
     this.active = !this.active
+
+    if (this.active)
+      setTimeout(() => {
+        document.getElementById('search_field')?.focus()
+      }, 80)
+  }
+
+  searchQuery(query: string) {
+    this.service.query = query
+    this.ref.markForCheck()
+    this.search()
   }
 
   search() {
@@ -83,38 +100,38 @@ export class SearchComponent {
     this.ref.markForCheck()
   }
 
-  searchQuery(suggestion: ISuggestedAction): void {
-    switch (suggestion.action) {
-      case 'route':
-        if (!suggestion.route) return
+  // searchQuery(suggestion: ISuggestedAction): void {
+  //   switch (suggestion.action) {
+  //     case 'route':
+  //       if (!suggestion.route) return
 
-        let params
-        if (suggestion.params)
-          params = JSON.parse(suggestion.params)
+  //       let params
+  //       if (suggestion.params)
+  //         params = JSON.parse(suggestion.params)
 
-        this.router.navigate([suggestion.route], {
-          queryParams: {
-            ...params,
-            query: this.query
-          }
-        })
-        this.hideFilters()
-        this.toggle()
-        break
+  //       this.router.navigate([suggestion.route], {
+  //         queryParams: {
+  //           ...params,
+  //           query: this.query
+  //         }
+  //       })
+  //       this.hideFilters()
+  //       this.toggle()
+  //       break
 
-      case 'search':
-        if (suggestion.query) {
-          this.query = suggestion.query
-          this.ref.markForCheck()
-          this.search()
-        }
-        break
+  //     case 'search':
+  //       if (suggestion.query) {
+  //         this.query = suggestion.query
+  //         this.ref.markForCheck()
+  //         this.search()
+  //       }
+  //       break
 
-      default:
-        console.error(`Unknown action: '${suggestion.action}'`)
-        return
-    }
-  }
+  //     default:
+  //       console.error(`Unknown action: '${suggestion.action}'`)
+  //       return
+  //   }
+  // }
 
   hideFilters() {
     setTimeout(() => {
@@ -124,20 +141,24 @@ export class SearchComponent {
     }, 80)
   }
 
-  showFilters(hightlight: boolean = false) {
+  showFilters() {
     this.filtersShown = true
+    this.ref.markForCheck()
 
-    if (hightlight === true) {
-      setTimeout(() => {
-        document.getElementById('search_field')?.focus()
-        document.getElementById('search_filters')?.classList.add('hightlight')
-      }, 18)
-    }
-
-    if (this.suggestions.length === 0) {
+    if (this.suggested.length === 0) {
       this.updateSuggestions()
     }
-    this.ref.markForCheck()
+  }
+
+  change(varname: 'only_favorites' | 'only_promo' | 'only_new') {
+    setTimeout(() => {
+      this.service[varname] = this.service[varname] === undefined
+      this.ref.markForCheck()
+    })
+  }
+
+  get authorized(): boolean {
+    return this.auth.isAuthenticated()
   }
 }
 

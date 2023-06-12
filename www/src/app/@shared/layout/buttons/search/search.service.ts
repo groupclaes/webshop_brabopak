@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { TranslateService } from '@ngx-translate/core'
 import { Observable, filter, shareReplay } from 'rxjs'
 import { environment } from 'src/environments/environment'
@@ -31,40 +32,42 @@ export class SearchService {
   constructor(
     private router: Router,
     private translate: TranslateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private localize: LocalizeRouterService
   ) {
     this.route.queryParams.subscribe(params => {
+      console.debug('SearchService.constructor() -- params', params)
       let filters: any = {}
       if (params['id']) {
         filters.category_id = +params['id']
       }
 
-      if (params['is_promo'] === 'true') {
+      if (params['only_promo'] === 'true') {
         console.debug('we need promo products')
         filters.only_promo = true
       }
 
-      if (params['is_new'] === 'true') {
+      if (params['only_new'] === 'true') {
         console.debug('we need new products')
         filters.only_new = true
       }
 
-      if (params['is_favorite'] === 'true') {
+      if (params['only_favorites'] === 'true') {
         console.debug('we need favorites products')
         filters.only_favorites = true
       }
 
-      if (params['is_best_selling'] === 'true') {
+      if (params['only_best_selling'] === 'true') {
         console.debug('we need best selling products')
         filters.only_best_selling = true
       }
 
-      if (params['is_spotlight'] === 'true') {
+      if (params['only_spotlight'] === 'true') {
         console.debug('we need spotlight products')
         filters.only_spotlight = true
       }
 
-      if (params['is_recent'] === 'true') {
+      if (params['only_recent'] === 'true') {
         console.debug('we need recent products')
         filters.only_recent = true
       }
@@ -98,6 +101,7 @@ export class SearchService {
       ) {
         // console.debug('filters have not changed, ignore update request')
       } else {
+        console.debug('filters have changed', filters)
         this._page = filters.page
         this._query = filters.query
         this._category_id = filters.category_id
@@ -111,10 +115,8 @@ export class SearchService {
         this._itemNum = filters.itemNum
         this._salUnit = filters.salUnit
 
-        if (this._refreshSub !== undefined) {
-          this._refreshSub.next(true)
-          this._refreshMenuSub.next(true)
-        }
+        this._refreshSub.next(true)
+        this._refreshMenuSub.next(true)
       }
     })
 
@@ -140,7 +142,11 @@ export class SearchService {
     const current = this.current
     delete current.culture
 
-    this.router.navigate([], {
+    let url: any[] = []
+    if (!window.location.pathname.includes('/products'))
+      url = (this.localize.translateRoute(['/products']) as any[])
+
+    this.router.navigate(url, {
       queryParams: {
         ...current,
         itemNum: this._itemNum,

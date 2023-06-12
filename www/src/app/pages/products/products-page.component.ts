@@ -47,6 +47,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.debug('ProductsPageComponent.ngOnInit()')
     this._subs.push(this.route.params.subscribe((params: Params) => {
       if (!this.init) {
         this.load(this.searchService.current)
@@ -64,7 +65,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy()')
+    console.debug('ProductsPageComponent.ngOnDestroy()')
     if (this._subs)
       this._subs.forEach(s => s.unsubscribe())
   }

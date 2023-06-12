@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
+import { SearchService } from 'src/app/@shared/layout/buttons/search/search.service'
 
 @Component({
   selector: 'bra-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'flex flex-row items-center space-x-2 text-gray-500 overflow-hidden'
+    class: 'block text-gray-500 border-b border-gray-200 bg-white px-4 py-3 sm:px-6 overflow-hidden'
   }
 })
 export class BreadcrumbsComponent {
@@ -22,7 +23,10 @@ export class BreadcrumbsComponent {
     return this._breadcrumbs
   }
 
-  constructor(private localize: LocalizeRouterService) { }
+  constructor(
+    private localize: LocalizeRouterService,
+    private service: SearchService
+  ) { }
 
   get_link(breadcrumbs: IBreadcrumb[], breadcrumb: IBreadcrumb): any[] {
     if (!breadcrumb.id && !breadcrumb.product_id) {
@@ -43,6 +47,12 @@ export class BreadcrumbsComponent {
     }
 
     return [this.localize.translateRoute('/')]
+  }
+
+  get params(): any {
+    return {
+      query: this.service.current.query
+    }
   }
 }
 

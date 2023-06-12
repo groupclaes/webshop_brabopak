@@ -1,5 +1,11 @@
 {
-  "components": {},
+  "components": {
+    "filters": {
+      "new": "Nieuwe producten",
+      "favorite": "Favoriete producten",
+      "promo": "Producten in promo"
+    }
+  },
   "pages": {
     "signin": {
       "form": {
