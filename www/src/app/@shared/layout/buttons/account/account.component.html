@@ -1,50 +1,49 @@
-<button type="menu" tabindex="1" [matMenuTriggerFor]="account"
+<button type="menu" tabindex="1" (click)="toggle()"
   class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 hover:text-primary dark:hover:text-accent">
   <div class="relative">
     <img class="w-7 h-7 rounded-full" loading="lazy" [src]="avatar" *ngIf="showAvatar">
     <i title="account" class="text-2xl fal fa-user-circle" *ngIf="!showAvatar"></i>
-    <span class="absolute right-0 bottom-0 w-2 h-2 rounded-full mr-px mb-px bg-green-500"></span>
+    <span class="absolute right-0 bottom-0 w-2 h-2 rounded-full mr-px mb-px"
+      [ngClass]="{ 'bg-red-500': !authenticated, 'bg-green-500': authenticated }"></span>
   </div>
+</button>
 
-  <mat-menu #account class="shadow-xl border w-64">
-    <ng-template matMenuContent>
-      <div class="flex flex-col bg-white dark:bg-gray-900 rounded">
-        <div class="rounded p-4 text-sm dark:text-white" *ngIf="authenticated">
-          Ingelogd als {{ displayName }}
-          <br>
-          {{ email }}
-        </div>
+<div class="top-13 mt-3 absolute w-64 lg:w-80 z-40 right-0 backdrop-blur border drop-shadow-lg bg-[#ffffffcc]
+  dark:bg-[#1118278f] rounded-b-xl" *ngIf="expanded">
+  <div class="flex flex-col space-y-4 p-4">
+    <div class="rounded text-sm dark:text-white" *ngIf="authenticated">
+      Ingelogd als {{ displayName }}
+      <br>
+      {{ email }}
+    </div>
 
-        <div *ngIf="multiUser" class="px-4 mb-2">
-          <label for="customer" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-            Geselecteerde klant
-          </label>
-          <select id="customer" class="appearance-none block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+    <div *ngIf="multiUser">
+      <label for="customer" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
+        Geselecteerde klant
+      </label>
+      <select id="customer" class="appearance-none block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
             focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600
             dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            [(ngModel)]="auth.currentCustomer">
-            <option [value]="undefined" disabled>Select a customer</option>
-            <option [ngValue]="customer" *ngFor="let customer of customers">
-              {{ customer.id }} - {{ customer.name }}
-            </option>
-          </select>
-        </div>
+        [(ngModel)]="auth.currentCustomer">
+        <option [value]="undefined" disabled>Select a customer</option>
+        <option [ngValue]="customer" *ngFor="let customer of customers">
+          {{ customer.id }} - {{ customer.name }}
+        </option>
+      </select>
+    </div>
+  </div>
 
-        <!-- <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item> -->
-        <ng-template [ngIf]="!authenticated">
-          <a [routerLink]="[ '/auth/sign-in' ] | localize" mat-menu-item class="mat-menu-item text-sm font-semibold text-secondary-500 hover:text-secondary-700
-            dark:hover:text-secondary-300">
-            {{ 'actions.sign-in' | translate }}
-          </a>
-        </ng-template>
-        <ng-template [ngIf]="authenticated">
-          <a (click)="logout()" mat-menu-item class="mat-menu-item text-sm font-semibold text-secondary-500 hover:text-secondary-700
-            dark:hover:text-secondary-300">
-            {{ 'actions.sign-out' | translate }}
-          </a>
-        </ng-template>
-        <!-- </button> -->
-      </div>
-    </ng-template>
-  </mat-menu>
-</button>
+  <!-- <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item> -->
+  <ng-template [ngIf]="!authenticated">
+    <a role="menuitem" [routerLink]="[ '/auth/sign-in' ] | localize"
+      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600">
+      <i class="fal fa-sign-in-alt fa-fw fa-lg"></i> {{ 'actions.sign-in' | translate }}
+    </a>
+  </ng-template>
+  <ng-template [ngIf]="authenticated">
+    <a role="menuitem" (click)="logout()"
+      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
+      <i class="fal fa-sign-out-alt fa-fw fa-lg"></i> {{ 'actions.sign-out' | translate }}
+    </a>
+  </ng-template>
+</div>

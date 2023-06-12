@@ -13,7 +13,7 @@
       aria-label="Zoeken naar producten" [(ngModel)]="query" role="search" (keydown)="doKeyDown($event)"
       (keyup)="doKeyUp($event)" (focusin)="showFilters()" (focusout)="hideFilters()">
     <div
-      class="absolute left-3 right-3 top-[2.3rem] backdrop-blur shadow-xl bg-[#ffffffcc] border border-t-primary dark:border-t-primary dark:bg-[#1118278f] rounded-b-xl dark:shadow-none"
+      class="absolute left-3 right-3 top-[2.3rem] backdrop-blur drop-shadow-lg border border-t-primary dark:border-t-primary bg-[#ffffffcc] dark:bg-[#1118278f] rounded-b-xl dark:shadow-none"
       id="filters" *ngIf="filtersShown">
       <ng-template [ngIf]="suggested.length > 0">
         <div class="font-bold text-xl pt-6 mx-6 mb-4">Suggesties</div>

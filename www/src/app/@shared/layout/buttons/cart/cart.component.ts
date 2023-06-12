@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
-import { CartService } from './cart.service';
-import { IProduct, IProductBase } from 'src/app/core/api/products-api.service';
+import { CartService } from './cart.service'
+import { IProductBase } from 'src/app/core/api/products-api.service'
 
 @Component({
   selector: 'claes-cart',
@@ -12,12 +12,21 @@ import { IProduct, IProductBase } from 'src/app/core/api/products-api.service';
 })
 export class CartComponent {
   expanded: boolean = false
+  timeout: number | undefined
 
   @HostListener('mouseleave', ['$event'])
   mouseLeave(event: MouseEvent) {
-    if (this.expanded)
-      this.toggle()
-    
+    this.timeout = window.setTimeout(() => {
+      this.expanded = false
+      this.ref.markForCheck()
+    }, 180)
+
+    event.preventDefault()
+  }
+
+  @HostListener('mouseenter', ['$event'])
+  mouseenter(event: MouseEvent) {
+    window.clearTimeout(this.timeout)
     event.preventDefault()
   }
 

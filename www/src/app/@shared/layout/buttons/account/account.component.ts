@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { AuthService } from 'src/app/auth/auth.service'
 import { LayoutService } from '../../layout.service'
@@ -6,9 +6,30 @@ import { LayoutService } from '../../layout.service'
 @Component({
   selector: 'claes-account',
   templateUrl: './account.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'relative py-3'
+  }
 })
 export class AccountComponent {
+  expanded: boolean = false
+  timeout: number | undefined
+
+  @HostListener('mouseleave', ['$event'])
+  mouseLeave(event: MouseEvent) {
+    this.timeout = window.setTimeout(() => {
+      this.expanded = false
+      this.ref.markForCheck()
+    }, 180)
+
+    event.preventDefault()
+  }
+
+  @HostListener('mouseenter', ['$event'])
+  mouseenter(event: MouseEvent) {
+    window.clearTimeout(this.timeout)
+    event.preventDefault()
+  }
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -23,6 +44,10 @@ export class AccountComponent {
 
   logout(): void {
     this.auth.logout()
+  }
+
+  toggle(): void {
+    this.expanded = !this.expanded
   }
 
   get multiUser(): boolean {
