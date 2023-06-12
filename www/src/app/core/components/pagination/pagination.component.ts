@@ -12,11 +12,7 @@ import { SearchService } from 'src/app/@shared/layout/buttons/search/search.serv
 export class PaginationComponent {
   @Input() count: number = 0
 
-  constructor(public service: SearchService) {
-    setTimeout(() => {
-      console.debug(this.pages)
-    }, 2000)
-  }
+  constructor(public service: SearchService) { }
 
   isCurrentPage(page: number): boolean {
     return this.service.page === page - 1 || (page === 1 && !this.service.page)

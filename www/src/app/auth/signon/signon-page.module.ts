@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule } from '@angular/forms'
 import { TranslateModule } from '@ngx-translate/core'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
+import { ModalsModule } from 'src/app/core/components/modals/modals.module'
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
   ],
   imports: [
     CommonModule,
+    ModalsModule,
     ReactiveFormsModule,
     LocalizeRouterModule,
     TranslateModule.forChild(),

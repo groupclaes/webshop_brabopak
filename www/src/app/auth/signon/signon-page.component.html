@@ -61,3 +61,8 @@
     </div>
   </div>
 </div>
+
+
+<bra-alert-modal *ngIf="showAlreadyRegistered" title="Account al geregistreerd" (close)="showAlreadyRegistered=false"
+  message="Dit e-mailadres is al geregistreerd. Je kan met dit e-mailadres inloggen of een nieuw wachtwoord instellen">
+</bra-alert-modal>

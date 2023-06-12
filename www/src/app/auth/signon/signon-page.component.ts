@@ -6,16 +6,15 @@ import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'bra-signon-page',
-  templateUrl: './signon-page.component.html',
-  styles: [
-  ]
+  templateUrl: './signon-page.component.html'
 })
 export class SignonPageComponent implements OnInit {
   isLoading = false
+  showAlreadyRegistered = false
   signonForm: FormGroup = this.fb.group({
-    username: ['', [Validators.required, Validators.email]], // info@brabopak.com
+    username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
     password: ['', [Validators.required, Validators.minLength(8)]], // shop2069
-    code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[A-Z]{12}$')]], // SGWQVXPQWZEM
+    code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[A-Z]{12}$')]], // SGWQVXPQWZEM  --  FTPGIAPQDOSO
   })
 
   constructor(
@@ -47,6 +46,11 @@ export class SignonPageComponent implements OnInit {
         switch (errRes.status) {
           case 0:
             alert(errRes.statusText)
+            break
+          
+          case 403:
+            this.showAlreadyRegistered = true
+            this.ref.markForCheck()
             break
 
           case 404:
