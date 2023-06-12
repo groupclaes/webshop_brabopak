@@ -17,7 +17,8 @@
     <div class="flex px-1 pb-2 border-b last:border-none mb-2" [id]="'menu-basket-product-' + product.quantity"
       *ngFor="let product of service.products">
       <div class="flex-auto">
-        <a [routerLink]="['/products']" class="text-md" [queryParams]="{productId: product.quantity}">
+        <a [routerLink]="['/product', product.id, itemName(product)] | localize"
+          class="text-md hover:underline hover:text-primary">
           {{ product.name }}
         </a>
         <br>

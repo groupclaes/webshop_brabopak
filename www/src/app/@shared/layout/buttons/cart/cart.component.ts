@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
 import { CartService } from './cart.service';
 import { IProduct, IProductBase } from 'src/app/core/api/products-api.service';
 
@@ -6,19 +6,25 @@ import { IProduct, IProductBase } from 'src/app/core/api/products-api.service';
   selector: 'claes-cart',
   templateUrl: './cart.component.html',
   host: {
-    class: 'relative'
+    class: 'relative py-3'
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent {
   expanded: boolean = false
 
+  @HostListener('mouseleave', ['$event'])
+  mouseLeave(event: MouseEvent) {
+    if (this.expanded)
+      this.toggle()
+    
+    event.preventDefault()
+  }
+
   constructor(
     public service: CartService,
     private ref: ChangeDetectorRef
   ) {
-    console.debug('CartComponent -- service', this.service)
-
     service.changes.subscribe({
       next: () => {
         this.ref.markForCheck()
@@ -65,6 +71,10 @@ export class CartComponent {
     price.totalTax = price.stack * price.baseTax
     price.total = price.totalProduct + price.totalTax
     return price
+  }
+
+  itemName(product: IProductBase) {
+    return product.name.replace(/ /g, '-').toLowerCase()
   }
 
   get calcTotalPrice(): myPriceTotalEntry {

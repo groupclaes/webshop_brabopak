@@ -1,8 +1,4 @@
 <div class="flex h-full space-x-8">
-  <!-- <bra-flyout-navigation-group [category]="category" [active]="isCategoryActive(category.id)"
-    (activateChange)="activateCategory(category.id)" *ngFor="let category of categories" class="flex">
-  </bra-flyout-navigation-group> -->
-
   <div class="relative flex space-x-6 items-center text-secondary-500">
     <button type="button"
       class="relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
@@ -30,7 +26,7 @@
   <div class="relative bg-white dark:bg-gray-900">
     <div class="mx-auto max-w-7xl px-8">
       <div class="flex flex-row">
-        <div class="w-1/4 grid grid-cols-1 py-16 gap-y-4">
+        <div class="w-1/4 content-start grid grid-cols-1 py-16 gap-y-4">
           <div class=" text-sm" *ngFor="let category of categories">
             <p class="text-md font-bold text-gray-900">
               <a [routerLink]="['/products', itemName(category)] | localize" class="hover:underline"
@@ -40,19 +36,17 @@
           </div>
         </div>
         <div class="w-3/4 grid grid-cols-1 gap-y-10 gap-x-8 py-16">
-          <div class="row-start-1 grid grid-cols-6 gap-y-6 gap-x-4 text-sm">
+          <div class="row-start-1 grid grid-cols-4 xl:grid-cols-5 gap-y-6 gap-x-4 text-sm">
             <div *ngFor="let sub of activeCategory?.children">
               <p class="text-md font-bold text-gray-900">
                 <a [routerLink]="['/products', itemName(activeCategory), itemName(sub)] | localize"
                   class="hover:underline" [queryParams]="{id: sub.id}" (click)="close()">{{ capitalize(sub.name) }}</a>
-                <!-- (click)="activateChange.emit()"> -->
               </p>
               <ul role="list" class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
                 <li class="flex" *ngFor="let subCategory of sub.children">
                   <a [routerLink]="['/products', itemName(activeCategory), itemName(sub), itemName(subCategory)] | localize"
                     class="hover:text-gray-800 hover:underline" [queryParams]="{id: subCategory.id}"
                     (click)="close()">{{ capitalize(subCategory.name) }}</a>
-                  <!-- (click)="activateChange.emit()"> -->
                 </li>
               </ul>
             </div>

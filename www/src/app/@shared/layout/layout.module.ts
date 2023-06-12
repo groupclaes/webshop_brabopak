@@ -33,7 +33,8 @@ import { FormsModule } from '@angular/forms'
 import { CartComponent } from './buttons/cart/cart.component'
 import { FlyoutNavigationComponent } from './navigation/flyout-navigation/flyout-navigation.component'
 import { FlyoutNavigationGroupComponent } from './navigation/flyout-navigation-group/flyout-navigation-group.component'
-import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
+import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router';
+import { MobileNavigationComponent } from './navigation/mobile-navigation/mobile-navigation.component'
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
     VerticalNavigationGroupItemComponent,
     VerticalNavigationAsideItemComponent,
     FlyoutNavigationComponent,
-    FlyoutNavigationGroupComponent
+    FlyoutNavigationGroupComponent,
+    MobileNavigationComponent
   ],
   imports: [
     CommonModule,

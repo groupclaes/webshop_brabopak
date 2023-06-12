@@ -320,6 +320,14 @@ export class SearchService {
     return this._only_favorites === true || this._only_promo === true || this._only_new === true || this._only_spotlight === true || this._only_best_selling === true || this._only_recent === true
   }
 
+  get hasPrevious(): boolean {
+    return (this._page ?? 0) > 0
+  }
+
+  get hasNext(): boolean {
+    return (this._page ?? 0) < this.page_count - 1
+  }
+
   get current(): any {
     return {
       category_id: this._category_id,
