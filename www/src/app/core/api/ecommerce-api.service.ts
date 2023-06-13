@@ -65,7 +65,7 @@ export class EcommerceApiService {
 export interface ICart {
   id: number
   modified?: Date
-  products: ICartProduct[]
+  products?: ICartProduct[]
 }
 
 export interface ICartProduct extends IProductBase {

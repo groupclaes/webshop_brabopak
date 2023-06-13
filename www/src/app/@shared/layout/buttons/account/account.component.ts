@@ -63,6 +63,10 @@ export class AccountComponent {
     return 'Select a customer'
   }
 
+  get showCustomerModal(): boolean {
+    return this.auth.isAuthenticated() && (!this.auth.currentCustomer || this.selectCustomer)
+  }
+
   get multiUser(): boolean {
     return this.authenticated && this.auth.isMultiUser()
   }

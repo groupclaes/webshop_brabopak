@@ -71,7 +71,7 @@ export class ProductPageComponent implements OnDestroy {
       const response = await this.products.get({
         id,
         token: this.auth.id_token?.token,
-        usercode: this.auth.id_token?.usercode,
+        usercode: this.auth.currentCustomer?.usercode,
         culture: this.culture.split('-')[0]
       })
 

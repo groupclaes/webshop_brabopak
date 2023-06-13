@@ -8,6 +8,7 @@ import { InfoModalComponent } from './info-modal/info-modal.component'
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component'
 import { CustomerModalComponent } from './customer-modal/customer-modal.component'
 import { FormsModule } from '@angular/forms'
+import { CoreComponentsModule } from '../components.module'
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FormsModule } from '@angular/forms'
   imports: [
     CommonModule,
     FormsModule,
+    CoreComponentsModule,
     TranslateModule.forChild()
   ]
 })

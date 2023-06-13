@@ -85,7 +85,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
       }
 
       this.subscriber = this.products.search(
-        this.auth.id_token?.usercode,
+        this.auth.currentCustomer?.usercode,
         {
           ...filters,
           per_page: this.per_page

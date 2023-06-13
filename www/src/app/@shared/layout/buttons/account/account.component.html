@@ -50,5 +50,5 @@
   </ng-template>
 </div>
 
-<bra-customer-modal *ngIf="!auth.currentCustomer || selectCustomer" (close)="selectCustomer = false">
+<bra-customer-modal *ngIf="showCustomerModal" (close)="selectCustomer = false">
 </bra-customer-modal>

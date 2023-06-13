@@ -248,13 +248,15 @@ export class AuthService {
   }
 
   set currentCustomer(customer: ICustomer | undefined) {
-    console.log('set current customer', customer)
     if (!customer) {
       window.localStorage.removeItem(CUSTOMER_STORAGE_KEY)
       return
     }
-    window.localStorage.setItem(CUSTOMER_STORAGE_KEY, `${customer.id}_${customer.address_id}`)
-    this.customerChange.next()
+
+    if (customer !== this.currentCustomer) {
+      window.localStorage.setItem(CUSTOMER_STORAGE_KEY, `${customer.id}_${customer.address_id}`)
+      this.customerChange.next()
+    }
   }
 
   get currentCustomer(): ICustomer | undefined {

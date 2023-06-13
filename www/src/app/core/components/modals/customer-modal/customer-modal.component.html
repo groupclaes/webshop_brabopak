@@ -10,6 +10,10 @@
           <div class="sm:flex sm:items-start">
             <div class="w-full text-center sm:text-left">
               <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{{ title }}</h3>
+
+              <div class="p-4 mx-auto text-center align-center" *ngIf="int">
+                <bra-loader></bra-loader>
+              </div>
               <div>
                 <label for="customer" class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">
                   Zoeken
@@ -17,7 +21,7 @@
                 <input id="customer" class="flex items-center h-10 border shadow-sm bg-white rounded-md px-4 w-full
                   invalid:border-danger dark:bg-transparent" [(ngModel)]="query">
               </div>
-              <div class="mt-2 overflow-scroll h:48 md:h-64">
+              <div class="mt-2 overflow-scroll h:48 md:h-64" *ngIf="!int">
                 <div
                   class="flex px-2 py-1 border-b rounded cursor-pointer last:border-b-0 hover:text-primary hover:underline"
                   [ngClass]="{ 'font-bold': customer === auth.currentCustomer }" *ngFor="let customer of customers"

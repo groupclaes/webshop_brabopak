@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
 import { AuthService, ICustomer } from 'src/app/auth/auth.service'
 
 @Component({
@@ -11,9 +11,18 @@ export class CustomerModalComponent {
   @Output() close: EventEmitter<void> = new EventEmitter<void>()
 
   query: string = ''
+  int: number | undefined
 
-  constructor(public auth: AuthService) {
-
+  constructor(public auth: AuthService, private ref: ChangeDetectorRef) {
+    this.auth.change.subscribe(() => this.ref.markForCheck())
+    if (this.auth.customers.length === 0)
+      this.int = window.setInterval(() => {
+        if (this.auth.customers.length > 0) {
+          window.clearInterval(this.int)
+          this.int = undefined
+          this.ref.markForCheck()
+        }
+      }, 180)
   }
 
   select(customer: ICustomer) {

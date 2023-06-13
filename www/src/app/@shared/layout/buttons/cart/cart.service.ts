@@ -45,13 +45,13 @@ export class CartService {
     }
 
     try {
-      console.debug('CartService.init() -- try')
+      console.debug('CartService.init() -- try', this.auth.currentCustomer)
       // get carts from api
       const response = await this.api.cart(this.auth.currentCustomer.usercode)
 
       this._initialized = true
       if (response) {
-        this._products = response[0].products
+        this._products = response[0].products ?? []
         this._modified = response[0].modified
       } else {
         this._products = []
@@ -74,7 +74,7 @@ export class CartService {
     }
 
     const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.currentCustomer.usercode)
-    this._products = response[0].products
+    this._products = response[0].products ?? []
     this._modified = response[0].modified
     this.changes.emit()
   }
