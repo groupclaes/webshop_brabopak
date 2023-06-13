@@ -35,6 +35,7 @@ import { FlyoutNavigationComponent } from './navigation/flyout-navigation/flyout
 import { FlyoutNavigationGroupComponent } from './navigation/flyout-navigation-group/flyout-navigation-group.component'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router';
 import { MobileNavigationComponent } from './navigation/mobile-navigation/mobile-navigation.component'
+import { ModalsModule } from 'src/app/core/components/modals/modals.module'
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MobileNavigationComponent } from './navigation/mobile-navigation/mobile
     CommonModule,
     FormsModule,
     MatMenuModule,
+    ModalsModule,
     RouterModule,
     LocalizeRouterModule,
     TranslateModule.forChild()

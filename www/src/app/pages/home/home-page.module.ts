@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core'
 import { ProductsModule } from 'src/app/core/components/products/products.module'
 import { PipesModule } from 'src/app/core/pipes/pipes.module'
 import { CoreComponentsModule } from 'src/app/core/components/components.module'
+import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CoreComponentsModule } from 'src/app/core/components/components.module'
     CoreComponentsModule,
     ProductsModule,
     PipesModule,
+    LocalizeRouterModule,
     TranslateModule.forChild(),
     RouterModule.forChild([{
       path: '',

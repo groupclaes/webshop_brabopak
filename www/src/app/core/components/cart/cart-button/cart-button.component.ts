@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, Input } from '@angular/core'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
+import { AuthService } from 'src/app/auth/auth.service'
 import { IProductBase } from 'src/app/core/api/products-api.service'
 
 @Component({
@@ -19,6 +20,7 @@ export class CartButtonComponent {
   }
 
   constructor(
+    public auth: AuthService,
     private service: CartService,
     private ref: ChangeDetectorRef
   ) {

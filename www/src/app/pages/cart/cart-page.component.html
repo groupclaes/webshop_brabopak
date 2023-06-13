@@ -24,7 +24,7 @@
         {{ 'pages.cart.steps.3.backButton' | translate }}
       </a>
     </ng-container>
-    
+
     <div class="p-4 mx-auto text-center align-center" *ngIf="!service.initialized">
       <bra-loader></bra-loader>
     </div>
@@ -56,7 +56,7 @@
                       </small>
                     </div>
                   </div>
-                  <div>
+                  <div *ngIf="auth.canViewPrices">
                     <span class="baseprice text-gray-500 italic">
                       {{ product.prices && product.prices[0].basePrice > 0 ?
                           (product.prices[0].basePrice * product.quantity >
@@ -277,36 +277,38 @@
         </div>
 
         <div class="min-w-nav w-nav">
-          <div id="shipping-cost">
-            <small translate="pages.cart.shippingCosts"></small>
-            <span class="price" [ngClass]="{ success: calcTotalPrice.totalDelivery === 0 }">
-              {{ calcTotalPrice.totalDelivery > 0 ? (calcTotalPrice.totalDelivery | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : ('pages.cart.steps.3.freeShipping' | translate) }}
-            </span>
-          </div>
-          <div id="tax-cost" *ngIf="calcTotalPrice.totalTax > 0">
-            <small translate="pages.cart.taxCosts"></small>
-            <span class="price">
-              {{ calcTotalPrice.totalTax | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
-            </span>
-          </div>
-          <div id="products-cost">
-            <small translate="pages.cart.productCosts"></small>
-            <span class="price">
-              {{ calcTotalPrice.totalProduct - calcTotalPrice.totalDiscount | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
-            </span>
-          </div>
-          <br>
-          <div id="total-cost">
-            <small translate="pages.cart.totalCosts"></small>
-            <span class="price">
-              {{ calcTotalPrice.total | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
-            </span>
-          </div>
-          <small class="note text-gray-500 italic"
-            [translate]="'pages.cart.' + (calcTotalPrice.totalDelivery > 0 ? 'priceDisclaimerTransport' : 'priceDisclaimer')">
-          </small>
-          <br>
-          <br>
+          <ng-template [ngIf]="auth.canViewPrices">
+            <div id="shipping-cost">
+              <small translate="pages.cart.shippingCosts"></small>
+              <span class="price" [ngClass]="{ success: calcTotalPrice.totalDelivery === 0 }">
+                {{ calcTotalPrice.totalDelivery > 0 ? (calcTotalPrice.totalDelivery | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : ('pages.cart.steps.3.freeShipping' | translate) }}
+              </span>
+            </div>
+            <div id="tax-cost" *ngIf="calcTotalPrice.totalTax > 0">
+              <small translate="pages.cart.taxCosts"></small>
+              <span class="price">
+                {{ calcTotalPrice.totalTax | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
+              </span>
+            </div>
+            <div id="products-cost">
+              <small translate="pages.cart.productCosts"></small>
+              <span class="price">
+                {{ calcTotalPrice.totalProduct - calcTotalPrice.totalDiscount | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
+              </span>
+            </div>
+            <br>
+            <div id="total-cost">
+              <small translate="pages.cart.totalCosts"></small>
+              <span class="price">
+                {{ calcTotalPrice.total | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
+              </span>
+            </div>
+            <small class="note text-gray-500 italic"
+              [translate]="'pages.cart.' + (calcTotalPrice.totalDelivery > 0 ? 'priceDisclaimerTransport' : 'priceDisclaimer')">
+            </small>
+            <br>
+            <br>
+          </ng-template>
           <ng-container [ngSwitch]="currentStep">
             <button class="blockfont-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
               (click)="proceedCheckout(2)" translate="pages.cart.steps.1.asideButton"

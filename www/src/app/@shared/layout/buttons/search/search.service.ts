@@ -36,7 +36,6 @@ export class SearchService {
     private localize: LocalizeRouterService
   ) {
     this.route.queryParams.subscribe(params => {
-      console.debug('SearchService.constructor() -- params', params)
       let filters: any = {}
       if (params['id']) {
         filters.category_id = +params['id']
@@ -101,7 +100,6 @@ export class SearchService {
       ) {
         // console.debug('filters have not changed, ignore update request')
       } else {
-        console.debug('filters have changed', filters)
         this._page = filters.page
         this._query = filters.query
         this._category_id = filters.category_id

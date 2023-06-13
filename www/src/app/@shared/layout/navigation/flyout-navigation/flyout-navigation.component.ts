@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core'
+import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 
 declare var require: any
@@ -17,7 +18,8 @@ export class FlyoutNavigationComponent {
 
   constructor(
     api: EcommerceApiService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    public auth: AuthService
   ) {
     api.menu().then(r => {
       this._categories = r

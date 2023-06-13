@@ -62,6 +62,11 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         this.ref.markForCheck()
       }
     }))
+
+    this._subs.push(this.auth.customerChange.subscribe(() => {
+      this.load(this.searchService.current)
+      this.ref.markForCheck()
+    }))
   }
 
   ngOnDestroy(): void {
@@ -73,6 +78,8 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   async load(filters: any) {
     try {
       console.debug('ProductsPageComponent.load() -- try', filters)
+      this.loading = true
+      this.ref.markForCheck()
       if (this.subscriber && !this.subscriber.closed) {
         this.subscriber.unsubscribe()
       }

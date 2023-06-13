@@ -6,7 +6,7 @@
       </div>
       <div class="font-medium tracking-tight text-secondary-500" *ngIf="abandonedCart">
         Je hebt tijdens je vorig bezoek {{ abandonedCart.count }} artikels in je winkelwagent achtergelaten, <a
-          routerLink="/account/cart" class="underline">klik hier</a> om je bestelling te
+          [routerLink]="['/cart'] | localize" class="underline">klik hier</a> om je bestelling te
         voltooien.
       </div>
     </div>

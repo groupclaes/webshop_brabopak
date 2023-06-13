@@ -172,6 +172,18 @@
           "asideButton": "Bestelling plaatsen"
         }
       }
+    },
+    "order-history": {
+      "title": "Orderhistoriek",
+      "header": {
+        "title": ""
+      }
+    },
+    "profile": {
+      "title": "Profiel",
+      "header": {
+        "title": ""
+      }
     }
   },
   "actions": {

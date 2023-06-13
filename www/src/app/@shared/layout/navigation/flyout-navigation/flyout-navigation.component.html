@@ -7,16 +7,25 @@
       'border-transparent hover:text-secondary-700 dark:hover:text-secondary-300':
       !active
     }" aria-expanded="false" (click)="activate()">Categoriën</button>
-    <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-    <button [routerLink]="['/products'] | localize" [queryParams]="{ is_promo: true }" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
+    <ng-template [ngIf]="!auth.isAuthenticated()">
+      <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+      <button [routerLink]="['/products'] | localize" [routerLinkActiveOptions]="{exact: true}" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
       transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300"
-      [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent',
+        [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent',
+      'dark:text-accent']">Producten</button>
+    </ng-template>
+    <ng-template [ngIf]="auth.isAuthenticated()">
+      <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+      <button [routerLink]="['/products'] | localize" [queryParams]="{ is_promo: true }" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
+      transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300"
+        [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent',
       'dark:text-accent']">Promoties</button>
-    <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-    <button [routerLink]="['/products'] | localize" [queryParams]="{ is_new: true }" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
+      <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+      <button [routerLink]="['/products'] | localize" [queryParams]="{ is_new: true }" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
       transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300"
-      [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent', 'dark:text-accent']">Nieuwe
-      producten</button>
+        [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent', 'dark:text-accent']">Nieuwe
+        producten</button>
+    </ng-template>
   </div>
 </div>
 

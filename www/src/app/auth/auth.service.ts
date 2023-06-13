@@ -132,7 +132,7 @@ export class AuthService {
     this.storage.removeItem(REFRESH_STORAGE_KEY)
     this.change.next(undefined)
 
-    this.router.navigate([this.localize.translateRoute('/auth/sign-in')])
+    // this.router.navigate([this.localize.translateRoute('/auth/sign-in')])
   }
 
   public isAuthenticated(): boolean {
@@ -225,6 +225,10 @@ export class AuthService {
         removeItem: (key) => null
       }
     }
+  }
+
+  get canViewPrices(): boolean {
+    return this.isAuthenticated() && this.id_token !== undefined && ((this.id_token.user_type === 2 || this.id_token.user_type === 3) && this.currentCustomer !== undefined)
   }
 
   get customers(): ICustomer[] {

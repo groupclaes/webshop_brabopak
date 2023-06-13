@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
-import { AuthService } from 'src/app/auth/auth.service'
+import { AuthService, ICustomer } from 'src/app/auth/auth.service'
 import { LayoutService } from '../../layout.service'
 
 @Component({
@@ -13,6 +13,7 @@ import { LayoutService } from '../../layout.service'
 })
 export class AccountComponent {
   expanded: boolean = false
+  selectCustomer: boolean = false
   timeout: number | undefined
 
   @HostListener('mouseleave', ['$event'])
@@ -34,8 +35,7 @@ export class AccountComponent {
   constructor(
     private ref: ChangeDetectorRef,
     public auth: AuthService,
-    private sanitizer: DomSanitizer,
-    private layout: LayoutService
+    private sanitizer: DomSanitizer
   ) {
     this.auth.change.subscribe(provider => {
       this.ref.markForCheck()
@@ -44,10 +44,23 @@ export class AccountComponent {
 
   logout(): void {
     this.auth.logout()
+    this.expanded = false
+    this.ref.markForCheck()
   }
 
   toggle(): void {
     this.expanded = !this.expanded
+  }
+
+  toggleSelectCustomer(): void {
+    this.expanded = false
+    this.selectCustomer = !this.selectCustomer
+  }
+
+  customerName(customer?: ICustomer) {
+    if (customer)
+      return `${customer.name} - ${customer.address_id > 0 ? customer.address_name + ' ' : ''}${customer.address_id > 0 ? customer.address_city : customer.city}`
+    return 'Select a customer'
   }
 
   get multiUser(): boolean {

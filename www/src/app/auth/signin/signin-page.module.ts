@@ -7,6 +7,7 @@ import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha'
 import { TranslateModule } from '@ngx-translate/core'
 import { environment } from 'src/environments/environment'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
+import { ModalsModule } from 'src/app/core/components/modals/modals.module'
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
     TranslateModule.forChild(),
     RecaptchaV3Module,
     LocalizeRouterModule,
+    ModalsModule,
     RouterModule.forChild([{
       path: '',
       component: SigninPageComponent

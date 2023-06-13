@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core'
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslateService } from '@ngx-translate/core'
 import { ReCaptchaV3Service } from 'ng-recaptcha'
 import { Subscription, firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth.service'
@@ -11,12 +10,13 @@ import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 @Component({
   selector: 'bra-signin-page',
   templateUrl: './signin-page.component.html',
-  styles: [
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SigninPageComponent implements OnInit, OnDestroy {
   mfaRequired = false
   isLoading = false
+  showIncorrectCredentials = false
+
   signinForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
@@ -29,7 +29,6 @@ export class SigninPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
     private auth: AuthService,
-    private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute,
     private localize: LocalizeRouterService,
@@ -85,6 +84,8 @@ export class SigninPageComponent implements OnInit, OnDestroy {
   }
 
   async loginSso() {
+    this.isLoading = true
+    this.ref.markForCheck()
     const token = await firstValueFrom(this.recaptchaV3Service.execute('login'))
 
     try {
@@ -93,6 +94,8 @@ export class SigninPageComponent implements OnInit, OnDestroy {
       let authorization_code = authorizeResponse.authorization_code
 
       if (authorizeResponse.mfa_required) {
+        this.isLoading = false
+        this.ref.markForCheck()
         this.enableMfa()
         return
       }
@@ -117,7 +120,8 @@ export class SigninPageComponent implements OnInit, OnDestroy {
 
           case 404:
             if (errRes.error.error === 'Username or password is incorrect!') {
-              alert(this.translate.instant('errors.incorrect_credentials'))
+              this.showIncorrectCredentials = true
+              this.signinForm.controls['password'].reset()
             }
             break
 
@@ -131,6 +135,7 @@ export class SigninPageComponent implements OnInit, OnDestroy {
         }
       }
     } finally {
+      this.isLoading = false
       this.ref.markForCheck()
     }
   }

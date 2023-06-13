@@ -1,8 +1,9 @@
 import { CurrencyPipe } from '@angular/common'
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { TranslateService } from '@ngx-translate/core'
+import { Subscription } from 'rxjs'
 import { AuthService } from 'src/app/auth/auth.service'
 import { PcmApiService } from 'src/app/core/api/pcm-api.service'
 import { IProduct, ProductsApiService } from 'src/app/core/api/products-api.service'
@@ -20,7 +21,8 @@ const capitalize = require('capitalize')
     class: 'relative flex flex-auto w-full'
   }
 })
-export class ProductPageComponent {
+export class ProductPageComponent implements OnDestroy {
+  private _subs: Subscription[] = []
   private _product: IProduct | undefined
   private _images: any[] | undefined
   private _attachments: any[] | undefined
@@ -38,19 +40,30 @@ export class ProductPageComponent {
     private translate: TranslateService,
     private products: ProductsApiService,
     private pcm: PcmApiService,
-    private auth: AuthService,
+    public auth: AuthService,
     private currencyPipe: CurrencyPipe,
     private router: Router,
     private localize: LocalizeRouterService
   ) {
-    this.route.params.subscribe(params => {
+    this._subs.push(this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
         const id = +params['id']
         // const name = params['name'].replace(/---/g, ' - ').replace(/-/g, ' ')
 
         this.load(id)
       }
-    })
+    }))
+
+    this._subs.push(this.auth.customerChange.subscribe(() => {
+      if (this._product)
+        this.load(this._product.id)
+    }))
+  }
+
+  ngOnDestroy(): void {
+    console.debug('ProductsPageComponent.ngOnDestroy()')
+    if (this._subs)
+      this._subs.forEach(s => s.unsubscribe())
   }
 
   async load(id: number) {

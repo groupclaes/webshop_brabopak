@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core'
+import { Subscription } from 'rxjs'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
@@ -11,24 +12,40 @@ import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
     class: 'relative flex flex-auto w-full'
   }
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnDestroy {
+  private _subs: Subscription[] = []
   dashboard: any[] = []
   loading: boolean = true
 
   constructor(
-    private auth: AuthService,
+    public auth: AuthService,
     private api: EcommerceApiService,
     private ref: ChangeDetectorRef,
     private cart: CartService
   ) {
-    this.auth.change.subscribe({
+    this._subs.push(this.auth.change.subscribe({
       next: (token) => {
         if (this.auth.isAuthenticated())
           this.load()
+        if (!token)
+          location.reload()
       }
-    })
+    }))
+    this._subs.push(
+      this.auth.customerChange.subscribe({
+        next: () => {
+          this.ref.markForCheck()
+        }
+      })
+    )
     if (this.auth.isAuthenticated())
       this.load()
+  }
+
+  ngOnDestroy(): void {
+    console.debug('ProductsPageComponent.ngOnDestroy()')
+    if (this._subs)
+      this._subs.forEach(s => s.unsubscribe())
   }
 
   async load() {

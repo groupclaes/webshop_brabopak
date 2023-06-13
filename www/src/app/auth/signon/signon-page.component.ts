@@ -11,6 +11,7 @@ import { AuthService } from '../auth.service'
 export class SignonPageComponent implements OnInit {
   isLoading = false
   showAlreadyRegistered = false
+  showSuccess = false
   signonForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
     password: ['', [Validators.required, Validators.minLength(8)]], // shop2069
@@ -25,6 +26,7 @@ export class SignonPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.showSuccess = true
   }
 
   async signon() {
@@ -37,7 +39,10 @@ export class SignonPageComponent implements OnInit {
   async signonSso() {
     try {
       const signonResponse: any = await this.auth.signon(this.signonForm.value)
-      console.log(signonResponse)
+
+      if (signonResponse.success === true) {
+        this.showSuccess = true
+      }
     } catch (err: any) {
       console.log(err)
       if (err.status && err.message) {
@@ -47,7 +52,7 @@ export class SignonPageComponent implements OnInit {
           case 0:
             alert(errRes.statusText)
             break
-          
+
           case 403:
             this.showAlreadyRegistered = true
             this.ref.markForCheck()

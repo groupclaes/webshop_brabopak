@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
 import { CartService } from './cart.service'
 import { IProductBase } from 'src/app/core/api/products-api.service'
+import { AuthService } from 'src/app/auth/auth.service'
 
 @Component({
   selector: 'claes-cart',
@@ -32,7 +33,8 @@ export class CartComponent {
 
   constructor(
     public service: CartService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    public auth: AuthService
   ) {
     service.changes.subscribe({
       next: () => {

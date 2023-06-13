@@ -11,7 +11,7 @@ export default [{
   method: 'GET',
   url: '/search',
   handler: searchController.get,
-  requiredPermissions: []
+  requiredPermissions: [undefined]
 }, {
   method: 'GET',
   url: '/carts',

@@ -51,18 +51,15 @@ export class AuthInterceptor implements HttpInterceptor {
   addAuthToken(request: HttpRequest<any>) {
     const token = this.auth.access_token
 
-    //if (request.headers.has('Authorization')) {
     if (!token) {
       console.warn('There is no token, but this is required for this request to work!')
+      return request
     }
 
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token ?? 'no token available'}`,
+        Authorization: `Bearer ${token}`,
       }
     })
-    //}
-
-    return request
   }
 }

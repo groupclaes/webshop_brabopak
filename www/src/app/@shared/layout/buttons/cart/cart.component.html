@@ -27,7 +27,7 @@
           {{ product.unit }}
         </small>
       </div>
-      <div class="flex-[0_100px] text-right font-bold ml-3 leading-6">
+      <div class="flex-[0_100px] text-right font-bold ml-3 leading-6" *ngIf="auth.canViewPrices">
         {{ product.prices && product.prices[0].basePrice > 0 ?
           ( calcPrice(product, product.quantity)?.totalProduct |
           currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' ) :
@@ -36,7 +36,7 @@
       </div>
     </div>
   </div>
-  <div class="border-t pt-3 mb-4" *ngIf="service.products && service.products.length > 0">
+  <div class="border-t pt-3 mb-4" *ngIf="auth.canViewPrices && service.products && service.products.length > 0">
     <div class="flex" id="menu-basket-shipping-cost">
       <small translate>pages.cart.shippingCosts</small>
       <span class="flex-auto text-right font-bold inline-block"

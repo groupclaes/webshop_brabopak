@@ -20,7 +20,7 @@
       {{ item.unit }}
     </div>
   </div>
-  <div class="flex flex-col text-lg font-medium leading-tight" *ngIf="currentPrice">
+  <div class="flex flex-col text-lg font-medium leading-tight" *ngIf="auth.canViewPrices && currentPrice">
     {{ currentPrice }}
   </div>
 </div>

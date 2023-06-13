@@ -39,7 +39,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     public service: CartService,
     private fb: FormBuilder,
-    private auth: AuthService
+    public auth: AuthService
   ) {
   }
 

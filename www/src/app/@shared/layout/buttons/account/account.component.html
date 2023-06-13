@@ -10,40 +10,45 @@
 
 <div class="top-13 mt-3 absolute w-64 lg:w-80 z-40 right-0 backdrop-blur border drop-shadow-lg bg-[#ffffffcc]
   dark:bg-[#1118278f] rounded-b-xl" *ngIf="expanded">
-  <div class="flex flex-col space-y-4 p-4">
-    <div class="rounded text-sm dark:text-white" *ngIf="authenticated">
-      Ingelogd als {{ displayName }}
-      <br>
-      {{ email }}
+  <div class="flex flex-col space-y-4 mt-4 px-4 mb-2" *ngIf="authenticated">
+    <div class="rounded text-sm dark:text-white">
+      Ingelogd als {{ email }}
     </div>
 
-    <div *ngIf="multiUser">
-      <label for="customer" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
+    <div *ngIf="multiUser" (click)="toggleSelectCustomer();$event.preventDefault();$event.stopPropagation()">
+      <label for="customer" class="block text-sm font-semibold text-gray-900 dark:text-white">
         Geselecteerde klant
       </label>
-      <select id="customer" class="appearance-none block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+      <input id="customer" class="appearance-none block w-full bg-gray-50 border border-gray-300 text-sm rounded-lg
             focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600
             dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        [(ngModel)]="auth.currentCustomer">
-        <option [value]="undefined" disabled>Select a customer</option>
-        <option [ngValue]="customer" *ngFor="let customer of customers">
-          {{ customer.id }} - {{ customer.name }}
-        </option>
-      </select>
+        onclick="$event.preventDefault();$event.stopPropagation()" disabled
+        [value]="customerName(auth.currentCustomer)">
     </div>
   </div>
 
   <!-- <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item> -->
   <ng-template [ngIf]="!authenticated">
     <a role="menuitem" [routerLink]="[ '/auth/sign-in' ] | localize"
-      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600">
+      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 rounded-b-xl">
       <i class="fal fa-sign-in-alt fa-fw fa-lg"></i> {{ 'actions.sign-in' | translate }}
     </a>
   </ng-template>
   <ng-template [ngIf]="authenticated">
+    <a role="menuitem" [routerLink]="['/account/order-history'] | localize"
+      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-600">
+      <i class="fal fa-bags-shopping fa-fw fa-lg"></i> {{ 'pages.order-history.title' | translate }}
+    </a>
+    <a role="menuitem" [routerLink]="['/account/profile'] | localize"
+      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-600">
+      <i class="fal fa-user fa-fw fa-lg"></i> {{ 'pages.profile.title' | translate }}
+    </a>
     <a role="menuitem" (click)="logout()"
-      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
+      class="block pr-7 pl-4 h-10 leading-10 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer rounded-b-xl">
       <i class="fal fa-sign-out-alt fa-fw fa-lg"></i> {{ 'actions.sign-out' | translate }}
     </a>
   </ng-template>
 </div>
+
+<bra-customer-modal *ngIf="!auth.currentCustomer || selectCustomer" (close)="selectCustomer = false">
+</bra-customer-modal>
