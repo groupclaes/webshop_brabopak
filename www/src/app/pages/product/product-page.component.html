@@ -33,7 +33,8 @@
         <span class="text-xl md:text-4xl font-light">
           {{ basePrice }}
         </span>
-        <span *ngIf="product.prices[0].isPromo && product.prices[0].discount > 0" class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300
+        <span *ngIf="product.prices[0].is_promo && product.prices[0].discount > 0"
+          class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300
           dark:text-red-900">Promotie
           {{ (product.prices[product.prices.length-1].discount * -.01) | percent:'0.0-1'}}</span>
       </div>

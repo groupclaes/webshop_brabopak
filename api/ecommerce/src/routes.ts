@@ -1,17 +1,11 @@
 import * as menuController from './controllers/menu.controller'
 import * as cartsController from './controllers/carts.controller'
 import * as dashboardController from './controllers/dashboard.controller'
-import * as searchController from './controllers/search.controller'
 
 export default [{
   method: 'GET',
   url: '/menu',
   handler: menuController.get
-}, {
-  method: 'GET',
-  url: '/search',
-  handler: searchController.get,
-  requiredPermissions: [undefined]
 }, {
   method: 'GET',
   url: '/carts',

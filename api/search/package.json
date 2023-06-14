@@ -1,0 +1,26 @@
+{
+  "name": "webshop_api_search",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild ./src/index.ts --bundle --platform=node --minify --packages=external --external:'./config' --outfile=dist/index.min.js",
+    "publish": "npm run build && ./build.sh"
+  },
+  "author": {
+    "name": "Jamie Vangeysel",
+    "email": "vangeysel-jamie@hotmail.com",
+    "url": "https://jamievangeysel.be"
+  },
+  "dependencies": {
+    "@groupclaes/fastify-authhandler": "^2.0.1",
+    "@groupclaes/fastify-elastic": "^2.0.4",
+    "@groupclaes/oe-connector": "^1.2.5",
+    "fastify": "^4.18.0",
+    "jose": "^4.14.4",
+    "mssql": "^8.1.4"
+  },
+  "devDependencies": {
+    "@types/mssql": "^8.1.2",
+    "@types/node": "^18.16.17"
+  }
+}

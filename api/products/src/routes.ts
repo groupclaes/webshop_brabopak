@@ -10,9 +10,4 @@ export default [{
   url: '/:id/base',
   handler: productsController.getBase,
   requiredPermissions: []
-}, {
-  method: 'POST',
-  url: '/search',
-  handler: productsController.postSearch,
-  requiredPermissions: []
 }]
