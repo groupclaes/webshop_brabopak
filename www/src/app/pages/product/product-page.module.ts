@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
 import { CartComponentsModule } from 'src/app/core/components/cart/cart.module'
 import { ProductComponentsModule } from 'src/app/core/components/products/products.module'
+import { DirectivesModule } from 'src/app/core/directives/directives.module'
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ProductComponentsModule } from 'src/app/core/components/products/produc
     CommonModule,
     CoreComponentsModule,
     CartComponentsModule,
+    DirectivesModule,
     ProductComponentsModule,
     TranslateModule.forChild(),
     NgBytesPipeModule,

@@ -1,11 +1,9 @@
 import { ChangeDetectorRef, Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { TranslateService } from '@ngx-translate/core'
 import { Subscription } from 'rxjs'
 import { myPriceEntry, myPriceTotalEntry } from 'src/app/@shared/layout/buttons/cart/cart.component'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { AuthService } from 'src/app/auth/auth.service'
-import { CustomersApiService } from 'src/app/core/api/customers-api.service'
 import { ICartProduct } from 'src/app/core/api/ecommerce-api.service'
 import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
 

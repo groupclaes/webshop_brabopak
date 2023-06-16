@@ -1,12 +1,17 @@
-<div class="flex flex-row items-center space-x-2">
-  <span class="text-xl md:text-4xl font-light">
-    {{ basePrice }}
-  </span>
-  <span *ngIf="prices[prices.length-1].discount > 0"
-    class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300 dark:text-red-900">
-    Promotie
-    {{ (prices[prices.length-1].discount * -.01) | percent:'0.0-1'}}
-  </span>
+<div>
+  <div class="text-md md:text-2xl font-light line-through" *ngIf="prices[prices.length-1].discount > 0">
+    {{ prices[prices.length-1].base | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
+  </div>
+  <div class="flex flex-row items-center space-x-2">
+    <span class="text-xl md:text-4xl font-light">
+      {{ price }}
+    </span>
+    <span *ngIf="prices[prices.length-1].discount > 0"
+      class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300 dark:text-red-900">
+      Promotie
+      {{ (prices[prices.length-1].discount * -1) | percent:'0.0-1':'nl-BE'}}
+    </span>
+  </div>
 </div>
 
 <div class="inline-block mt-2" *ngIf="prices.length > 1">
@@ -21,7 +26,8 @@
       <span translate [translateParams]="{ unit }">components.products.product-prices.table.price</span>
     </div>
   </div>
-  <div class="flex flex-row items-center px-2 py-1 space-x-2 border-b text-md text-secondary-700 dark:text-secondary-500"
+  <div
+    class="flex flex-row items-center px-2 py-1 space-x-2 border-b text-md text-secondary-700 dark:text-secondary-500"
     *ngFor="let price of prices | slice:0:prices.length-1">
     <div class="w-10 text-right">
       <span [textContent]="price.quantity"></span>

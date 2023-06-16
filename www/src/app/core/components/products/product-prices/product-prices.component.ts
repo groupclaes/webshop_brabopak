@@ -27,10 +27,10 @@ export class ProductPricesComponent {
     private currencyPipe: CurrencyPipe
   ) { }
 
-  get basePrice(): string | undefined {
+  get price(): string | undefined {
     if (this.prices.some((e: any) => e.amount > 0)) {
       let myprice: any = this.prices.find((e: any) => e.quantity === 1)
-      return this.currencyPipe.transform(myprice.base, 'EUR', 'symbol-narrow', '0.2-2', this.culture) ?? undefined
+      return this.currencyPipe.transform(myprice.amount, 'EUR', 'symbol-narrow', '0.2-2', this.culture) ?? undefined
     } else if (this.prices.some((e: any) => e.amount === -1)) {
       return this.translate.instant('price.request')
     }
