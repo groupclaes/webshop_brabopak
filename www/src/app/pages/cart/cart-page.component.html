@@ -58,15 +58,15 @@
                   </div>
                   <div *ngIf="auth.canViewPrices">
                     <span class="baseprice text-gray-500 italic">
-                      {{ product.prices && product.prices[0].basePrice > 0 ?
-                          (product.prices[0].basePrice * product.quantity >
+                      {{ product.prices && product.prices[0].base > 0 ?
+                          (product.prices[0].base * product.quantity >
                           calcPrice(product, product.quantity).totalProduct ?
-                            (product.prices[0].basePrice * product.quantity |
+                            (product.prices[0].base * product.quantity |
                             currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : '') :
                           ''
                         }}
                     </span>
-                    {{ product.prices && product.prices[0].basePrice > 0 ?
+                    {{ product.prices && product.prices[0].base > 0 ?
                         ( calcPrice(product, product.quantity).totalProduct |
                         currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' ) :
                         'pages.cart.priceOnDemand' | translate

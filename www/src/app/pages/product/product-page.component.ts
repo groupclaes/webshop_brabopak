@@ -183,19 +183,6 @@ export class ProductPageComponent implements OnDestroy {
     return this._product
   }
 
-  get basePrice(): string | null {
-    if (!this._product) return null
-    if (this.auth.isAuthenticated() && this._product.prices) {
-      if (this._product.prices.some((e: any) => e.amount > 0)) {
-        let myprice: any = this._product.prices.find((e: any) => e.quantity === 1)
-        return this.currencyPipe.transform(myprice.base, 'EUR', 'symbol-narrow', '0.2-2', 'nl-BE')
-      } else if (this._product.prices.some((e: any) => e.amount === -1)) {
-        return this.translate.instant('price.request')
-      }
-    }
-    return null
-  }
-
   get images(): any[] {
     return this._images || []
   }

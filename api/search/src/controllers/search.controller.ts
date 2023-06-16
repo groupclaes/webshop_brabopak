@@ -46,7 +46,7 @@ export const post = async (request: FastifyRequest<{
 }>, reply: FastifyReply) => {
   const start = performance.now()
   try {
-    const repo = new Product()
+    const repo = new Search()
     const token: JWTPayload = request['token'] || { sub: null }
 
     const userCode = request.query.usercode

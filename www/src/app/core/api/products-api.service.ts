@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, retryWhen, delay, take, firstValueFrom } from 'rxjs'
+import { retryWhen, delay, take, firstValueFrom } from 'rxjs'
 import { environment } from 'src/environments/environment'
 import { trimParameters } from '.'
 
@@ -33,18 +33,6 @@ export class ProductsApiService {
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
-
-  search(usercode?: number, filters?: IProductSearchFilters, ux?: string): Observable<any> {
-    const params = trimParameters({
-      usercode,
-      culture: filters?.culture,
-      ux
-    })
-
-    return this.http.post(`${environment.api}products/search`, filters, {
-      params
-    })
-  }
 }
 
 export interface IProductBase {
@@ -52,7 +40,7 @@ export interface IProductBase {
   name: string
   unit: string
   itemnum: string
-  prices?: any[]
+  prices?: IProductPrice[]
   taxes?: any[]
   type: string
   stack_size: number
@@ -76,13 +64,10 @@ export interface IProduct extends IProductBase {
   similarProducts: any[]
 }
 
-export interface IProductSearchFilters {
-  culture?: string,
-  query?: string,
-  only_favorites?: boolean,
-  only_promo?: boolean,
-  only_new?: boolean,
-  page?: number,
-  per_page?: number,
-  category_id?: number
+export interface IProductPrice {
+  base: number
+  is_promo: boolean
+  amount: number
+  discount: number
+  quantity: number
 }

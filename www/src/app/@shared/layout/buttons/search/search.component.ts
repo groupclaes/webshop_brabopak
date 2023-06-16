@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { SearchService } from './search.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 import { AuthService } from 'src/app/auth/auth.service'
+import { SearchApiService } from 'src/app/core/api/search-api.service'
 
 @Component({
   selector: 'claes-search',
@@ -22,7 +23,7 @@ export class SearchComponent {
     private ref: ChangeDetectorRef,
     public service: SearchService,
     private auth: AuthService,
-    private ecommerceApi: EcommerceApiService
+    private searchApi: SearchApiService
   ) {
     this.query = this.service.query ?? ''
     this.lastEvent = this.query
@@ -41,7 +42,7 @@ export class SearchComponent {
 
   private async updateSuggestions() {
     try {
-      const result = await this.ecommerceApi.search(this.query ?? '', this.service.culture, this.service.id)
+      const result = await this.searchApi.get(this.query ?? '', this.service.culture, this.service.id)
       if (result) {
         this.suggested = result.results ?? []
         this.popular = result.popular ?? []

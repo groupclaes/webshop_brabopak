@@ -7,7 +7,7 @@ import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { CustomersApiService } from 'src/app/core/api/customers-api.service'
 import { ICartProduct } from 'src/app/core/api/ecommerce-api.service'
-import { IProductBase } from 'src/app/core/api/products-api.service'
+import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
 
 @Component({
   selector: 'bra-cart-page',
@@ -84,7 +84,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     if (!product || !product.prices) { return price }
 
     price.stack = count
-    price.basePrice = product.prices[0].basePrice
+    price.basePrice = product.prices[0].base
 
     product.taxes?.forEach((taxEntry: any) => {
       if (taxEntry.type === 'FP') { //  && this.auth.credentials.fostplus === true
@@ -103,7 +103,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     }
 
     let curStackSize = 0
-    product.prices.forEach((priceEntry: any) => {
+    product.prices.forEach((priceEntry: IProductPrice) => {
       if (priceEntry.quantity >= curStackSize && priceEntry.quantity <= price.stack) {
         curStackSize = priceEntry.quantity
         price.baseDiscountPrice = priceEntry.amount

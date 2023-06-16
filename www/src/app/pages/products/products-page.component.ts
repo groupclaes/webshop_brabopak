@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs'
 import { SearchService } from 'src/app/@shared/layout/buttons/search/search.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { ProductsApiService } from 'src/app/core/api/products-api.service'
+import { SearchApiService } from 'src/app/core/api/search-api.service'
 import { IBreadcrumb } from 'src/app/core/components/breadcrumbs/breadcrumbs.component'
 import { environment } from 'src/environments/environment'
 
@@ -39,10 +40,10 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
-    private products: ProductsApiService,
     private translate: TranslateService,
     private ref: ChangeDetectorRef,
-    public searchService: SearchService
+    public searchService: SearchService,
+    private search: SearchApiService
   ) {
   }
 
@@ -84,7 +85,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         this.subscriber.unsubscribe()
       }
 
-      this.subscriber = this.products.search(
+      this.subscriber = this.search.post(
         this.auth.currentCustomer?.usercode,
         {
           ...filters,

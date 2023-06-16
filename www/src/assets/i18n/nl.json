@@ -4,6 +4,14 @@
       "new": "Nieuwe producten",
       "favorite": "Favoriete producten",
       "promo": "Producten in promo"
+    },
+    "products": {
+      "product-prices": {
+        "table": {
+          "quantity": "Aantal",
+          "price": "Prijs per {{unit}}"
+        }
+      }
     }
   },
   "pages": {

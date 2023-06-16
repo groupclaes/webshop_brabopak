@@ -17,7 +17,6 @@ export class EcommerceApiService {
     return {
       menu: () => `${environment.api}ecommerce/menu`,
       dashboard: () => `${environment.api}ecommerce/dashboard`,
-      search: () => `${environment.api}ecommerce/search`,
       cart: () => `${environment.api}ecommerce/carts`,
       cartProduct: () => `${environment.api}ecommerce/carts/products`
     }
@@ -32,15 +31,6 @@ export class EcommerceApiService {
       usercode
     })
     return firstValueFrom(this.http.get<any>(this.urls.dashboard(), { params }))
-  }
-
-  search(query: string, culture: string, category_id?: number): Promise<any> {
-    const params = trimParameters({
-      query,
-      culture,
-      category_id
-    })
-    return firstValueFrom(this.http.get<any>(this.urls.search(), { params }))
   }
 
   cart(usercode: number): Promise<ICart[]> {

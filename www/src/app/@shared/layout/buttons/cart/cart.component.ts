@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
 import { CartService } from './cart.service'
-import { IProductBase } from 'src/app/core/api/products-api.service'
+import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
 import { AuthService } from 'src/app/auth/auth.service'
 
 @Component({
@@ -52,7 +52,7 @@ export class CartComponent {
     if (!product || !product.prices) { return }
 
     price.stack = count
-    price.basePrice = product.prices[0].basePrice
+    price.basePrice = product.prices[0].base
 
     product.taxes?.forEach((taxEntry: any) => {
       if (taxEntry.type === 'FP') { //  && this.auth.credentials.fostplus === true
@@ -71,7 +71,7 @@ export class CartComponent {
     }
 
     let curStackSize = 0
-    product.prices.forEach((priceEntry: any) => {
+    product.prices.forEach((priceEntry: IProductPrice) => {
       if (priceEntry.quantity >= curStackSize && priceEntry.quantity <= price.stack) {
         curStackSize = priceEntry.quantity
         price.baseDiscountPrice = priceEntry.amount

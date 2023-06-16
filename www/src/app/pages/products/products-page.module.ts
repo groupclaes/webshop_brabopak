@@ -4,7 +4,7 @@ import { ProductsPageComponent } from './products-page.component'
 import { RouterModule } from '@angular/router'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
 import { TranslateModule } from '@ngx-translate/core'
-import { ProductsModule } from 'src/app/core/components/products/products.module'
+import { ProductComponentsModule } from 'src/app/core/components/products/products.module'
 import { CoreComponentsModule } from 'src/app/core/components/components.module'
 
 @NgModule({
@@ -16,7 +16,7 @@ import { CoreComponentsModule } from 'src/app/core/components/components.module'
     CoreComponentsModule,
     TranslateModule.forChild(),
     LocalizeRouterModule,
-    ProductsModule,
+    ProductComponentsModule,
     RouterModule.forChild([{
       path: '',
       component: ProductsPageComponent
