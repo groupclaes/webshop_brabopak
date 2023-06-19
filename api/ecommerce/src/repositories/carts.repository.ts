@@ -64,4 +64,16 @@ export default class Cart {
     }
     return undefined
   }
+
+  async getUserSettings(usercode: number): Promise<undefined | any> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('usercode', sql.Int, usercode)
+
+    const result = await r.execute(`sso.usp_getUserSettings`)
+
+    if (result.recordset.length > 0) {
+      return result.recordset[0][0]
+    }
+    return undefined
+  }
 }

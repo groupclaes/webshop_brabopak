@@ -141,3 +141,61 @@ export const post = async (request: FastifyRequest<{
       .send(err)
   }
 }
+
+// get order history (from RAW)
+export const getHistory = async (request: FastifyRequest<{
+  Querystring: {
+    usercode: number
+  }
+}>, reply: FastifyReply) => {
+  try {
+    const repo = new Cart()
+    const token: JWTPayload = request['token'] || { sub: null }
+
+    if (token.sub) {
+      const user = await repo.getUserInfo(token.sub)
+      const customer = await repo.getUserSettings(request.query.usercode)
+
+      oe.configure({
+        c: false,
+        tw: -1,
+        simpleParameters: true
+      })
+
+      let oeResponse = await oe.run('getOrderHis', [
+        'BRA',
+        'user',
+        customer.customer_id,
+        customer.address_id,
+        25,
+        undefined
+      ])
+
+      request.log.info({ token, customer_id: customer.customer_id, address_id: customer.address_id, }, 'Get orders history')
+
+      if (oeResponse && oeResponse.status === 200) {
+        const orders = oeResponse.result.orders
+        if (orders) {
+          return { statusCode: 200, length: orders.length, orders }
+        } else {
+          return reply
+            .code(204)
+            .send()
+        }
+      }
+
+      return reply
+        .code(oeResponse.status)
+        .send(oeResponse)
+    }
+
+    return reply
+      .status(401)
+      .send({ error: 'Unauthorized!' })
+  } catch (err) {
+    request.log.fatal(request.body, 'failed to send order!')
+    return reply
+      .status(500)
+      .send(err)
+  }
+}
