@@ -9,7 +9,7 @@ export class MagnifierDirective {
   w: number = 0
   h: number = 0
   bw = 3
-  zoom = 2.5
+  zoom = 4
   // .magnifier-glass
   constructor({ nativeElement }: ElementRef<HTMLImageElement>) {
     this.img = nativeElement
@@ -23,13 +23,13 @@ export class MagnifierDirective {
 
       const moveMagnifier = (e: any) => {
         var pos, x, y
-        /*prevent any other actions that may occur when moving over the image*/
+        /* prevent any other actions that may occur when moving over the image */
         e.preventDefault()
-        /*get the cursor's x and y positions:*/
+        /* get the cursor's x and y positions: */
         pos = getCursorPos(e)
         x = pos.x
         y = pos.y
-        /*prevent the magnifier glass from being positioned outside the image:*/
+        /* prevent the magnifier glass from being positioned outside the image: */
         if (x > this.img.width - this.w / this.zoom) {
           x = this.img.width - this.w / this.zoom
         }
@@ -42,11 +42,11 @@ export class MagnifierDirective {
         if (y < this.h / this.zoom) {
           y = this.h / this.zoom
         }
-        /*set the position of the magnifier glass:*/
+        /* set the position of the magnifier glass: */
         if (this.glass) {
           this.glass.style.left = x - this.w + "px"
           this.glass.style.top = y - this.h + "px"
-          /*display what the magnifier glass "sees":*/
+          /* display what the magnifier glass "sees": */
           this.glass.style.backgroundPosition = "-" + (x * this.zoom - this.w + this.bw) + "px -" + (y * this.zoom - this.h + this.bw) + "px"
         }
       }
@@ -54,12 +54,12 @@ export class MagnifierDirective {
       const getCursorPos = (e: any) => {
         var a, x = 0, y = 0
         e = e || window.event
-        /*get the x and y positions of the image:*/
+        /* get the x and y positions of the image: */
         a = this.img.getBoundingClientRect()
-        /*calculate the cursor's x and y coordinates, relative to the image:*/
+        /* calculate the cursor's x and y coordinates, relative to the image: */
         x = e.pageX - a.left
         y = e.pageY - a.top
-        /*consider any page scrolling:*/
+        /* consider any page scrolling: */
         x = x - window.scrollX
         y = y - window.scrollY
         return { x: x, y: y }
