@@ -171,7 +171,7 @@ export const getHistory = async (request: FastifyRequest<{
         undefined
       ])
 
-      request.log.info({ token, customer_id: customer.customer_id, address_id: customer.address_id, }, 'Get orders history')
+      request.log.info({ token, customer_id: customer.customer_id, address_id: customer.address_id, user, customer }, 'Get orders history')
 
       if (oeResponse && oeResponse.status === 200) {
         const orders = oeResponse.result.orders

@@ -23,6 +23,11 @@ export default [{
   requiredPermissions: []
 }, {
   method: 'GET',
+  url: '/carts/history',
+  handler: cartsController.getHistory,
+  requiredPermissions: []
+}, {
+  method: 'GET',
   url: '/dashboard',
   handler: dashboardController.get,
   requiredPermissions: []
