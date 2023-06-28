@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, Input } from '@angular/core'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
+import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { IProductBase } from 'src/app/core/api/products-api.service'
 
@@ -22,7 +23,8 @@ export class CartButtonComponent {
   constructor(
     public auth: AuthService,
     private service: CartService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private modalCtrl: ModalsService
   ) {
     service.changes.subscribe({
       next: () => {
@@ -36,11 +38,12 @@ export class CartButtonComponent {
     this.service.update(this.product, 1)
   }
 
-  removeOne() {
+  async removeOne() {
     if (!this.product || !this.currentQuantity) return
 
     if (this.currentQuantity === 1) {
-      const confirmed = confirm('Are you sure you want to remove this product from cart?')
+      const modal = new Modal('alert', 'Product verwijderen', 'Weet je zeker dat je het product uit je winkelwagentje wilt verwijderen?', [{ title: 'Annuleer', type: 'abort', color: 'danger' }, { title: 'Ja', action: () => true }])
+      const confirmed = await this.modalCtrl.show(modal)
       if (!confirmed) return
     }
 

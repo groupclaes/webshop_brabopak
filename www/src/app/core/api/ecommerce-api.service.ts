@@ -19,7 +19,8 @@ export class EcommerceApiService {
       dashboard: () => `${environment.api}ecommerce/dashboard`,
       cart: () => `${environment.api}ecommerce/carts`,
       cartProduct: () => `${environment.api}ecommerce/carts/products`,
-      cartHistory: () => `${environment.api}ecommerce/carts/history`
+      orders: () => `${environment.api}ecommerce/orders`,
+      order: (id: number) => `${environment.api}ecommerce/orders/${id}`
     }
   }
 
@@ -41,11 +42,18 @@ export class EcommerceApiService {
     return firstValueFrom(this.http.get<ICart[]>(this.urls.cart(), { params }))
   }
 
-  cartHistory(usercode: number): Promise<any[]> {
+  orders(usercode: number): Promise<IGetCartHistryResponse> {
     const params = trimParameters({
       usercode
     })
-    return firstValueFrom(this.http.get<ICart[]>(this.urls.cartHistory(), { params }))
+    return firstValueFrom(this.http.get<IGetCartHistryResponse>(this.urls.orders(), { params }))
+  }
+
+  order(id: number, usercode: number): Promise<IGetCartResponse> {
+    const params = trimParameters({
+      usercode
+    })
+    return firstValueFrom(this.http.get<IGetCartResponse>(this.urls.order(id), { params }))
   }
 
   putCartProduct(product: any, usercode: number): Promise<ICart[]> {
@@ -68,4 +76,40 @@ export interface ICart {
 
 export interface ICartProduct extends IProductBase {
   quantity: number
+}
+
+export interface IGetCartHistryResponse {
+  statusCode: number
+  result: {
+    orders: {
+      id: number
+      reference: string
+      date: string
+      method: string
+      orderLines: {
+        id: number
+        itemNum: string
+        itemName: string
+        unit: string
+      }[]
+    }[]
+  }
+}
+
+export interface IGetCartResponse {
+  statusCode: number
+  result: {
+    orders: {
+      id: number
+      reference: string
+      date: string
+      method: string
+      orderLines: {
+        id: number
+        itemNum: string
+        itemName: string
+        unit: string
+      }[]
+    }[]
+  }
 }

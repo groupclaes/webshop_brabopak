@@ -1,39 +1,42 @@
-<div class="relative mx-auto w-60 h-60 border rounded-xl drop-shadow hover:opacity-75 overflow-hidden"
-  [ngStyle]="{background: '#' + item.color}">
-  <img class="w-full" [src]="item.url.replace('small', 'thumb_l')" [ngStyle]="{background: '#' + item.color}" alt="">
+<ng-template [ngIf]="item">
+  <div class="relative mx-auto w-60 h-60 border rounded-xl drop-shadow hover:opacity-75 overflow-hidden"
+    [ngStyle]="{background: '#' + item.color}">
+    <img class="w-full" [src]="item.url.replace('small', 'thumb_l')" [ngStyle]="{background: '#' + item.color}" alt="">
 
-  <div class="absolute top-2 right-2 space-x-4" *ngIf="item.type === 'B'">
-    <div class="w-5 h-5 leading-5 text-center rounded-md bg-success text-white">B</div>
-  </div>
-
-  <div id="cart-controlls" class="hidden absolute bottom-4 left-4 right-4 group-hover:block z-10">
-    <bra-cart-button [product]="item"></bra-cart-button>
-  </div>
-</div>
-
-<div class="flex flex-row justify-between space-x-4 mt-2 group">
-  <div class="flex flex-col">
-    <div class="text-md group-hover:text-primary group-hover:underline group-hover:dark:text-accent">
-      {{ item.name }}
+    <div class="absolute top-2 left-2 space-x-4">
+      <div class="w-5 h-5 leading-5 text-center rounded-md bg-success text-white" *ngIf="item.type === 'B'">B</div>
+      <div class="w-auto h-5 px-2  leading-5 text-center rounded-md bg-danger text-white" *ngIf="isPromo">Promotie</div>
     </div>
-    <div class="text-sm text-secondary-500 font-light mt-1">
-      {{ item.unit }}
+
+    <div id="cart-controlls" class="hidden absolute bottom-4 left-4 right-4 group-hover:block z-10">
+      <bra-cart-button [product]="item"></bra-cart-button>
     </div>
   </div>
-  <div class="flex flex-col text-lg font-medium leading-tight" *ngIf="auth.canViewPrices && currentPrice">
-    {{ currentPrice }}
-  </div>
-</div>
 
-<div class="flex-flex-row justify-between" *ngIf="isFavorite">
-  <div class="text-sm text-gray-500">
-    {{ favinfo }}
+  <div class="flex flex-row justify-between space-x-4 mt-2 group">
+    <div class="flex flex-col">
+      <div class="text-md group-hover:text-primary group-hover:underline group-hover:dark:text-accent">
+        {{ item.name }}
+      </div>
+      <div class="text-sm text-secondary-500 font-light mt-1">
+        {{ item.unit }}
+      </div>
+    </div>
+    <div class="flex flex-col text-lg font-medium leading-tight" *ngIf="auth.canViewPrices && currentPrice">
+      {{ currentPrice }}
+    </div>
   </div>
-</div>
 
-<div class="flex-flex-row justify-between" *ngIf="availableDescription">
-  <i class="fas fa-fw fa-shipping-timed text-red-500"></i>
-  <div class="text-sm text-gray-500">
-    {{ availableDescription }}
+  <div class="flex-flex-row justify-between" *ngIf="isFavorite">
+    <div class="text-sm text-gray-500">
+      {{ favinfo }}
+    </div>
   </div>
-</div>
+
+  <div class="flex-flex-row justify-between" *ngIf="availableDescription">
+    <i class="fas fa-fw fa-shipping-timed text-red-500"></i>
+    <div class="text-sm text-gray-500">
+      {{ availableDescription }}
+    </div>
+  </div>
+</ng-template>

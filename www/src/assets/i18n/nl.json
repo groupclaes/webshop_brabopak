@@ -179,12 +179,14 @@
           "freeShipping": "Gratis levering!",
           "asideButton": "Bestelling plaatsen"
         }
-      }
-    },
-    "order-history": {
-      "title": "Orderhistoriek",
-      "header": {
-        "title": ""
+      },
+      "history": {
+        "title": "Orderhistoriek",
+        "header": {
+          "title": ""
+        },
+        "view": "Bestelling bekijken",
+        "re-purchase": "Opnieuw bestellen"
       }
     },
     "profile": {
@@ -213,6 +215,8 @@
   "price.request": "Prijs op aanvraag",
   "errors": {
     "minimum_order_quantity": "Minimale bestelhoeveelheid is {{correctqty}}. Wil je deze hoeveelheid bestellen?",
-    "stack_size": "Je moet per {{stack_size}} bestellen. Wil je {{correctqty}} bestellen?"
+    "stack_size": "Je moet per {{stack_size}} bestellen. Wil je {{correctqty}} bestellen?",
+    "products_load": "Er is een fout opgetreden bij het ophalen van producten",
+    "products_search": "Er zijn geen producten terugevonden"
   }
 }

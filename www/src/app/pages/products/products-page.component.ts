@@ -26,6 +26,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   private subscriber: Subscription | undefined
 
   loading: boolean = true
+  error: boolean = false
   init: boolean = false
 
   per_page: number = 16
@@ -98,8 +99,14 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
             this.count = response.productCount
             this.calcpages(response.productCount)
             this.searchService.calculatePages(response.productCount)
+            this.error = false
             this.loading = false
             this.ref.markForCheck()
+          },
+          error: (err) => {
+            this.error = true
+            this.loading = false
+            console.error(err)
           }
         })
 

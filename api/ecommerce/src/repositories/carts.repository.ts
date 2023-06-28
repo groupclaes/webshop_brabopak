@@ -72,7 +72,7 @@ export default class Cart {
     const result = await r.execute(`sso.usp_getUserSettings`)
 
     if (result.recordset.length > 0) {
-      return result.recordset[0][0]
+      return result.recordset[0]
     }
     return undefined
   }

@@ -1,0 +1,84 @@
+<div class="container">
+  <a routerLink="/account/order-history">
+    <i class="fal fa-lg fa-angle-left"></i>
+    {{ 'pages.account.order-history-detail.backButton' | translate }}
+  </a>
+  <div class="spinner" *ngIf="isLoading">
+    <i class="fal fa-fw fa-2x fa-spinner fa-spin"></i>
+  </div>
+  <div id="order" *ngIf="!isLoading && order">
+    <h2 translate="pages.account.order-history-detail.title"></h2>
+    <div class="order-actions"></div>
+    <div class="order-title">
+      <small>
+        <i class="emphasize">{{ 'orderedOn' | translate }}:</i>
+        {{ order.date | date:'d MMMM yyyy':undefined:culture+'-BE' }}
+        &nbsp;
+        <i class="emphasize">{{ 'orderNumber' | translate }}:</i>
+        {{ order.id }}
+      </small>
+      <small>
+        <i class="emphasize">{{ 'reference' | translate }}:</i>
+        {{ order.reference }}
+      </small>
+    </div>
+    <div class="order-body">
+      <div class="product-block flex items-center" *ngFor="let product of order.orderLines">
+        <img class="mr-10 thumbnail" src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg"
+          alt="Thumbnail {{ product.itemNum }}" height="80" width="80">
+        <div class="name mr-10 flex-fill">
+          <small>
+            <i class="emphasize">{{ 'itemNum' | translate }}:</i>
+            {{ product.itemNum }}
+          </small>
+          <h5>
+            {{ product.count > 1 ? product.count + 'x' : '' }}
+            <a routerLink="/products" [queryParams]="{ productId: product.id }">
+              {{ product.itemName }}
+            </a>
+          </h5>
+          <small *ngIf="product.hasDatasheet === true">
+            <a [href]="getDatasheetUrl(product)"><i
+                class="fal fa-angle-right"></i>{{ 'pages.account.order-history-detail.downloadDatasheet' | translate }}</a>
+          </small>
+          <div class="product-backorder emphasize" *ngIf="product.inBackorder" [attr.title]="'inBackorder' | translate">
+            <i color="danger" class="fas fa-fw fa-business-time"></i>
+            {{ 'inBackorder' | translate }}
+          </div>
+        </div>
+        <!-- <div class="mr-10 price">
+          {{ product.amount | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
+        </div> -->
+      </div>
+    </div>
+    <div class="order-footer">
+      <h3 translate="pages.account.order-history-detail.addressPaymentInfo"></h3>
+      <div class="flex items-center flex-row">
+        <div class="flex flex-col">
+          <h4 translate="pages.account.order-history-detail.facturationAddress"></h4>
+          <div class="address-info">
+            {{ order.addresses[0].name }} <br>
+            {{ order.addresses[0].address }} {{ order.addresses[0].streetNum }} <br>
+            {{ order.addresses[0].zipCode }} {{ order.addresses[0].city }} <br>
+            {{ order.addresses[0].country }}
+          </div>
+        </div>
+        <div class="flex flex-col" *ngIf="order.addresses.length > 1">
+          <h4 translate="pages.account.order-history-detail.deliveryFacturation"></h4>
+          <div class="address-info">
+            {{ order.addresses[1].name }} <br>
+            {{ order.addresses[1].address }} {{ order.addresses[1].streetNum }} <br>
+            {{ order.addresses[1].zipCode }} {{ order.addresses[1].city }} <br>
+            {{ order.addresses[1].country }}
+          </div>
+        </div>
+        <!-- <div class="flex items-center">
+          <h5 translate="pages.account.order-history-detail.totalAmount"></h5>
+          <b>
+            {{ order.cost | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
+          </b>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

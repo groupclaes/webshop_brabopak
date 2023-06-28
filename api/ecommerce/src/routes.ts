@@ -1,6 +1,7 @@
 import * as menuController from './controllers/menu.controller'
 import * as cartsController from './controllers/carts.controller'
 import * as dashboardController from './controllers/dashboard.controller'
+import * as ordersController from './controllers/orders.controller'
 
 export default [{
   method: 'GET',
@@ -23,8 +24,13 @@ export default [{
   requiredPermissions: []
 }, {
   method: 'GET',
-  url: '/carts/history',
-  handler: cartsController.getHistory,
+  url: '/orders/:id',
+  handler: ordersController.get,
+  requiredPermissions: []
+}, {
+  method: 'GET',
+  url: '/orders',
+  handler: ordersController.getHistory,
   requiredPermissions: []
 }, {
   method: 'GET',

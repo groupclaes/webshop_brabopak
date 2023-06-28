@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
-  api: 'https://shop.brabopak.com/api/v1/',
+  api: 'https://shop.brabopak.com/api/uat/',
   pcm: 'https://pcm.groupclaes.be/v3/',
   sso: {
-    url: 'https://shop.brabopak.com/api/v1/sso/',
+    url: 'https://shop.brabopak.com/api/uat/sso/',
     client_id: 'hBK4c2uZK5',
     scope: 'openid offline_access email email_verified usercode customer_id address_id promo fostplus user_type customers customer_type',
   },

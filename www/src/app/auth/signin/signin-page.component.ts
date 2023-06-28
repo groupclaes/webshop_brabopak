@@ -6,6 +6,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha'
 import { Subscription, firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth.service'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
+import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 
 @Component({
   selector: 'bra-signin-page',
@@ -32,7 +33,8 @@ export class SigninPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private localize: LocalizeRouterService,
-    private recaptchaV3Service: ReCaptchaV3Service
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private modalCtrl: ModalsService
   ) { }
 
   ngOnInit(): void {
@@ -120,7 +122,8 @@ export class SigninPageComponent implements OnInit, OnDestroy {
 
           case 404:
             if (errRes.error.error === 'Username or password is incorrect!') {
-              this.showIncorrectCredentials = true
+              const modal = new Modal('alert', 'Foute inloggegevens', 'Controleer je e-mailadres en wachtwoord en probeer opniew. Je kan een nieuw wachtwoord instellen via \'wachtwoord vergeten ?\'.')
+              this.modalCtrl.show(modal)
               this.signinForm.controls['password'].reset()
             }
             break

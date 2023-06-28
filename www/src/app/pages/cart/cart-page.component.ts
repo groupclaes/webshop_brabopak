@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { myPriceEntry, myPriceTotalEntry } from 'src/app/@shared/layout/buttons/cart/cart.component'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
+import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { ICartProduct } from 'src/app/core/api/ecommerce-api.service'
 import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
@@ -37,7 +38,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     public service: CartService,
     private fb: FormBuilder,
-    public auth: AuthService
+    public auth: AuthService,
+    private modalCtrl: ModalsService
   ) {
   }
 
@@ -117,6 +119,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
   sendOrder() {
     if ((this.finalConfirmFormGroup && this.finalConfirmFormGroup.invalid) || this.isLoading) {
       this.finalConfirmFormGroup?.markAllAsTouched()
+      const modal = new Modal('alert', 'Formulier ongeldig', 'Controleer als alle velden zijn ingevuld en probeer opnieuw!')
+      this.modalCtrl.show(modal)
       return
     }
     if (!this.finalConfirmFormGroup) return

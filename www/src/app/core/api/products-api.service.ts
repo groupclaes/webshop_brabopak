@@ -43,6 +43,7 @@ export interface IProductBase {
   prices?: IProductPrice[]
   taxes?: any[]
   type: string
+  is_new: boolean
   stack_size: number
   minimum_order_quantity: number
   color: string

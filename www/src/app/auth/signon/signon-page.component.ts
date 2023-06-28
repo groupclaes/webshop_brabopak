@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 import { AuthService } from '../auth.service'
+import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 
 @Component({
   selector: 'bra-signon-page',
@@ -10,8 +11,6 @@ import { AuthService } from '../auth.service'
 })
 export class SignonPageComponent implements OnInit {
   isLoading = false
-  showAlreadyRegistered = false
-  showSuccess = false
   signonForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
     password: ['', [Validators.required, Validators.minLength(8)]], // shop2069
@@ -22,11 +21,11 @@ export class SignonPageComponent implements OnInit {
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
     private auth: AuthService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalsService
   ) { }
 
   ngOnInit(): void {
-    this.showSuccess = true
   }
 
   async signon() {
@@ -41,7 +40,8 @@ export class SignonPageComponent implements OnInit {
       const signonResponse: any = await this.auth.signon(this.signonForm.value)
 
       if (signonResponse.success === true) {
-        this.showSuccess = true
+        const modal = new Modal('success', 'Registratie gelukt', 'Je hebt je succesvol aangemeld voor een account op de Brabopak webshop, je kan nu inloggen met deze gegevens')
+        this.modalCtrl.show(modal)
       }
     } catch (err: any) {
       console.log(err)
@@ -54,7 +54,8 @@ export class SignonPageComponent implements OnInit {
             break
 
           case 403:
-            this.showAlreadyRegistered = true
+            const modal = new Modal('alert', 'Account al geregistreerd', 'Dit e-mailadres is al geregistreerd. Je kan met dit e-mailadres inloggen of een nieuw wachtwoord instellen')
+            this.modalCtrl.show(modal)
             this.ref.markForCheck()
             break
 

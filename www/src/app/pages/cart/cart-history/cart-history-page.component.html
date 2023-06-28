@@ -1,0 +1,125 @@
+<div class="flex flex-col w-full max-w-screen-xl mx-auto space-y-8 p-6 md:p-8">
+  <div class="flex items-center justify-between w-full">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <div class="text-4xl md:text-6xl font-bold tracking-tight leading-8 mb-4" translate>
+        pages.cart.history.title
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 mx-auto text-center align-center" *ngIf="isLoading">
+    <bra-loader></bra-loader>
+  </div>
+
+  <ng-container *ngFor="let order of orders">
+    <div class="px-4 sm:px-6 lg:px-8" id="order">
+      <div class="flex px-1 pt-1 pb-3">
+        <div class="flex-auto">
+          <i class="emphasize">{{ 'orderedOn' | translate }}:</i>
+          {{ order.date | date:'d MMMM yyyy':undefined:culture+'-BE' }}
+        </div>
+        <div>
+          {{ order.reference }}
+        </div>
+      </div>
+
+      <div class="p-5 border h-[178px] overflow-hidden rounded bg-gray-50">
+        <div class="relative transform-[translateX(-2px)_translateY(-2px) p-1]">
+          <div [id]="'order-swipe-container' + order.id" class="swipeable-content-container"
+            (scroll)="calcWide(order, $event)">
+            <div class="prev" *ngIf="order.prevArrow" (click)="scrollRight(order)">
+              <i class="fal fa-fw fa-lg fa-angle-left"></i>
+            </div>
+            <div [id]="'order-swipe-content' + order.id" class="swipe-container">
+              <a class="block flex-[0_0_auto] w-[280px] pr-3 pointer" *ngFor="let product of order.orderLines"
+                [routerLink]="['/product', product.id, itemName(product)] | localize">
+                <div class="group flex items-center -mx-10">
+                  <img class="mx-10 thumbnail" alt="Thumbnail {{ product.itemNum }}" height="100" width="100"
+                    src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg">
+                  <div
+                    class="mr-10 text-md group-hover:text-primary group-hover:underline group-hover:dark:text-accent">
+                    {{ product.itemName }}
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="next" *ngIf="order.nextArrow" (click)="scrollLeft(order)">
+              <i class="fal fa-fw fa-lg fa-angle-right"></i>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-row space-x-3">
+          <button class="block text-white rounded px-5 h-10 border border-primary bg-info hover:bg-primary"
+            [routerLink]="['/cart/history', order.id] | localize" translate>pages.cart.history.view</button>
+          <button class="block text-white rounded px-5 h-10 border border-primary bg-info hover:bg-primary"
+            [routerLink]="['/cart/copy'] | localize" [queryParams]="{ orderId: order.id}"
+            translate>pages.cart.history.re-purchase</button>
+        </div>
+      </div>
+    </div>
+    <!-- <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block[0].title" [link]="block[0].link"
+      [items]="block[0].products">
+    </bra-products-block> -->
+  </ng-container>
+</div>
+
+<!-- <div class="container">
+  <div id="order-list">
+    <h2 translate="pages.account.order-history.title"></h2>
+    <div class="spinner" *ngIf="isLoading">
+      <i class="fal fa-fw fa-2x fa-spinner fa-spin"></i>
+    </div>
+    <div class="orders-list" *ngIf="!isLoading">
+      <div [id]="'order-' + order.id" class="order-item" *ngFor="let order of orders"
+        [title]="'#' + order.id + ':' + order.reference">
+        <div class="order-title">
+          <small>
+            <i class="emphasize">{{ 'orderedOn' | translate }}:</i>
+            {{ order.date | date:'d MMMM yyyy':undefined:culture+'-BE' }}
+          </small>
+          <small>{{ order.reference }}</small>
+        </div>
+        <div class="order-row">
+          <div class="swipeable-content">
+            <div [id]="'order-swipe-container' + order.id" class="swipeable-content-container"
+              (scroll)="calcWide(order, $event)">
+              <div class="prev" *ngIf="order.prevArrow" (click)="scrollRight(order)">
+                <i class="fal fa-fw fa-lg fa-angle-left"></i>
+              </div>
+              <div [id]="'order-swipe-content' + order.id" class="swipe-container">
+                <a class="product" *ngFor="let product of order.orderLines" routerLink="/products"
+                  [queryParams]="{ productId: product.id }">
+                  <div class="flex items-center -mx-10">
+                    <img class="mx-10 thumbnail" alt="Thumbnail {{ product.itemNum }}" height="100" width="100"
+                      src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg">
+                    <div class="mr-10">
+                      <b>
+                        <h5>
+                          {{ product.itemName }}
+                        </h5>
+                      </b>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="next" *ngIf="order.nextArrow" (click)="scrollLeft(order)">
+                <i class="fal fa-fw fa-lg fa-angle-right"></i>
+              </div>
+            </div>
+          </div>
+          <div class="order-actions">
+            <a [routerLink]="['/account/order-history', order.id]"><i
+                class="fal fa-angle-right"></i>{{ 'pages.account.order-history.view' | translate }}</a>
+            <a routerLink="/account/copy-cart" [queryParams]="{ orderId: order.id}"><i
+                class="fal fa-angle-right"></i>{{ 'pages.account.order-history.re-purchase' | translate }}</a>
+          </div>
+        </div>
+        <div class="order-cost price" [textContent]="order.cost |
+          currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE'"></div>
+</div>
+<b class="emphasize" *ngIf="orders.length === 0">
+  <i translate="pages.account.order-history.no-orders"></i>
+</b>
+</div>
+</div>
+</div> -->

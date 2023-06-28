@@ -25,6 +25,27 @@ export const routes: Routes = [{
     layout
   }
 }, {
+  path: 'cart/history',
+  loadChildren: () => import('./pages/cart/cart-history/cart-history-page.module').then(m => m.CartHistoryPageModule),
+  canActivate: [authGuard],
+  data: {
+    layout
+  }
+}, {
+  path: 'cart/history/:id',
+  loadChildren: () => import('./pages/cart/cart-history/cart-detail/cart-detail-page.module').then(m => m.CartDetailPageModule),
+  canActivate: [authGuard],
+  data: {
+    layout
+  }
+}, {
+  path: 'cart/copy',
+  loadChildren: () => import('./pages/cart/cart-copy/cart-copy-page.module').then(m => m.CartCopyPageModule),
+  canActivate: [authGuard],
+  data: {
+    layout
+  }
+}, {
   path: 'products',
   loadChildren: () => import('./pages/products/products-page.module').then(m => m.ProductsPageModule),
   data: {

@@ -80,3 +80,55 @@ div.preview img {
   min-height: 48px !important;
   max-width: unset !important
 }
+
+
+div.swipeable-content-container {
+  overflow: hidden;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+
+  div.swipe-container {
+    transform: translate3d(0px, 0px, 0px);
+    display: flex;
+  }
+
+  div.prev {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: white;
+    border-radius: 9999px;
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+    vertical-align: middle;
+    text-align: center;
+    border: var(--list-divider-border)
+  }
+
+  div.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    left: auto;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: white;
+    border-radius: 9999px;
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+    vertical-align: middle;
+    text-align: center;
+    border: var(--list-divider-border)
+  }
+}

@@ -32,6 +32,7 @@ export class ProductPageComponent implements OnDestroy {
   breadcrumbs: IBreadcrumb[] = [{ name: 'Producten' }]
 
   availableLimit: Date = new Date(2050, 11, 31)
+  error: boolean = false
   loading: boolean = true
 
   constructor(
@@ -67,6 +68,15 @@ export class ProductPageComponent implements OnDestroy {
   }
 
   async load(id: number) {
+    if (id <= 0) {
+      this.loading = false
+      this.error = true
+      this.ref.markForCheck()
+      return
+    }
+    this.loading = true
+    this.ref.markForCheck()
+
     try {
       const response = await this.products.get({
         id,
@@ -88,7 +98,9 @@ export class ProductPageComponent implements OnDestroy {
       // ]
 
       this.loadResources()
+      this.error = false
     } catch (err) {
+      this.error = true
       console.log('Error loading product data', err)
     } finally {
       this.loading = false

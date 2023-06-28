@@ -1,39 +1,44 @@
-<div class="p-4 mx-auto text-center align-center" *ngIf="loading">
-  <bra-loader></bra-loader>
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8" *ngIf="product">
-  <div class="flex flex-row md:col-span-2">
-    <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
+<div class="flex flex-col w-full max-w-screen-xl mx-auto gap-8 p-6 md:p-8">
+  <div class="p-4 mx-auto text-center align-center" *ngIf="loading">
+    <bra-loader></bra-loader>
   </div>
-  <div id="images space-y-8" *ngIf="images.length > 0">
-    <div class="rounded-xl ring  ring-gray-50 dark:ring-gray-700">
-      <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier
-        [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
-        rounded-xl">
+
+  <div class="px-4 text-md text-gray-800 font-bold" *ngIf="!loading && error">
+    Het product kon niet worden geladen
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8" *ngIf="!loading && product">
+    <div class="flex flex-row md:col-span-2">
+      <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
     </div>
-    <div class="grid grid-cols-4 gap-8 mt-8 mx-[7px]" *ngIf="images.length > 1">
-      <div class="rounded-xl ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index"
-        (click)="activateImage(i)" [ngClass]="{ 
+    <div id="images space-y-8" *ngIf="images.length > 0">
+      <div class="rounded-xl ring  ring-gray-50 dark:ring-gray-700">
+        <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier
+          [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
+        rounded-xl">
+      </div>
+      <div class="grid grid-cols-4 gap-8 mt-8 mx-[7px]" *ngIf="images.length > 1">
+        <div class="rounded-xl ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index"
+          (click)="activateImage(i)" [ngClass]="{ 
           'ring-primary ring-offset-gray-2000': activeImage === image.guid,
           'ring-gray-50 dark:ring-gray-700': activeImage !== image.guid
         }">
-        <img [src]="'https://pcm.groupclaes.be/v3/product-images/' + image.guid" alt="" class="block rounded-xl">
+          <img [src]="'https://pcm.groupclaes.be/v3/product-images/' + image.guid" alt="" class="block rounded-xl">
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="flex flex-col" id="details">
-    <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2">
-      {{ product.name }}
-    </h1>
+    <div class="flex flex-col" id="details">
+      <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2">
+        {{ product.name }}
+      </h1>
 
-    <div class="mx-1">
-      <bra-product-prices *ngIf="product.prices && auth.canViewPrices" [prices]="product.prices"
-        [unit]="product.unit.toLocaleLowerCase()"></bra-product-prices>
+      <div class="mx-1">
+        <bra-product-prices *ngIf="product.prices && auth.canViewPrices" [prices]="product.prices"
+          [unit]="product.unit.toLocaleLowerCase()"></bra-product-prices>
 
 
-      <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
+        <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
         <i class="fas fa-star text-lg text-info"></i>
         <i class="fas fa-star text-lg text-info"></i>
         <i class="fas fa-star text-lg text-info"></i>
@@ -41,190 +46,192 @@
         <i class="far fa-star text-lg text-secondary-300"></i>
       </div> -->
 
-      <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line"
-        [innerHTML]="product.description"></p>
+        <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line"
+          [innerHTML]="product.description"></p>
 
-      <div id="actions" class="flex flex-row mt-8 gap-4" *ngIf="auth.isAuthenticated()">
-        <bra-cart-button class="w-full max-w-sm" [product]="product"></bra-cart-button>
-        <button type="menu" tabindex="-1"
-          class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
-          (click)="toggleFavorite()">
-          <i title="favorite" [ngClass]="{ 'text-info font-bold hover:font-normal': product.favorite && product.favorite[0].is_favorite,
+        <div id="actions" class="flex flex-row mt-8 gap-4" *ngIf="auth.isAuthenticated()">
+          <bra-cart-button class="w-full max-w-sm" [product]="product"></bra-cart-button>
+          <button type="menu" tabindex="-1"
+            class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
+            (click)="toggleFavorite()">
+            <i title="favorite" [ngClass]="{ 'text-info font-bold hover:font-normal': product.favorite && product.favorite[0].is_favorite,
             'text-secondary-500 hover:font-bold':
             !product.favorite || !product.favorite[0].is_favorite }" class="text-3xl far fa-heart cursor-pointer"></i>
-        </button>
-      </div>
+          </button>
+        </div>
 
-      <div class="mt-12">
-        <bra-accordion class="border-t" header="Kenmerken" *ngIf="product.features">
-          <ul body class="list-disc list-inside mt-4 ml-2 space-y-2">
-            <li *ngFor="let feature of product.features">
-              {{ feature }}
-            </li>
-          </ul>
-        </bra-accordion>
+        <div class="mt-12">
+          <bra-accordion class="border-t" header="Kenmerken" *ngIf="product.features">
+            <ul body class="list-disc list-inside mt-4 ml-2 space-y-2">
+              <li *ngFor="let feature of product.features">
+                {{ feature }}
+              </li>
+            </ul>
+          </bra-accordion>
 
-        <bra-accordion class="border-t" header="Aankoopgegevens"
-          *ngIf="product.favorite && product.favorite[0].last_bought_date">
-          <div body class="flex flex-col mt-4 ml-2 space-y-2">
-            <div class="flex flex-row space-x-1">
-              <div class="w-36 font-bold">
-                {{ 'pages.product.lastBought' | translate }}
+          <bra-accordion class="border-t" header="Aankoopgegevens"
+            *ngIf="product.favorite && product.favorite[0].last_bought_date">
+            <div body class="flex flex-col mt-4 ml-2 space-y-2">
+              <div class="flex flex-row space-x-1">
+                <div class="w-36 font-bold">
+                  {{ 'pages.product.lastBought' | translate }}
+                </div>
+                <div>
+                  {{ product.favorite[0].last_bought_date | date: 'dd/MM/yyyy' }}:
+                  {{ product.favorite[0].last_bought_quantity }}x
+                  {{ product.unit }}
+                </div>
               </div>
-              <div>
-                {{ product.favorite[0].last_bought_date | date: 'dd/MM/yyyy' }}:
-                {{ product.favorite[0].last_bought_quantity }}x
+              <div class="flex flex-row space-x-1">
+                <div class="w-36 font-bold">
+                  {{ 'pages.product.timesBought' | translate }}
+                </div>
+                <div>
+                  {{ product.favorite[0].frequency_bought }}
+                </div>
+              </div>
+              <div class="flex flex-row space-x-1">
+                <div class="w-36 font-bold">
+                  {{ 'pages.product.quantityBought' | translate }}
+                </div>
+                <div>
+                  {{ product.favorite[0].quantity_bought }}
+                </div>
+              </div>
+            </div>
+          </bra-accordion>
+
+          <bra-accordion class="border-t" header="Details" [expanded]="true">
+            <div body class="flex flex-col mt-4 ml-2 space-y-2">
+              <div class="flex flex-row">
+                <div class="w-40 font-bold">
+                  {{ 'pages.product.itemnum' | translate }}
+                </div>
+                {{ product.itemnum }}
+              </div>
+              <div class="flex flex-row">
+                <div class="w-40 font-bold">
+                  {{ 'pages.product.unit' | translate }}
+                </div>
                 {{ product.unit }}
               </div>
+              <div class="flex flex-row"
+                *ngIf="product.type === 'B' && product.minimum_order_quantity > 1 && product.stack_size === 1">
+                <div class="w-40 font-bold">
+                  {{ 'pages.product.minimum_order_quantity' | translate }}
+                </div>
+                {{ product.minimum_order_quantity }}
+              </div>
+              <div class="flex flex-row" *ngIf="product.type === 'B' && product.stack_size > 1">
+                <div class="w-40 font-bold">
+                  {{ 'pages.product.stack_size' | translate }}
+                </div>
+                {{ product.stack_size }}
+                <ng-template [ngIf]="product.minimum_order_quantity > 1">(min: {{product.minimum_order_quantity}})
+                </ng-template>
+              </div>
+              <div class="flex flex-row" *ngIf="product.supplier_id && product.itemnum !== product.supplier_id">
+                <div class="w-40 font-bold">
+                  {{ 'pages.product.supplier_id' | translate }}
+                </div>
+                {{ product.supplier_id }}
+              </div>
+              <div class="flex flex-row" *ngFor="let attribute of product.attributes">
+                <div class="w-40 font-bold">
+                  {{ attribute.group }}
+                </div>
+                {{ attribute.value }}
+              </div>
             </div>
-            <div class="flex flex-row space-x-1">
-              <div class="w-36 font-bold">
-                {{ 'pages.product.timesBought' | translate }}
-              </div>
-              <div>
-                {{ product.favorite[0].frequency_bought }}
-              </div>
-            </div>
-            <div class="flex flex-row space-x-1">
-              <div class="w-36 font-bold">
-                {{ 'pages.product.quantityBought' | translate }}
-              </div>
-              <div>
-                {{ product.favorite[0].quantity_bought }}
-              </div>
-            </div>
-          </div>
-        </bra-accordion>
+          </bra-accordion>
 
-        <bra-accordion class="border-t" header="Details" [expanded]="true">
-          <div body class="flex flex-col mt-4 ml-2 space-y-2">
-            <div class="flex flex-row">
-              <div class="w-40 font-bold">
-                {{ 'pages.product.itemnum' | translate }}
+          <bra-accordion class="border-t" header="Allergenen" *ngIf="isFood">
+            <div body class="mt-4 ml-2 space-y-2">
+              <div *ngIf="product.allergens && product.allergens[0].value !== null">
+                <div *ngFor="let allergen of product.allergens">
+                  <b>{{ 'pages.product.allergen.' + allergen.code | lowercase | translate }}:</b>
+                  <span>
+                    {{ 'pages.product.allergen.' + allergen.value | lowercase | translate }}</span>
+                </div>
               </div>
-              {{ product.itemnum }}
-            </div>
-            <div class="flex flex-row">
-              <div class="w-40 font-bold">
-                {{ 'pages.product.unit' | translate }}
+              <div *ngIf="product.allergens && product.allergens[0].value === null">
+                <span class="intend" translate="pages.product.allergen.nonePresent"></span>
               </div>
-              {{ product.unit }}
-            </div>
-            <div class="flex flex-row"
-              *ngIf="product.type === 'B' && product.minimum_order_quantity > 1 && product.stack_size === 1">
-              <div class="w-40 font-bold">
-                {{ 'pages.product.minimum_order_quantity' | translate }}
+              <div *ngIf="!product.allergens">
+                <span class="intend" translate="pages.product.allergen.noneAvailable"></span>
               </div>
-              {{ product.minimum_order_quantity }}
             </div>
-            <div class="flex flex-row" *ngIf="product.type === 'B' && product.stack_size > 1">
-              <div class="w-40 font-bold">
-                {{ 'pages.product.stack_size' | translate }}
-              </div>
-              {{ product.stack_size }}
-              <ng-template [ngIf]="product.minimum_order_quantity > 1">(min: {{product.minimum_order_quantity}})
-              </ng-template>
-            </div>
-            <div class="flex flex-row" *ngIf="product.supplier_id && product.itemnum !== product.supplier_id">
-              <div class="w-40 font-bold">
-                {{ 'pages.product.supplier_id' | translate }}
-              </div>
-              {{ product.supplier_id }}
-            </div>
-            <div class="flex flex-row" *ngFor="let attribute of product.attributes">
-              <div class="w-40 font-bold">
-                {{ attribute.group }}
-              </div>
-              {{ attribute.value }}
-            </div>
-          </div>
-        </bra-accordion>
+          </bra-accordion>
 
-        <bra-accordion class="border-t" header="Allergenen" *ngIf="isFood">
-          <div body class="mt-4 ml-2 space-y-2">
-            <div *ngIf="product.allergens && product.allergens[0].value !== null">
-              <div *ngFor="let allergen of product.allergens">
-                <b>{{ 'pages.product.allergen.' + allergen.code | lowercase | translate }}:</b>
-                <span>
-                  {{ 'pages.product.allergen.' + allergen.value | lowercase | translate }}</span>
+          <bra-accordion class="border-t" header="Bijlagen" *ngIf="attachments.length > 0">
+            <div body class="mt-4 ml-2 space-y-2">
+              <div *ngFor="let attachment of attachments">
+                <a [href]="attachment.downloadUrl" class="flex flex-row space-x-1 items-center overflow-ellipsis"
+                  target="_blank" rel="noreferrer noopener">
+                  <img class="mr-1"
+                    src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg" height="24"
+                    width="24">
+                  <span class="italic text-secondary-500">{{ attachment.documentType | translate }}</span>
+                  <i class="fal text-sm fa-minus"></i>
+                  <span class="truncate">{{ attachment.name }}</span>
+                  <span class="w-20 text-secondary-300">
+                    ({{ attachment.size | bytes : 2 }})
+                  </span>
+                </a>
               </div>
             </div>
-            <div *ngIf="product.allergens && product.allergens[0].value === null">
-              <span class="intend" translate="pages.product.allergen.nonePresent"></span>
-            </div>
-            <div *ngIf="!product.allergens">
-              <span class="intend" translate="pages.product.allergen.noneAvailable"></span>
-            </div>
-          </div>
-        </bra-accordion>
-
-        <bra-accordion class="border-t" header="Bijlagen" *ngIf="attachments.length > 0">
-          <div body class="mt-4 ml-2 space-y-2">
-            <div *ngFor="let attachment of attachments">
-              <a [href]="attachment.downloadUrl" class="flex flex-row space-x-1 items-center overflow-ellipsis"
-                target="_blank" rel="noreferrer noopener">
-                <img class="mr-1" src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg"
-                  height="24" width="24">
-                <span class="italic text-secondary-500">{{ attachment.documentType | translate }}</span>
-                <i class="fal text-sm fa-minus"></i>
-                <span class="truncate">{{ attachment.name }}</span>
-                <span class="w-20 text-secondary-300">
-                  ({{ attachment.size | bytes : 2 }})
-                </span>
-              </a>
-            </div>
-          </div>
-        </bra-accordion>
+          </bra-accordion>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="flex flex-col col-span-2" *ngIf="product.relatedProducts">
-    <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
-      {{ 'pages.product.related_products' | translate }}
-    </div>
+    <div class="flex flex-col col-span-2" *ngIf="product.relatedProducts">
+      <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
+        {{ 'pages.product.related_products' | translate }}
+      </div>
 
-    <div class="max-w-full overflow-x-scroll pb-2">
-      <div class="table-cell relative" *ngFor="let item of product.relatedProducts">
-        <a [routerLink]="['/product', item.id, itemName(item)] | localize"
-          class="flex flex-col w-40 m-1 p-2 rounded group">
-          <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
-            class="block w-40 h-40 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
-          <div class="italic font-medium mt-4 h-16 line-clamp-3">
-            <span class="font-md lowercase">{{ item.name }}</span>
-          </div>
-          <div class="flex flex-row justify-between mt-2">
-            <div class="font-normal text-secondary-500">
-              {{ item.packingUnit }}
+      <div class="max-w-full overflow-x-scroll pb-2">
+        <div class="table-cell relative" *ngFor="let item of product.relatedProducts">
+          <a [routerLink]="['/product', item.id, itemName(item)] | localize"
+            class="flex flex-col w-40 m-1 p-2 rounded group">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
+              class="block w-40 h-40 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+            <div class="italic font-medium mt-4 h-16 line-clamp-3">
+              <span class="font-md lowercase">{{ item.name }}</span>
             </div>
-            <span class="font-semibold">{{ 9.99 | currency:'EUR':'symbol-narrow':'0.2-2':culture }}</span>
-          </div>
-        </a>
+            <div class="flex flex-row justify-between mt-2">
+              <div class="font-normal text-secondary-500">
+                {{ item.packingUnit }}
+              </div>
+              <span class="font-semibold">{{ 9.99 | currency:'EUR':'symbol-narrow':'0.2-2':culture }}</span>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="flex flex-col col-span-2" *ngIf="product.similarProducts">
-    <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
-      {{ 'pages.product.similar_products' | translate }}
-    </div>
+    <div class="flex flex-col col-span-2" *ngIf="product.similarProducts">
+      <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
+        {{ 'pages.product.similar_products' | translate }}
+      </div>
 
-    <div class="max-w-full overflow-x-scroll pb-2">
-      <div class="table-cell relative" *ngFor="let item of product.similarProducts">
-        <a [routerLink]="['/product', item.id, itemName(item)] | localize"
-          class="flex flex-col w-40 m-1 p-2 rounded group">
-          <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
-            class="block w-40 h-36 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
-          <div class="italic font-medium mt-4 h-16 line-clamp-3">
-            <span class="font-md lowercase">{{ item.name }}</span>
-          </div>
-          <div class="flex flex-row justify-between mt-2">
-            <div class="font-normal text-secondary-500">
-              {{ item.packingUnit }}
+      <div class="max-w-full overflow-x-scroll pb-2">
+        <div class="table-cell relative" *ngFor="let item of product.similarProducts">
+          <a [routerLink]="['/product', item.id, itemName(item)] | localize"
+            class="flex flex-col w-40 m-1 p-2 rounded group">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
+              class="block w-40 h-36 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+            <div class="italic font-medium mt-4 h-16 line-clamp-3">
+              <span class="font-md lowercase">{{ item.name }}</span>
             </div>
-            <span class="font-semibold">{{ 9.99 | currency:'EUR':'symbol-narrow':'0.2-2':culture }}</span>
-          </div>
-        </a>
+            <div class="flex flex-row justify-between mt-2">
+              <div class="font-normal text-secondary-500">
+                {{ item.packingUnit }}
+              </div>
+              <span class="font-semibold">{{ 9.99 | currency:'EUR':'symbol-narrow':'0.2-2':culture }}</span>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
