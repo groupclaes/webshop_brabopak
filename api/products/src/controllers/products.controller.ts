@@ -1,7 +1,7 @@
 // External Dependancies
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { JWTPayload } from 'jose'
-// import oe from '@groupclaes/oe-connector'
+import oe from '@groupclaes/oe-connector'
 
 import Product from '../repositories/product.repository'
 
@@ -25,28 +25,27 @@ export const get = async (request: FastifyRequest<{
     const culture = request.query.culture ?? 'nl'
     let resp
 
-    // const itemnum = await repo.findItemNumById(id)
+    const itemnum = await repo.findItemNumById(id)
 
-    // oe.configure({
-    //   c: false
-    // })
+    oe.configure({
+      c: false,
+      tw: 1000,
+      simpleParameters: true
+    })
 
-    // let oeResponse = await oe.run('getProdInfo', [
-    //   'GRO',
-    //   0,
-    //   0,
-    //   [{
-    //     itemNum: itemnum
-    //   }],
-    //   undefined
-    // ], {
-    //   tw: 1000,
-    //   simpleParameters: true
-    // })
+    let oeResponse = await oe.run('getProdInfo', [
+      'BRA',
+      0,
+      0,
+      [{
+        itemNum: itemnum
+      }],
+      undefined
+    ])
 
-    // if (oeResponse && oeResponse.status === 200) {
-    //   resp = oeResponse.result
-    // }
+    if (oeResponse && oeResponse.status === 200) {
+      resp = oeResponse.result
+    }
 
     const response = {
       product: await repo.get(id, usercode, culture, token.sub)
@@ -122,6 +121,66 @@ export const getBase = async (request: FastifyRequest<{
     }
 
     return response
+  } catch (err) {
+    return reply
+      .status(500)
+      .send(err)
+  }
+}
+
+export const putFavorite = async (request: FastifyRequest<{
+  Params: {
+    id: number
+  },
+  Querystring: {
+    usercode: number,
+    mode: number
+  }
+}>, reply: FastifyReply) => {
+  try {
+
+    const repo = new Product()
+    const id = request.params.id
+    const usercode = request.query.usercode
+    const mode = request.query.mode
+
+    const product = await repo.getBase(id, usercode, 'nl')
+    const customer = await repo.getUserSettings(request.query.usercode)
+
+    if (product) {
+      oe.configure({
+        c: false,
+        tw: -1,
+        simpleParameters: true
+      })
+
+      let oeResponse = await oe.run('putFavorite', [
+        'BRA',
+        {
+          favorites: [{
+            usercode,
+            customer_id: customer.id,
+            address_id: customer.address_id,
+            itemnum: product.itemnum,
+            unit_code: product.unit_code,
+            mode
+          }]
+        },
+        undefined
+      ])
+
+      request.log.info({ order_id: request.params.id, customer_id: customer.customer_id, address_id: customer.address_id, customer }, 'Put favorite')
+      console.debug(oeResponse)
+
+      if (oeResponse && oeResponse.status === 200) {
+        await repo.putFavorite(id, customer.id, customer.address_id, mode)
+        return { statusCode: 200, result: oeResponse.result }
+      }
+
+      return reply
+        .code(oeResponse.status)
+        .send(oeResponse)
+    }
   } catch (err) {
     return reply
       .status(500)

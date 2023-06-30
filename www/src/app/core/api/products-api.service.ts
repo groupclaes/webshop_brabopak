@@ -33,6 +33,17 @@ export class ProductsApiService {
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
+
+  putFavorite({ id, usercode, mode }: any): Promise<any> {
+    const params = trimParameters({
+      usercode,
+      mode
+    })
+
+    return firstValueFrom(this.http.put(`${environment.api}products/${id}/favorite`, {}, { params })
+      .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
+      .pipe(delay(environment.performance.delay_medium)))
+  }
 }
 
 export interface IProductBase {

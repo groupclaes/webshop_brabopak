@@ -166,14 +166,16 @@
           <bra-accordion class="border-t" header="Bijlagen" *ngIf="attachments.length > 0">
             <div body class="mt-4 ml-2 space-y-2">
               <div *ngFor="let attachment of attachments">
-                <a [href]="attachment.downloadUrl" class="flex flex-row space-x-1 items-center overflow-ellipsis"
+                <a [href]="attachment.downloadUrl"
+                  class="flex flex-row items-center overflow-ellipsis hover:text-primary hover:underline hover:dark:text-accent cursor-pointer"
                   target="_blank" rel="noreferrer noopener">
                   <img class="mr-1"
                     src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg" height="24"
                     width="24">
+                  &nbsp;
                   <span class="italic text-secondary-500">{{ attachment.documentType | translate }}</span>
-                  <i class="fal text-sm fa-minus"></i>
-                  <span class="truncate">{{ attachment.name }}</span>
+                  &nbsp;-&nbsp;<span class="truncate">{{ attachment.name }}</span>
+                  &nbsp;
                   <span class="w-20 text-secondary-300">
                     ({{ attachment.size | bytes : 2 }})
                   </span>

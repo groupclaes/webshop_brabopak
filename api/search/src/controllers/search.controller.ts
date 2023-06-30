@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { JWTPayload } from 'jose'
+import oe from '@groupclaes/oe-connector'
 
 import Search from '../repositories/search.repository'
 
@@ -67,33 +68,38 @@ export const post = async (request: FastifyRequest<{
     console.log(response)
 
     if (userCode !== 0) {
-      //   // get oeInfo
-      //   let resp
-      //   let oeResponse = await oe.run('eCommerce/v1/getProdInfo', [
-      //     'GRO',
-      //     0,
-      //     0,
-      //     response.results.map(e => ({
-      //       id: e.id,
-      //       itemNum: e.itemNum
-      //     })),
-      //     undefined
-      //   ], {
-      //     tw: 1000
-      //   })
+      // get oeInfo
+      let resp
 
-      // if (oeResponse && oeResponse.status === 200) {
-      //   resp = oeResponse.result.id !== undefined ? [oeResponse.result] : oeResponse.result
+      oe.configure({
+        c: false,
+        tw: 1000,
+        simpleParameters: true
+      })
 
-      //   products.forEach(product => {
-      //     // find oe resp
-      //     const oeRes = resp.find(e => e.itemNum === product.itemNum)
+      let oeResponse = await oe.run('getProdInfo', [
+        'BRA',
+        0,
+        0,
+        response.results.map(e => ({
+          id: e.id,
+          itemNum: e.itemNum
+        })),
+        undefined
+      ])
 
-      //     product.stock = oeRes !== undefined ? oeRes.stock : -1
-      //     product.availableOn = oeRes !== undefined ? oeRes.availableOn : null
-      //     product.inBackorder = oeRes !== undefined ? oeRes.inBackorder : false
-      //   })
-      // }
+      if (oeResponse && oeResponse.status === 200) {
+        resp = oeResponse.result.id !== undefined ? [oeResponse.result] : oeResponse.result
+
+        products.forEach(product => {
+          // find oe resp
+          const oeRes = resp.find(e => e.itemNum === product.itemNum)
+
+          product.stock = oeRes !== undefined ? oeRes.stock : -1
+          product.availableOn = oeRes !== undefined ? oeRes.availableOn : null
+          product.inBackorder = oeRes !== undefined ? oeRes.inBackorder : false
+        })
+      }
     } else {
       // remove prices from response user is not authenticated
       products.forEach(product => {

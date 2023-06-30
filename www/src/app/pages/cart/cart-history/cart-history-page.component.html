@@ -15,12 +15,10 @@
     <div class="px-4 sm:px-6 lg:px-8" id="order">
       <div class="flex px-1 pt-1 pb-3">
         <div class="flex-auto">
-          <i class="emphasize">{{ 'orderedOn' | translate }}:</i>
+          <i class="emphasize">Besteld op:</i>
           {{ order.date | date:'d MMMM yyyy':undefined:culture+'-BE' }}
         </div>
-        <div>
-          {{ order.reference }}
-        </div>
+        {{ order.reference }}
       </div>
 
       <div class="p-5 border h-[178px] overflow-hidden rounded bg-gray-50">

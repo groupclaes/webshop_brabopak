@@ -2,8 +2,9 @@
   <div class="text-xl md:text-3xl font-semibold tracking-tight leading-8">
     {{ header | translate }}
   </div>
-  <div class="text-primary dark:text-accent" [routerLink]="url" [queryParams]="params">
-    Bekijk alles <i class="fal far fa-arrow-right"></i>
+  <div class="hover:text-primary hover:underline hover:dark:text-accent cursor-pointer" [routerLink]="url"
+    [queryParams]="params" *ngIf="url">
+    Bekijk alles <i class="fal fa-fw fa-arrow-right"></i>
   </div>
 </div>
 <div class="flex flex-row w-full font-serif">

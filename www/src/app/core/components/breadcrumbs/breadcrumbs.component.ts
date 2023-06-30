@@ -7,7 +7,7 @@ import { SearchService } from 'src/app/@shared/layout/buttons/search/search.serv
   templateUrl: './breadcrumbs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'block text-gray-500 border-b border-gray-200 bg-white px-4 py-3 sm:px-6 overflow-hidden'
+    class: 'block text-gray-500 border-b bg-white px-4 py-3 sm:px-6 overflow-hidden dark:bg-transparent dark:text-secondary-500'
   }
 })
 export class BreadcrumbsComponent {

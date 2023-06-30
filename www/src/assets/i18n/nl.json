@@ -183,10 +183,28 @@
       "history": {
         "title": "Orderhistoriek",
         "header": {
-          "title": ""
+          "title": "Orderhistoriek"
         },
         "view": "Bestelling bekijken",
         "re-purchase": "Opnieuw bestellen"
+      },
+      "history-detail": {
+        "title": "Details bestelling {{id}}",
+        "backButton": " Terug naar orderhistoriek"
+      },
+      "copy": {
+        "header": {
+          "title": "Order opnieuw bestellen",
+          "button": " Terug naar orderhistoriek"
+        },
+        "current": "Huidige winkelwagen: ",
+        "new": "Nieuwe winkelwagen: ",
+        "form": {
+          "title": "Huidige winkelwagen: (kies een actie)",
+          "replace": " Vervangen",
+          "merge": " Samenvoegen",
+          "apply": "Toepassen"
+        }
       }
     },
     "profile": {

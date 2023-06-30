@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router'
 import { CartDetailPageComponent } from './cart-detail-page.component'
 import { TranslateModule } from '@ngx-translate/core'
 import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
+import { CoreComponentsModule } from 'src/app/core/components/components.module'
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
   ],
   imports: [
     CommonModule,
+    CoreComponentsModule,
     LocalizeRouterModule,
     TranslateModule.forChild(),
     RouterModule.forChild([{

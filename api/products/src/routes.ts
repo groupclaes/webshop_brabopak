@@ -10,4 +10,9 @@ export default [{
   url: '/:id/base',
   handler: productsController.getBase,
   requiredPermissions: []
+}, {
+  method: 'PUT',
+  url: '/:id/favorite',
+  handler: productsController.putFavorite,
+  requiredPermissions: []
 }]

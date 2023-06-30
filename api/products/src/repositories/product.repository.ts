@@ -55,4 +55,38 @@ export default class Product {
       throw err
     }
   }
+
+  async putFavorite(id: number, customer_id: number, address_id: number, type: number) {
+    try {
+      const r = new sql.Request(await db.get(DB_NAME))
+      r.input('id', sql.Int, id)
+      r.input('customer_id', sql.Int, customer_id)
+      r.input('address_id', sql.Int, address_id)
+      r.input('type', sql.Bit, type)
+      const result = await r.execute(this.schema + '[usp_putFavorite]')
+
+      if (result.rowsAffected.length > 0) {
+        return result.rowsAffected[0] > 0
+      }
+      return undefined
+    } catch (err) {
+      throw err
+    }
+  }
+
+  async getUserSettings(usercode: number): Promise<undefined | any> {
+    try {
+      const r = new sql.Request(await db.get(DB_NAME))
+      r.input('usercode', sql.Int, usercode)
+
+      const result = await r.execute(`sso.usp_getUserSettings`)
+
+      if (result.recordset.length > 0) {
+        return result.recordset[0]
+      }
+      return undefined
+    } catch (err) {
+      throw err
+    }
+  }
 }

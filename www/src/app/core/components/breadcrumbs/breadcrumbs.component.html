@@ -1,7 +1,8 @@
-<div class="flex flex-row items-center space-x-1 h-10 text-sm text-gray-700">
+<div class="flex flex-row items-center space-x-1 h-10 text-sm">
   <ng-container *ngFor="let breadcrumb of breadcrumbs; let isLast = last">
-    <a class="cursor-pointer truncate whitespace-nowrap hover:text-primary" [routerLink]="breadcrumb.link"
-      [queryParams]="{ id: breadcrumb.id , query: params.query }" [title]="breadcrumb.name">{{ breadcrumb.name }}</a>
+    <a class="cursor-pointer truncate whitespace-nowrap hover:text-primary hover:underline hover:dark:text-accent"
+      [routerLink]="breadcrumb.link" [queryParams]="{ id: breadcrumb.id , query: params.query }"
+      [title]="breadcrumb.name">{{ breadcrumb.name }}</a>
     <i class="fal fa-lg fa-fw fa-angle-right" *ngIf="!isLast"></i>
   </ng-container>
 </div>

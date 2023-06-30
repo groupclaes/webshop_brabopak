@@ -39,10 +39,9 @@ export class ProductPageComponent implements OnDestroy {
     private ref: ChangeDetectorRef,
     private route: ActivatedRoute,
     private translate: TranslateService,
-    private products: ProductsApiService,
+    private api: ProductsApiService,
     private pcm: PcmApiService,
     public auth: AuthService,
-    private currencyPipe: CurrencyPipe,
     private router: Router,
     private localize: LocalizeRouterService
   ) {
@@ -78,7 +77,7 @@ export class ProductPageComponent implements OnDestroy {
     this.ref.markForCheck()
 
     try {
-      const response = await this.products.get({
+      const response = await this.api.get({
         id,
         token: this.auth.id_token?.token,
         usercode: this.auth.currentCustomer?.usercode,
@@ -128,9 +127,15 @@ export class ProductPageComponent implements OnDestroy {
   }
 
   async toggleFavorite() {
-    if (this._product?.favorite) {
+    let mode = 0
+    if (this._product?.favorite && this._product.favorite[0].is_favorite) {
       this._product.favorite[0].is_favorite = !this._product.favorite[0].is_favorite
+    } else {
+      // product is not a favorite
+      mode = 1
     }
+
+    await this.api.putFavorite({ id: this._product?.id, usercode: this.auth.currentCustomer?.usercode, mode })
     this.ref.markForCheck()
   }
 
