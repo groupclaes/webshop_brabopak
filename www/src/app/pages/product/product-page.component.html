@@ -50,7 +50,7 @@
           [innerHTML]="product.description"></p>
 
         <div id="actions" class="flex flex-row mt-8 gap-4" *ngIf="auth.isAuthenticated()">
-          <bra-cart-button class="w-full max-w-sm" [product]="product"></bra-cart-button>
+          <bra-cart-button class="block" [product]="product"></bra-cart-button>
           <button type="menu" tabindex="-1"
             class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
             (click)="toggleFavorite()">

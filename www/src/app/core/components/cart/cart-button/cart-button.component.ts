@@ -8,7 +8,7 @@ import { IProductBase } from 'src/app/core/api/products-api.service'
   selector: 'bra-cart-button',
   templateUrl: './cart-button.component.html',
   host: {
-    class: 'flex'
+    class: 'block w-full max-w-[15rem]'
   }
 })
 export class CartButtonComponent {
@@ -42,7 +42,7 @@ export class CartButtonComponent {
     if (!this.product || !this.currentQuantity) return
 
     if (this.currentQuantity === 1) {
-      const modal = new Modal('alert', 'Product verwijderen', 'Weet je zeker dat je het product uit je winkelwagentje wilt verwijderen?', [{ title: 'Annuleer', type: 'abort', color: 'danger' }, { title: 'Ja', action: () => true }])
+      const modal = new Modal('alert', 'Product verwijderen', 'Weet je zeker dat je het product uit je winkelwagentje wilt verwijderen?', [{ title: 'Verwijder', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }])
       const confirmed = await this.modalCtrl.show(modal)
       if (!confirmed) return
     }

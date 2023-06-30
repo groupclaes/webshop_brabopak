@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { TranslateService } from '@ngx-translate/core'
 import { Subscription } from 'rxjs'
+import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { PcmApiService } from 'src/app/core/api/pcm-api.service'
 import { IProduct, ProductsApiService } from 'src/app/core/api/products-api.service'
@@ -43,7 +44,8 @@ export class ProductPageComponent implements OnDestroy {
     private pcm: PcmApiService,
     public auth: AuthService,
     private router: Router,
-    private localize: LocalizeRouterService
+    private localize: LocalizeRouterService,
+    private modalCtrl: ModalsService
   ) {
     this._subs.push(this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
@@ -127,16 +129,32 @@ export class ProductPageComponent implements OnDestroy {
   }
 
   async toggleFavorite() {
-    let mode = 0
-    if (this._product?.favorite && this._product.favorite[0].is_favorite) {
-      this._product.favorite[0].is_favorite = !this._product.favorite[0].is_favorite
-    } else {
-      // product is not a favorite
-      mode = 1
+    if (!this._product) return
+
+    let mode = 1
+    if (this._product.favorite && this._product.favorite[0].is_favorite) {
+      if (this._product.favorite[0].is_favorite) mode = 0
     }
 
-    await this.api.putFavorite({ id: this._product?.id, usercode: this.auth.currentCustomer?.usercode, mode })
-    this.ref.markForCheck()
+    let update = false
+
+    if (mode === 0) {
+      const modal = new Modal('alert', 'Product verwijderen?', 'Ben je zeker dat je dit product uit je favorieten wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }, ])
+      update = await this.modalCtrl.show(modal)
+    } else {
+      const modal = new Modal('success', 'Product toevoegen?', 'Ben je zeker dat je dit product wilt toevoegen aan je favorieten?', [{ title: 'Toevoegen', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' }, ])
+      update = await this.modalCtrl.show(modal)
+    }
+
+    if (update) {
+      if (this._product.favorite) {
+        this._product.favorite[0].is_favorite = !this._product.favorite[0].is_favorite
+      } else {
+        this._product.favorite = [{ is_favorite: true }]
+      }
+      await this.api.putFavorite({ id: this._product.id, usercode: this.auth.currentCustomer?.usercode, mode })
+      this.ref.markForCheck()
+    }
   }
 
   activateImage(index: number) {

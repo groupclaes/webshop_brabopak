@@ -1,5 +1,5 @@
-<ng-template [ngIf]="auth.isAuthenticated()" Ï>
-  <button class="font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary
+<ng-template [ngIf]="auth.isAuthenticated()">
+  <button class="block font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary
   disabled:bg-gray-400" title="Plaats in winkelwagen" (click)="add()" *ngIf="!added || !ready" [disabled]="!ready">
     {{ 'Plaats in winkelwagen' | translate }}
   </button>
@@ -8,7 +8,7 @@
     <button class="fal fa-minus px-4 h-10 w-12 bg-white text-lg border rounded-l bg-transparent hover:border-primary"
       [attr.aria-label]="amountName + '-remove'" color="primary" (click)="removeOne()"
       [disabled]="!currentQuantity"></button>
-    <input type="text" [attr.aria-label]="amountName" [ngModel]="currentQuantity" (blur)="update($event)" class="font-serif w-full max-w-sm px-4 h-10 bg-white text-lg border border-l-transparent border-r-transparent
+    <input type="text" [attr.aria-label]="amountName" [ngModel]="currentQuantity" (blur)="update($event)" class="font-serif w-full px-4 h-10 bg-white text-lg border border-l-transparent border-r-transparent
     outline-none focus:border-primary hover:border-primary">
     <button class="fal fa-plus px-4 h-10 w-12 bg-white text-lg border rounded-r bg-transparent hover:border-primary"
       [attr.aria-label]="amountName + '-add'" color="primary" (click)="addOne()"></button>

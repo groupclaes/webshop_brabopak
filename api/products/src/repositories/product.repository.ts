@@ -56,13 +56,13 @@ export default class Product {
     }
   }
 
-  async putFavorite(id: number, customer_id: number, address_id: number, type: number) {
+  async putFavorite(id: number, customer_id: number, address_id: number, mode: number) {
     try {
       const r = new sql.Request(await db.get(DB_NAME))
-      r.input('id', sql.Int, id)
+      r.input('product_id', sql.Int, id)
       r.input('customer_id', sql.Int, customer_id)
       r.input('address_id', sql.Int, address_id)
-      r.input('type', sql.Bit, type)
+      r.input('mode', sql.Bit, mode)
       const result = await r.execute(this.schema + '[usp_putFavorite]')
 
       if (result.rowsAffected.length > 0) {

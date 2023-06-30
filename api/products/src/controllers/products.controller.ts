@@ -145,9 +145,10 @@ export const putFavorite = async (request: FastifyRequest<{
     const mode = request.query.mode
 
     const product = await repo.getBase(id, usercode, 'nl')
-    const customer = await repo.getUserSettings(request.query.usercode)
+    const customer = await repo.getUserSettings(+request.query.usercode)
 
-    if (product) {
+    if (product && customer) {
+      console.debug(customer)
       oe.configure({
         c: false,
         tw: -1,
@@ -159,7 +160,7 @@ export const putFavorite = async (request: FastifyRequest<{
         {
           favorites: [{
             usercode,
-            customer_id: customer.id,
+            customer_id: customer.customer_id,
             address_id: customer.address_id,
             itemnum: product.itemnum,
             unit_code: product.unit_code,
@@ -173,7 +174,7 @@ export const putFavorite = async (request: FastifyRequest<{
       console.debug(oeResponse)
 
       if (oeResponse && oeResponse.status === 200) {
-        await repo.putFavorite(id, customer.id, customer.address_id, mode)
+        await repo.putFavorite(id, customer.customer_id, customer.address_id, mode)
         return { statusCode: 200, result: oeResponse.result }
       }
 
