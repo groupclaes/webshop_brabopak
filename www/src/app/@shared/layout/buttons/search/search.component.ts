@@ -44,8 +44,8 @@ export class SearchComponent {
     try {
       const result = await this.searchApi.get(this.query ?? '', this.service.culture, this.service.id)
       if (result) {
-        this.suggested = result.results ?? []
-        this.popular = result.popular ?? []
+        this.suggested = result.data.results ?? []
+        this.popular = result.data.popular ?? []
       }
     } catch (err: any) {
       if (err.status !== 404) {

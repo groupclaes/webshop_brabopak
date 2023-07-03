@@ -22,7 +22,7 @@ export class FlyoutNavigationComponent {
     public auth: AuthService
   ) {
     api.menu().then(r => {
-      this._categories = r
+      this._categories = r.data
       this.ref.markForCheck()
     })
   }

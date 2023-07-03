@@ -86,8 +86,8 @@ export class CartCopyPageComponent {
         try {
           const apiResponse = await this.api.order(id, this.auth.currentCustomer?.usercode || 0)
 
-          if (apiResponse && apiResponse.statusCode === 200) {
-            const order = apiResponse.result.orders[0]
+          if (apiResponse && apiResponse.code === 200) {
+            const order = apiResponse.data.orders[0]
             // remove line wich are no longer available
             order.orderLines = order.orderLines.filter((e: any) => !e.isUnavailable)
             this.order = order

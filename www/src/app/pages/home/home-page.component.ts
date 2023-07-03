@@ -55,7 +55,7 @@ export class HomePageComponent implements OnDestroy {
 
       if (this.auth.id_token) {
         const resp = await this.api.dashboard(this.auth.id_token?.usercode)
-        this.dashboard = resp
+        this.dashboard = resp.data.blocks
       }
     } catch (err) {
       console.error(err)

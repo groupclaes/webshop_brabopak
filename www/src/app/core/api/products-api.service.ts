@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { retryWhen, delay, take, firstValueFrom } from 'rxjs'
 import { environment } from 'src/environments/environment'
-import { trimParameters } from '.'
+import { IBaseApiResponse, trimParameters } from '.'
 
 @Injectable({
   providedIn: 'root'
@@ -12,38 +12,45 @@ export class ProductsApiService {
     private http: HttpClient
   ) { }
 
-  get({ id, usercode, department, culture }: any): Promise<{ product: IProduct }> {
+  get({ id, usercode, department, culture }: any): Promise<IGetProductResponse> {
     const params = trimParameters({
       usercode,
       department,
       culture
     })
 
-    return firstValueFrom(this.http.get<{ product: IProduct }>(`${environment.api}products/${id}`, { params })
+    return firstValueFrom(this.http.get<IGetProductResponse>(`${environment.api}products/${id}`, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
 
-  getBase({ id, usercode }: any): Promise<any> {
+  getBase({ id, usercode }: any): Promise<IGetProductBaseResponse> {
     const params = trimParameters({
       usercode
     })
 
-    return firstValueFrom(this.http.get(`${environment.api}products/${id}/base`, { params })
+    return firstValueFrom(this.http.get<IGetProductBaseResponse>(`${environment.api}products/${id}/base`, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
 
-  putFavorite({ id, usercode, mode }: any): Promise<any> {
+  putFavorite({ id, usercode, mode }: any): Promise<IBaseApiResponse> {
     const params = trimParameters({
       usercode,
       mode
     })
 
-    return firstValueFrom(this.http.put(`${environment.api}products/${id}/favorite`, {}, { params })
+    return firstValueFrom(this.http.put<IBaseApiResponse>(`${environment.api}products/${id}/favorite`, {}, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
+}
+
+export interface IGetProductResponse extends IBaseApiResponse { 
+  data: { product: IProduct }
+}
+export interface IGetProductBaseResponse extends IBaseApiResponse {
+  data: { product: IProductBase }
 }
 
 export interface IProductBase {

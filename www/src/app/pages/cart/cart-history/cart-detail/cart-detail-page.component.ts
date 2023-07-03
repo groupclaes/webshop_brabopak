@@ -54,8 +54,8 @@ export class CartDetailPageComponent implements OnInit {
 
     try {
       const r = await this.api.order(this.order_id, this.auth.currentCustomer.usercode)
-      if (r && r.result.orders.length === 1) {
-        this.order = r.result.orders[0]
+      if (r && r.data.orders.length === 1) {
+        this.order = r.data.orders[0]
         this.order.orderLines.forEach(async (product: any) => {
           try {
             await this.pcm.checkDatasheetHead(product.itemNum, this.culture)

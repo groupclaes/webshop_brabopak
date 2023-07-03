@@ -35,26 +35,28 @@ export const get = async (request: FastifyRequest<{
         .status(204)
         .send()
 
-    for (const lists of dashboard) {
-      for (const list of lists) {
-        for (const product of list.products) {
-          if (!canViewPrices) { }
-          product.prices?.forEach(price => {
-            price.base = 0
-            delete price.amount
-            delete price.discount
-            delete price.quantity
-          })
-        }
-      }
-    }
+    // for (const lists of dashboard) {
+    //   for (const list of lists) {
+    //     for (const product of list.products) {
+    //       if (!canViewPrices) { }
+    //       product.prices?.forEach(price => {
+    //         price.base = 0
+    //         delete price.amount
+    //         delete price.discount
+    //         delete price.quantity
+    //       })
+    //     }
+    //   }
+    // }
 
-    const data = dashboard.map(dashboard => dashboard[0])
+    // const data = dashboard.map(dashboard => dashboard[0])
 
     return {
       status: 'success',
       code: 200,
-      data
+      data: {
+        blocks: dashboard.map(x => x[0])
+      }
     }
   } catch (err) {
     return reply

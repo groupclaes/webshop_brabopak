@@ -51,7 +51,7 @@ export class CartHistoryPageComponent {
     try {
       const r = await this.api.orders(this.auth.currentCustomer.usercode)
       if (r) {
-        this.orders = r.result.orders
+        this.orders = r.data.orders
         this.ref.markForCheck()
         setTimeout(() => {
           this.orders.forEach(order => this.calcWide(order))

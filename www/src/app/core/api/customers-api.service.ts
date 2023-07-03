@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 import { environment } from 'src/environments/environment.prod'
+import { IBaseApiResponse } from '.'
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class CustomersApiService {
     }
   }
 
-  get(id: number, addressId: number) {
-    return firstValueFrom(this.http.get(this.urls.get(), { params: { id, addressId } }))
+  get(id: number, addressId: number): Promise<IBaseApiResponse> {
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.get(), { params: { id, addressId } }))
   }
 }

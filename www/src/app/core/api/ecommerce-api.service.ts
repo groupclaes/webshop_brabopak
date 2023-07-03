@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 import { environment } from 'src/environments/environment'
-import { trimParameters } from '.'
+import { IBaseApiResponse, trimParameters } from '.'
 import { IProductBase } from './products-api.service'
 
 @Injectable({
@@ -24,47 +24,47 @@ export class EcommerceApiService {
     }
   }
 
-  menu(): Promise<any> {
-    return firstValueFrom(this.http.get<any>(this.urls.menu()))
+  menu(): Promise<IBaseApiResponse> {
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.menu()))
   }
 
-  dashboard(usercode: number): Promise<any> {
+  dashboard(usercode: number): Promise<IBaseApiResponse> {
     const params = trimParameters({
       usercode
     })
-    return firstValueFrom(this.http.get<any>(this.urls.dashboard(), { params }))
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.dashboard(), { params }))
   }
 
-  cart(usercode: number): Promise<ICart[]> {
+  cart(usercode: number): Promise<IGetCartsResponse> {
     const params = trimParameters({
       usercode
     })
-    return firstValueFrom(this.http.get<ICart[]>(this.urls.cart(), { params }))
+    return firstValueFrom(this.http.get<IGetCartsResponse>(this.urls.cart(), { params }))
   }
 
-  orders(usercode: number): Promise<IGetCartHistryResponse> {
+  orders(usercode: number): Promise<IGetOrderHistoryResponse> {
     const params = trimParameters({
       usercode
     })
-    return firstValueFrom(this.http.get<IGetCartHistryResponse>(this.urls.orders(), { params }))
+    return firstValueFrom(this.http.get<IGetOrderHistoryResponse>(this.urls.orders(), { params }))
   }
 
-  order(id: number, usercode: number): Promise<IGetCartResponse> {
+  order(id: number, usercode: number): Promise<IGetOrderResponse> {
     const params = trimParameters({
       usercode
     })
-    return firstValueFrom(this.http.get<IGetCartResponse>(this.urls.order(id), { params }))
+    return firstValueFrom(this.http.get<IGetOrderResponse>(this.urls.order(id), { params }))
   }
 
-  putCartProduct(product: any, usercode: number): Promise<ICart[]> {
+  putCartProduct(product: any, usercode: number): Promise<IGetCartsResponse> {
     const params = {
       usercode
     }
-    return firstValueFrom(this.http.put<ICart[]>(this.urls.cartProduct(), product, { params }))
+    return firstValueFrom(this.http.put<IGetCartsResponse>(this.urls.cartProduct(), product, { params }))
   }
 
   postCart(form: any) {
-    return firstValueFrom(this.http.post<any>(this.urls.cart(), form))
+    return firstValueFrom(this.http.post<IBaseApiResponse>(this.urls.cart(), form))
   }
 }
 
@@ -78,9 +78,12 @@ export interface ICartProduct extends IProductBase {
   quantity: number
 }
 
-export interface IGetCartHistryResponse {
-  statusCode: number
-  result: {
+export interface IGetCartsResponse extends IBaseApiResponse {
+  data: ICart[]
+}
+
+export interface IGetOrderHistoryResponse extends IBaseApiResponse {
+  data: {
     orders: {
       id: number
       reference: string
@@ -96,9 +99,8 @@ export interface IGetCartHistryResponse {
   }
 }
 
-export interface IGetCartResponse {
-  statusCode: number
-  result: {
+export interface IGetOrderResponse extends IBaseApiResponse {
+  data: {
     orders: {
       id: number
       reference: string

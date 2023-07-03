@@ -51,8 +51,8 @@ export class CartService {
 
       this._initialized = true
       if (response) {
-        this._products = response[0].products ?? []
-        this._modified = response[0].modified
+        this._products = response.data[0].products ?? []
+        this._modified = response.data[0].modified
       } else {
         this._products = []
         this._modified = undefined
@@ -74,19 +74,19 @@ export class CartService {
     }
 
     const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.currentCustomer.usercode)
-    this._products = response[0].products ?? []
-    this._modified = response[0].modified
+    this._products = response.data[0].products ?? []
+    this._modified = response.data[0].modified
     this.changes.emit()
   }
 
   async send(form: any): Promise<boolean> {
     const response = await this.api.postCart(form)
 
-    if (response.status === 200) {
+    if (response.code === 200) {
       this.init()
     }
 
-    return response.status === 200
+    return response.code === 200
   }
 
   private validateQuantity(product: IProductBase, quantity: number): boolean {

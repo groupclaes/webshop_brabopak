@@ -93,12 +93,12 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
           per_page: this.per_page
         }).subscribe({
           next: (response) => {
-            this._products = response.products
+            this._products = response.data.products
             this.breadcrumbs = [{ name: 'Producten' }]
-            this.breadcrumbs = this.breadcrumbs.concat(response.breadcrumbs.map((e: any) => ({ name: this.capitalize(e.name), id: e.id })))
-            this.count = response.productCount
-            this.calcpages(response.productCount)
-            this.searchService.calculatePages(response.productCount)
+            this.breadcrumbs = this.breadcrumbs.concat(response.data.breadcrumbs.map((e: any) => ({ name: this.capitalize(e.name), id: e.id })))
+            this.count = response.data.productCount
+            this.calcpages(response.data.productCount)
+            this.searchService.calculatePages(response.data.productCount)
             this.error = false
             this.loading = false
             this.ref.markForCheck()

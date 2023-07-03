@@ -86,7 +86,7 @@ export class ProductPageComponent implements OnDestroy {
         culture: this.culture.split('-')[0]
       })
 
-      this._product = response.product
+      this._product = response.data.product
       this.breadcrumbs = [{ name: 'Producten' }]
       this.breadcrumbs = this.breadcrumbs.concat(this._product.breadcrumbs.map((e: any) => ({ name: this.capitalize(e.name), id: e.id })))
       this.breadcrumbs.push({ name: this._product.name, product_id: id })
@@ -139,10 +139,10 @@ export class ProductPageComponent implements OnDestroy {
     let update = false
 
     if (mode === 0) {
-      const modal = new Modal('alert', 'Product verwijderen?', 'Ben je zeker dat je dit product uit je favorieten wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }, ])
+      const modal = new Modal('alert', 'Product verwijderen?', 'Ben je zeker dat je dit product uit je favorieten wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' },])
       update = await this.modalCtrl.show(modal)
     } else {
-      const modal = new Modal('success', 'Product toevoegen?', 'Ben je zeker dat je dit product wilt toevoegen aan je favorieten?', [{ title: 'Toevoegen', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' }, ])
+      const modal = new Modal('success', 'Product toevoegen?', 'Ben je zeker dat je dit product wilt toevoegen aan je favorieten?', [{ title: 'Toevoegen', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' },])
       update = await this.modalCtrl.show(modal)
     }
 
