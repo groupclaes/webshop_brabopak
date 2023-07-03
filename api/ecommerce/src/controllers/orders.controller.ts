@@ -36,21 +36,30 @@ export const get = async (request: FastifyRequest<{
       ])
 
       request.log.info({ order_id: request.params.id, customer_id: customer.customer_id, address_id: customer.address_id, user, customer }, 'Get order')
-      console.debug(oeResponse)
 
       if (oeResponse && oeResponse.status === 200) {
-        return { statusCode: 200, result: oeResponse.result }
+        return {
+          status: 'success',
+          code: oeResponse.status,
+          data: oeResponse.result
+        }
       }
 
-      return reply
-        .code(oeResponse.status)
-        .send(oeResponse)
+      return {
+        status: 'fail',
+        code: oeResponse.status,
+        data: oeResponse.result
+      }
     }
   } catch (err) {
     request.log.fatal(request.body, 'failed to get order!')
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get order'
+      })
   }
 }
 
@@ -87,21 +96,35 @@ export const getHistory = async (request: FastifyRequest<{
       request.log.info({ customer_id: customer.customer_id, address_id: customer.address_id, user, customer }, 'Get orders history')
 
       if (oeResponse && oeResponse.status === 200) {
-        return { statusCode: 200, result: oeResponse.result }
+        return {
+          status: 'success',
+          code: oeResponse.status,
+          data: oeResponse.result
+        }
       }
 
-      return reply
-        .code(oeResponse.status)
-        .send(oeResponse)
+      return {
+        status: 'fail',
+        code: oeResponse.status,
+        data: oeResponse.result
+      }
     }
 
     return reply
       .status(401)
-      .send({ error: 'Unauthorized!' })
+      .send({
+        status: 'fail',
+        code: 401,
+        message: 'Unauthorized'
+      })
   } catch (err) {
     request.log.fatal(request.body, 'failed to get history!')
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get order history'
+      })
   }
 }

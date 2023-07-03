@@ -5,7 +5,6 @@ import { env } from 'process'
 import oe from '@groupclaes/oe-connector'
 
 import User from '../repositories/user.repository'
-import { request } from 'http'
 // SGWQVXPQWZEM
 
 /**
@@ -37,10 +36,9 @@ export const postSignOn = async (request: FastifyRequest<{
       return reply
         .status(403)
         .send({
-          status: 'Forbidden',
-          statusCode: 403,
-          message: 'User already exists',
-          success: false
+          status: 'fail',
+          code: 403,
+          message: 'user already exists'
         })
     }
 
@@ -62,37 +60,48 @@ export const postSignOn = async (request: FastifyRequest<{
           // insert/update user.settings
           await repo.checkSettings(appuser)
           return {
-            success: true
+            status: 'success',
+            code: 200,
+            data: {
+              success: true
+            }
           }
         }
         return reply
           .status(500)
           .send({
-            status: 'Internal Server Error',
-            statusCode: 500,
-            message: 'Error while creating new user entry!'
+            status: 'error',
+            code: 500,
+            message: 'error while creating new user entry'
           })
       }
       return reply
         .status(500)
         .send({
-          status: 'Internal Server Error',
-          statusCode: 500,
-          message: 'Error with usersettings!'
+          status: 'error',
+          code: 500,
+          message: 'error with usersettings!'
         })
     } else {
       return reply
         .status(500)
         .send({
-          status: 'Internal Server Error',
-          statusCode: 500,
-          message: 'Error while retrieving registration info!'
+          status: 'error',
+          code: 500,
+          message: 'error while retrieving registration info!'
         })
     }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to register user',
+        data: {
+          error: err
+        }
+      })
   }
 }
 
@@ -197,7 +206,11 @@ export const getCustomers = async (request: FastifyRequest<any>, reply: FastifyR
     }
     return reply
       .status(401)
-      .send({ error: 'Unauthorized!' })
+      .send({
+        status: 'fail',
+        code: 401,
+        message: 'Unauthorized'
+      })
   } catch (err) {
     return reply
       .status(500)

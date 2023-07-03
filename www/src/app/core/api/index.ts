@@ -1,7 +1,9 @@
 export interface IBaseApiResponse {
-  error: string | null
-  verified: boolean,
-  result: any
+  status: 'error' | 'success' | 'fail'
+  code?: number
+  message?: string
+  data?: any
+  executionTime?: number
 }
 
 export const trimParameters = (params: any): any => {

@@ -52,13 +52,13 @@ export const get = async (request: FastifyRequest<{
     }
 
     if (response.product === null) {
-      reply
+      return reply
         .status(401)
         .send({
-          verified: false,
-          error: 'Wrong credentials'
+          status: 'fail',
+          code: 401,
+          message: 'Unauthorized'
         })
-      return
     }
 
     if (response.product.error) {
@@ -79,12 +79,19 @@ export const get = async (request: FastifyRequest<{
     const stock = resp !== undefined ? resp.stock : -1
 
     request.log.info({ productId: id, usercode, stock, culture }, 'Get product details')
-
-    return response
+    return {
+      status: 'success',
+      code: 200,
+      data: response
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get product information'
+      })
   }
 }
 
@@ -111,20 +118,27 @@ export const getBase = async (request: FastifyRequest<{
     }
 
     if (response.product === null) {
-      reply
+      return reply
         .status(401)
         .send({
-          verified: false,
-          error: 'Wrong credentials'
+          status: 'fail',
+          code: 401,
+          message: 'Unauthorized'
         })
-      return
     }
-
-    return response
+    return {
+      status: 'success',
+      code: 200,
+      data: response
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get base product information'
+      })
   }
 }
 
@@ -175,16 +189,26 @@ export const putFavorite = async (request: FastifyRequest<{
 
       if (oeResponse && oeResponse.status === 200) {
         await repo.putFavorite(id, customer.customer_id, customer.address_id, mode)
-        return { statusCode: 200, result: oeResponse.result }
+        return {
+          status: 'success',
+          code: oeResponse.status,
+          data: oeResponse.result
+        }
       }
 
-      return reply
-        .code(oeResponse.status)
-        .send(oeResponse)
+      return {
+        status: 'fail',
+        code: oeResponse.status,
+        data: oeResponse.result
+      }
     }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to update product favorite status'
+      })
   }
 }

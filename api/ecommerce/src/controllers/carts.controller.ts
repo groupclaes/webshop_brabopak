@@ -18,11 +18,21 @@ export const get = async (request: FastifyRequest<{
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
-    return await repo.get(usercode, token.sub, culture)
+    const data = await repo.get(usercode, token.sub, culture)
+
+    return {
+      status: 'success',
+      code: 200,
+      data
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to fetch carts from database'
+      })
   }
 }
 
@@ -44,14 +54,23 @@ export const put = async (request: FastifyRequest<{
     const culture = request.query.culture ?? 'nl'
 
     if (token.sub) {
-      const resp = await repo.updateProduct(usercode, token.sub, request.body.product_id, request.body.quantity)
+      await repo.updateProduct(usercode, token.sub, request.body.product_id, request.body.quantity)
     }
 
-    return await repo.get(usercode, token.sub, culture)
+    const data = await repo.get(usercode, token.sub, culture)
+    return {
+      status: 'success',
+      code: 200,
+      data
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to update cart'
+      })
   }
 }
 
@@ -59,7 +78,6 @@ export const put = async (request: FastifyRequest<{
 export const post = async (request: FastifyRequest<{
   Body: any
 }>, reply: FastifyReply) => {
-
   try {
     const repo = new Cart()
     const token: JWTPayload = request['token'] || { sub: null }
@@ -126,18 +144,29 @@ export const post = async (request: FastifyRequest<{
 
       if (oeResponse && oeResponse.status === 200 && oeResponse.result) {
         return {
-          success: true
+          status: 'success',
+          data: {
+            success: true
+          }
         }
       }
     }
 
     return reply
       .status(401)
-      .send({ error: 'Unauthorized!' })
+      .send({ 
+        status: 'fail',
+        code: 401,
+        message: 'Unauthorized'
+       })
   } catch (err) {
     request.log.fatal(request.body, 'failed to send order!')
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to update cart'
+      })
   }
 }

@@ -22,7 +22,9 @@ export const get = async (request: FastifyRequest<{
       return reply
         .code(400)
         .send({
-          error: `Invalid 'grant_type' specified!`
+          status: 'error',
+          code: 400,
+          message: `Invalid 'grant_type' specified!`
         })
     }
 
@@ -30,7 +32,9 @@ export const get = async (request: FastifyRequest<{
       return reply
         .code(400)
         .send({
-          error: `No 'code' supplied!`
+          status: 'error',
+          code: 400,
+          message: `No 'code' supplied!`
         })
     }
 
@@ -41,7 +45,9 @@ export const get = async (request: FastifyRequest<{
       return reply
         .code(404)
         .send({
-          error: `Invalid 'code' specified!`
+          status: 'error',
+          code: 404,
+          message: `Invalid 'code' specified!`
         })
     }
 
@@ -49,7 +55,9 @@ export const get = async (request: FastifyRequest<{
       return reply
         .code(403)
         .send({
-          error: `'code' has expired!`
+          status: 'error',
+          code: 403,
+          message: `'code' has expired!`
         })
     }
 
@@ -90,7 +98,9 @@ export const get = async (request: FastifyRequest<{
     return reply
       .code(500)
       .send({
-        error: `Something unexpected happened!`
+        status: 'error',
+        code: 500,
+        message: `Something unexpected happened!`
       })
   }
 }

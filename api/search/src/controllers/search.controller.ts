@@ -11,6 +11,7 @@ export const get = async (request: FastifyRequest<{
     category_id?: number
   }
 }>, reply: FastifyReply) => {
+  const start = performance.now()
   try {
     const repo = new Search()
     const token: JWTPayload = request['token'] || { sub: null }
@@ -18,11 +19,21 @@ export const get = async (request: FastifyRequest<{
     const culture = request.query.culture ?? 'nl'
     const category_id = request.query.category_id
 
-    return await repo.getQueries({ user_id: token.sub, query, culture, category_id })
+    const data = await repo.getQueries({ user_id: token.sub, query, culture, category_id })
+    return {
+      status: 'success',
+      code: 200,
+      data,
+      executionTime: performance.now() - start
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get search queries'
+      })
   }
 }
 
@@ -69,7 +80,7 @@ export const post = async (request: FastifyRequest<{
 
     if (userCode !== 0) {
       // get oeInfo
-      let resp
+      let resp: any
 
       oe.configure({
         c: false,
@@ -106,15 +117,24 @@ export const post = async (request: FastifyRequest<{
         product.prices = null
       })
     }
+
     return {
-      productCount: response.count,
-      products,
-      breadcrumbs: response.breadcrumbs,
+      status: 'success',
+      code: 200,
+      data: {
+        productCount: response.count,
+        products,
+        breadcrumbs: response.breadcrumbs,
+      },
       executionTime: performance.now() - start
     }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to search in products'
+      })
   }
 }

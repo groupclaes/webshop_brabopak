@@ -18,7 +18,11 @@ export const get = async (request: FastifyRequest<{
     if (!token.sub)
       return reply
         .status(401)
-        .send({ error: 'Unauthorized!' })
+        .send({
+          status: 'fail',
+          code: 401,
+          message: 'Unauthorized'
+        })
 
     const user = await repo.getUserInfo(token.sub)
 
@@ -31,9 +35,10 @@ export const get = async (request: FastifyRequest<{
         .status(204)
         .send()
 
-    for (const productLists of dashboard) {
-      for (const product of productLists.products) {
-        if (!canViewPrices) {
+    for (const lists of dashboard) {
+      for (const list of lists) {
+        for (const product of list.products) {
+          if (!canViewPrices) { }
           product.prices?.forEach(price => {
             price.base = 0
             delete price.amount
@@ -44,10 +49,23 @@ export const get = async (request: FastifyRequest<{
       }
     }
 
-    return dashboard.map(list => list[0])
+    const data = dashboard.map(dashboard => dashboard[0])
+
+    return {
+      status: 'success',
+      code: 200,
+      data
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get dashboard',
+        data: {
+          error: err
+        }
+      })
   }
 }

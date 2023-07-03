@@ -13,10 +13,19 @@ export const get = async (request: FastifyRequest<{
     const token: JWTPayload = request['token'] || { sub: null }
     const culture = request.query.culture ?? 'nl'
 
-    return await repo.getTree(token.sub, culture)
+    const data = await repo.getTree(token.sub, culture)
+    return {
+      status: 'success',
+      code: 200,
+      data
+    }
   } catch (err) {
     return reply
       .status(500)
-      .send(err)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to get categories tree from database'
+      })
   }
 }
