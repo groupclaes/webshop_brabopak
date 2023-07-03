@@ -3,7 +3,7 @@
     [ngStyle]="{background: '#' + item.color}">
     <img class="w-full" [src]="item.url.replace('small', 'thumb_l')" [ngStyle]="{background: '#' + item.color}" alt="">
 
-    <div class="absolute top-2 left-2 space-x-4">
+    <div class="absolute flex top-2 left-2 space-x-2">
       <div class="w-5 h-5 leading-5 text-center rounded-md bg-success text-white" *ngIf="item.type === 'B'">B</div>
       <div class="w-auto h-5 px-2  leading-5 text-center rounded-md bg-danger text-white" *ngIf="isPromo">Promotie</div>
     </div>

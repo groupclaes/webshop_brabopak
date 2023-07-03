@@ -26,7 +26,8 @@ COPY . /app
 
 # generate build
 # RUN ng build --configuration production --output-path=dist
-RUN ng build --output-path=dist
+RUN ng build --configuration staging --output-path=dist
+# RUN ng build --output-path=dist
 
 ############
 ### prod ###

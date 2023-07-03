@@ -5,12 +5,12 @@
   </button>
 
   <div class="flex flex-row" *ngIf="added && ready">
-    <button class="fal fa-minus px-4 h-10 w-12 bg-white text-lg border rounded-l bg-transparent hover:border-primary"
-      [attr.aria-label]="amountName + '-remove'" color="primary" (click)="removeOne()"
+    <button class="fal fa-minus px-4 h-10 w-12 bg-white text-lg border rounded-l dark:bg-gray-700 hover:border-primary
+      dark:hover:border-accent" [attr.aria-label]="amountName + '-remove'" color="primary" (click)="removeOne()"
       [disabled]="!currentQuantity"></button>
     <input type="text" [attr.aria-label]="amountName" [ngModel]="currentQuantity" (blur)="update($event)" class="font-serif w-full px-4 h-10 bg-white text-lg border border-l-transparent border-r-transparent
-    outline-none focus:border-primary hover:border-primary">
-    <button class="fal fa-plus px-4 h-10 w-12 bg-white text-lg border rounded-r bg-transparent hover:border-primary"
-      [attr.aria-label]="amountName + '-add'" color="primary" (click)="addOne()"></button>
+    outline-none dark:bg-gray-700 focus:border-primary hover:border-primary dark:hover:border-accent">
+    <button class="fal fa-plus px-4 h-10 w-12 bg-white text-lg border rounded-r dark:bg-gray-700 hover:border-primary
+      dark:hover:border-accent" [attr.aria-label]="amountName + '-add'" color="primary" (click)="addOne()"></button>
   </div>
 </ng-template>

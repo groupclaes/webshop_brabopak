@@ -10,7 +10,9 @@ import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 })
 export class CartHistoryPageComponent {
   orders: any[] = []
-  isLoading: boolean = false
+
+  loading: boolean = true
+  error: boolean = false
 
   constructor(
     private auth: AuthService,
@@ -27,7 +29,7 @@ export class CartHistoryPageComponent {
   }
 
   ngOnInit(): void {
-    this.isLoading = true
+    this.loading = true
     this.ref.markForCheck()
 
     const element: HTMLElement | null = window.document.getElementById('myHtml')
@@ -48,21 +50,23 @@ export class CartHistoryPageComponent {
   async loadOrderHistory() {
     if (!this.auth.currentCustomer) return
 
+    this.loading = true
+    this.error = false
+    this.ref.markForCheck()
     try {
-      const r = await this.api.orders(this.auth.currentCustomer.usercode)
-      if (r) {
-        this.orders = r.data.orders
+      const response = await this.api.orders(this.auth.currentCustomer.usercode)
+      if (response.data && response.data.orders) {
+        this.orders = response.data.orders
         this.ref.markForCheck()
         setTimeout(() => {
           this.orders.forEach(order => this.calcWide(order))
         }, 50)
-      } else if (!r) {
-        // no orders
       }
     } catch (err) {
       console.error(err)
+      this.error = true
     } finally {
-      this.isLoading = false
+      this.loading = false
       this.ref.markForCheck()
     }
   }

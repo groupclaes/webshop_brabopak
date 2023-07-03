@@ -235,6 +235,8 @@
     "minimum_order_quantity": "Minimale bestelhoeveelheid is {{correctqty}}. Wil je deze hoeveelheid bestellen?",
     "stack_size": "Je moet per {{stack_size}} bestellen. Wil je {{correctqty}} bestellen?",
     "products_load": "Er is een fout opgetreden bij het ophalen van producten",
-    "products_search": "Er zijn geen producten terugevonden"
+    "products_search": "Er zijn geen producten terugevonden",
+    "order_history_empty": "Je hebt nog geen uitgeleverde orders in je historiek",
+    "order_history_load": "Er is een fout opgetreden bij het ophalen van je orderhistoriek"
   }
 }

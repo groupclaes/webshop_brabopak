@@ -78,7 +78,7 @@
             <div *ngSwitchCase="2">
               <form class="space-y-6" [formGroup]="deliveryConfirmFormGroup">
                 <div>
-                  <label class="block text-sm font-medium leading-6 text-gray-900" for="customerReference" translate>
+                  <label class="block text-sm font-medium leading-6" for="customerReference" translate>
                     pages.cart.steps.2.form.customerReference
                   </label>
                   <div class="relative mt-2 rounded-md shadow-sm">
@@ -95,7 +95,7 @@
                   <mat-datepicker touchUi="true" #dp></mat-datepicker>
                 </mat-form-field> -->
                 <div>
-                  <legend class="block text-sm font-medium leading-6 text-gray-900" translate>
+                  <legend class="block text-sm font-medium leading-6" translate>
                     pages.cart.steps.2.form.deliverOption
                   </legend>
                   <div class="relative mt-2 rounded-md">
@@ -112,7 +112,7 @@
                   </div>
                 </div>
                 <div>
-                  <legend class="block text-sm font-medium leading-6 text-gray-900" translate>
+                  <legend class="block text-sm font-medium leading-6" translate>
                     pages.cart.steps.2.form.deliveryMethod
                   </legend>
                   <div class="relative mt-2 rounded-md">
@@ -140,7 +140,7 @@
                   </div>
                 </div>
                 <div>
-                  <legend class="block text-sm font-medium leading-6 text-gray-900" translate>
+                  <legend class="block text-sm font-medium leading-6" translate>
                     pages.cart.steps.2.form.deliveryOption
                   </legend>
                   <div class="relative mt-2 rounded-md">
@@ -157,7 +157,7 @@
                   </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium leading-6 text-gray-900" for="comments" translate>
+                  <label class="block text-sm font-medium leading-6" for="comments" translate>
                     pages.cart.steps.2.form.comments
                   </label>
                   <div class="relative mt-2 rounded-md shadow-sm">
@@ -177,31 +177,31 @@
                       pages.cart.steps.3.form.invoiceInfo
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.name
                       </div>
                       {{ final.invoiceInfo.name }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.address
                       </div>
                       {{ final.invoiceInfo.address }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.city
                       </div>
                       {{ final.invoiceInfo.zipCode }} {{ final.invoiceInfo.city }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.country
                       </div>
                       {{ final.invoiceInfo.country }}
                     </div>
                     <div class="flex items-baseline" *ngIf="final.invoiceInfo.reference">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
 
                       </div>
                       {{ final.invoiceInfo.reference }}
@@ -212,37 +212,37 @@
                       pages.cart.steps.3.form.deliveryInfo
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.deliveryMethod.title
                       </div>
                       {{ 'pages.cart.steps.3.form.deliveryMethod.' + final.deliveryInfo.method | translate }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.deliveryOption.title
                       </div>
                       {{ 'pages.cart.steps.3.form.deliveryOption.' + final.deliveryInfo.option | translate }}
                     </div>
                     <div class="flex items-baseline" *ngIf="final.deliveryInfo.name">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.name
                       </div>
                       {{ final.deliveryInfo.name }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.address
                       </div>
                       {{ final.deliveryInfo.address }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.city
                       </div>
                       {{ final.deliveryInfo.zipCode }} {{ final.deliveryInfo.city }}
                     </div>
                     <div class="flex items-baseline">
-                      <div class="block text-sm font-medium leading-6 mr-1 text-gray-900" translate>
+                      <div class="block text-sm font-medium leading-6 mr-1" translate>
                         pages.cart.steps.3.form.country
                       </div>
                       {{ final.deliveryInfo.country }}

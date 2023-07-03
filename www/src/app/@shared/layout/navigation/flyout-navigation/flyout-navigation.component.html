@@ -8,19 +8,19 @@
       !active
     }" aria-expanded="false" (click)="activate()">Categoriën</button>
     <ng-template [ngIf]="!auth.isAuthenticated()">
-      <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+      <span class="h-6 w-0 border-l" aria-hidden="true"></span>
       <button [routerLink]="['/products'] | localize" [routerLinkActiveOptions]="{exact: true}" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
       transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300"
         [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent',
       'dark:text-accent']">Producten</button>
     </ng-template>
     <ng-template [ngIf]="auth.isAuthenticated()">
-      <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+      <span class="h-6 w-0 border-l" aria-hidden="true"></span>
       <button [routerLink]="['/products'] | localize" [queryParams]="{ only_promo: true }" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
       transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300"
         [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent',
       'dark:text-accent']">Promoties</button>
-      <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+      <span class="h-6 w-0 border-l" aria-hidden="true"></span>
       <button [routerLink]="['/products'] | localize" [queryParams]="{ only_new: true }" class="relative border-b-2 border-transparent z-10 -mb-px flex items-center pt-px text-sm font-medium
       transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300"
         [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent', 'dark:text-accent']">Nieuwe
@@ -37,7 +37,7 @@
       <div class="flex flex-row">
         <div class="w-1/4 content-start grid grid-cols-1 py-16 gap-y-4">
           <div class=" text-sm" *ngFor="let category of categories">
-            <p class="text-md font-bold text-gray-900">
+            <p class="text-md font-bold text-gray-900 dark:text-gray-100">
               <a [routerLink]="['/products', itemName(category)] | localize" class="hover:underline"
                 [queryParams]="{id: category.id}" (mouseover)="activateCategory(category)" (click)="close()"
                 [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</a>
@@ -47,15 +47,15 @@
         <div class="w-3/4 grid grid-cols-1 gap-y-10 gap-x-8 py-16">
           <div class="row-start-1 grid grid-cols-4 xl:grid-cols-5 gap-y-6 gap-x-4 text-sm">
             <div *ngFor="let sub of activeCategory?.children">
-              <p class="text-md font-bold text-gray-900">
+              <p class="text-md font-bold text-gray-800 dark:text-gray-200">
                 <a [routerLink]="['/products', itemName(activeCategory), itemName(sub)] | localize"
                   class="hover:underline" [queryParams]="{id: sub.id}" (click)="close()">{{ capitalize(sub.name) }}</a>
               </p>
               <ul role="list" class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
                 <li class="flex" *ngFor="let subCategory of sub.children">
                   <a [routerLink]="['/products', itemName(activeCategory), itemName(sub), itemName(subCategory)] | localize"
-                    class="hover:text-gray-800 hover:underline" [queryParams]="{id: subCategory.id}"
-                    (click)="close()">{{ capitalize(subCategory.name) }}</a>
+                    class="hover:text-gray-800 dark:hover:text-gray-100 hover:underline" [queryParams]="{id:
+                    subCategory.id}" (click)="close()">{{ capitalize(subCategory.name) }}</a>
                 </li>
               </ul>
             </div>

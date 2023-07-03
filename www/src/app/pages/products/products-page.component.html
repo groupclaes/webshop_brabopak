@@ -11,10 +11,12 @@
       <bra-product-item [item]="item" class="flex flex-col w-full mx-auto max-w-[15rem] cursor-pointer"
         [routerLink]="['/product', item.id, itemName(item)] | localize" *ngFor="let item of items"></bra-product-item>
     </div>
-    <div class="px-4 text-md text-gray-800 font-bold" *ngIf="items.length === 0 && !error" translate>
+    <div class="px-4 sm:px-6 lg:px-8 text-md text-gray-800 font-bold dark:text-gray-200"
+      *ngIf="items.length === 0 && !error" translate>
       errors.products_search
     </div>
-    <div class="px-4 text-md text-gray-800 font-bold" *ngIf="items.length === 0 && error" translate>
+    <div class="px-4 sm:px-6 lg:px-8 text-md text-gray-800 font-bold dark:text-gray-200"
+      *ngIf="items.length === 0 && error" translate>
       errors.products_load
     </div>
   </div>
