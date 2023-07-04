@@ -6,6 +6,10 @@ export interface IBaseApiResponse {
   executionTime?: number
 }
 
+// status is always advised
+// if status is success or fail, data is required
+// if status is error message is required
+
 export const trimParameters = (params: any): any => {
   for (const prop in params) {
     // ignore parameters that are set to null or are undefined

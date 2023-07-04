@@ -18,19 +18,19 @@ export class ModalsContainerComponent {
   buttonClass(buttonType: "warning" | "success" | "info" | "danger" | undefined): string {
     switch (buttonType) {
       case 'warning':
-        return 'bg-yellow-600 text-gray-900 ring-yellow-700 hover:bg-yellow-500'
+        return 'bg-yellow-600 border-yellow-700 hover:bg-yellow-500'
 
       case 'success':
-        return 'bg-green-600 text-white ring-green-700 hover:bg-green-500'
+        return 'bg-green-600 text-white border-green-700 hover:bg-green-500'
 
       case 'info':
-        return 'bg-blue-600 text-white ring-blue-700 hover:bg-blue-500'
+        return 'bg-blue-600 text-white border-blue-700 hover:bg-blue-500'
 
       case 'danger':
-        return 'bg-red-600 text-white ring-red-700 hover:bg-red-500'
+        return 'bg-red-600 text-white border-red-700 hover:bg-red-500'
 
       default:
-        return 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50'
+        return 'bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-900'
     }
   }
 

@@ -76,7 +76,10 @@ export const post = async (request: FastifyRequest<{
     // Get a list of itemNums
     const response = await repo.search(userCode, culture, query, oFavorites, oPromo, oNew, page, perPage, category, token.sub)
     const products = response.results
-    console.log(response)
+
+
+    const user = await repo.getUserInfo(token.sub)
+    const canViewPrices = user.uer_type === 2 || user.uer_type === 3
 
     if (userCode !== 0) {
       // get oeInfo
@@ -111,11 +114,18 @@ export const post = async (request: FastifyRequest<{
           product.inBackorder = oeRes !== undefined ? oeRes.inBackorder : false
         })
       }
-    } else {
-      // remove prices from response user is not authenticated
-      products.forEach(product => {
-        product.prices = null
-      })
+    }
+
+    if (!canViewPrices) {
+      for (const product of products) {
+        if (!product.prices) continue
+        for (const price of product.prices) {
+          price.base = 0
+          delete price.amount
+          delete price.discount
+          delete price.quantity
+        }
+      }
     }
 
     return {
@@ -134,7 +144,10 @@ export const post = async (request: FastifyRequest<{
       .send({
         status: 'error',
         code: 500,
-        message: 'failed to search in products'
+        message: 'failed to search in products',
+        data: {
+          err
+        }
       })
   }
 }

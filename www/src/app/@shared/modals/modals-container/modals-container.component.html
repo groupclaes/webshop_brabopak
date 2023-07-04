@@ -26,41 +26,49 @@
           From: "opacity-100 translate-y-0 sm:scale-100"
           To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       -->
-          <div
-            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
-            onclick="$event.stopPropagation()">
+          <div class="relative transform overflow-hidden rounded-lg backdrop-blur text-left shadow-xl transition-all
+            sm:my-8 sm:w-full sm:max-w-lg" onclick="$event.stopPropagation()">
             <ng-template [ngSwitchDefault]>
-              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div class="bg-[#ffffffcc] dark:bg-[#1118278f] px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                   <ng-container [ngSwitch]="modal.template">
-                    <div *ngSwitchCase="'alert'" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0
-              sm:h-10 sm:w-10">
-                      <i class="fal fa-fw fa-exclamation-triangle text-red-600"></i>
+                    <div *ngSwitchCase="'alert'"
+                      class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 dark:bg-red-300">
+                      <i class="fal fa-fw fa-exclamation-triangle text-red-600 dark:text-red-900"></i>
                     </div>
-                    <div *ngSwitchCase="'success'"
-                      class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <i class="fal fa-fw fa-check text-green-600"></i>
+                    <div *ngSwitchCase="'success'" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100
+                      sm:mx-0 sm:h-10 sm:w-10 dark:bg-green-300">
+                      <i class="fal fa-fw fa-check text-green-600 dark:text-green-900"></i>
+                    </div>
+                    <div *ngSwitchCase="'error'" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100
+                      sm:mx-0 sm:h-10 sm:w-10 dark:bg-red-300">
+                      <i class="fal fa-fw fa-times text-red-600 dark:text-red-900"></i>
+                    </div>
+                    <div *ngSwitchCase="'warning'" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100
+                      sm:mx-0 sm:h-10 sm:w-10 dark:bg-yellow-300">
+                      <i class="fal fa-fw fa-exclamation-triangle text-yellow-600 dark:text-yellow-900"></i>
                     </div>
                   </ng-container>
                   <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{{ modal.title }}</h3>
+                    <h3 class="text-base font-semibold leading-6" id="modal-title">{{ modal.title }}</h3>
                     <div class="mt-2">
-                      <p class="text-sm text-gray-500">{{ modal.message }}</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">{{ modal.message }}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </ng-template>
-            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 space-y-3 sm:space-y-0">
+            <div class="bg-[#f9fafbcc] px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 space-y-3 sm:space-y-0
+              dark:bg-[#374151cc]">
               <!-- <button type="button"
             class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button> -->
               <button type="button" (click)="modal.close.emit()" *ngIf="modal.buttons.length === 0"
-                class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm border ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto dark:text-white dark:bg-gray-900 dark:hover:bg-gray-700"
                 translate>Sluiten</button>
               <ng-template [ngIf]="modal.buttons.length > 0">
                 <button type="button" *ngFor="let button of modal.buttons" (click)="modal.click(button)"
                   [ngClass]="buttonClass(button.color)" class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold
-                    shadow-sm ring-1 ring-inset sm:mt-0 sm:w-auto sm:ml-3" translate>{{ button.title }}</button>
+                    shadow-sm border sm:mt-0 sm:w-auto sm:ml-3" translate>{{ button.title }}</button>
               </ng-template>
             </div>
           </div>

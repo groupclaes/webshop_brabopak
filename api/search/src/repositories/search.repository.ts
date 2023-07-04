@@ -52,4 +52,16 @@ export default class Search {
       throw err
     }
   }
+
+  async getUserInfo(user_id: string): Promise<undefined | any> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('user_id', sql.Int, user_id)
+
+    const result = await r.execute(`sso.usp_getUserInfo`)
+
+    if (result.recordset.length > 0) {
+      return result.recordset[0][0]
+    }
+    return undefined
+  }
 }

@@ -25,7 +25,6 @@ export const get = async (request: FastifyRequest<{
         })
 
     const user = await repo.getUserInfo(token.sub)
-
     const canViewPrices = user.uer_type === 2 || user.uer_type === 3
 
     const dashboard: any[] | undefined = await repo.get(request.query.usercode, token.sub, culture)
@@ -35,19 +34,20 @@ export const get = async (request: FastifyRequest<{
         .status(204)
         .send()
 
-    // for (const lists of dashboard) {
-    //   for (const list of lists) {
-    //     for (const product of list.products) {
-    //       if (!canViewPrices) { }
-    //       product.prices?.forEach(price => {
-    //         price.base = 0
-    //         delete price.amount
-    //         delete price.discount
-    //         delete price.quantity
-    //       })
-    //     }
-    //   }
-    // }
+    const blocks = dashboard.map(x => x[0])
+    if (!canViewPrices) {
+      for (const list of blocks) {
+        if (!list.products) continue
+        for (const product of list.products) {
+          product.prices?.forEach(price => {
+            price.base = 0
+            delete price.amount
+            delete price.discount
+            delete price.quantity
+          })
+        }
+      }
+    }
 
     // const data = dashboard.map(dashboard => dashboard[0])
 
@@ -55,7 +55,7 @@ export const get = async (request: FastifyRequest<{
       status: 'success',
       code: 200,
       data: {
-        blocks: dashboard.map(x => x[0])
+        blocks
       }
     }
   } catch (err) {
