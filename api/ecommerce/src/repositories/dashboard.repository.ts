@@ -29,6 +29,8 @@ export default class Cart {
    * @returns 
    */
   async getUserInfo(user_id: string): Promise<undefined | any> {
+    if (!user_id) return undefined
+    
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
 

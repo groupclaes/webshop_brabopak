@@ -25,7 +25,9 @@ export const get = async (request: FastifyRequest<{
         })
 
     const user = await repo.getUserInfo(token.sub)
-    const canViewPrices = user.uer_type === 2 || user.uer_type === 3
+    let canViewPrices = false
+    if (user)
+      canViewPrices = user.user_type === 2 || user.user_type === 3
 
     const dashboard: any[] | undefined = await repo.get(request.query.usercode, token.sub, culture)
 

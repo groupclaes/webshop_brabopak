@@ -77,9 +77,10 @@ export const post = async (request: FastifyRequest<{
     const response = await repo.search(userCode, culture, query, oFavorites, oPromo, oNew, page, perPage, category, token.sub)
     const products = response.results
 
-
     const user = await repo.getUserInfo(token.sub)
-    const canViewPrices = user.uer_type === 2 || user.uer_type === 3
+    let canViewPrices = false
+    if (user)
+      canViewPrices = user.user_type === 2 || user.user_type === 3
 
     if (userCode !== 0) {
       // get oeInfo
