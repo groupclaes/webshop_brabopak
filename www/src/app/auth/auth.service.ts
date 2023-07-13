@@ -152,6 +152,13 @@ export class AuthService {
     return false
   }
 
+  public isAgent(): boolean {
+    if (this.id_token) {
+      return this.id_token.user_type === 2
+    }
+    return false
+  }
+
   private saveTokens(tokens: IGetTokenResponse): void {
     const refresh_token = tokens.refresh_token
     delete tokens.refresh_token
