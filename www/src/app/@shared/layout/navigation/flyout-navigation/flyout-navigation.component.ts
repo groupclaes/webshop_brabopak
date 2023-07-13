@@ -25,6 +25,9 @@ export class FlyoutNavigationComponent {
       this._categories = r.data
       this.ref.markForCheck()
     })
+    auth.change.subscribe({
+      next: () => this.ref.markForCheck()
+    })
   }
 
   activate() {
