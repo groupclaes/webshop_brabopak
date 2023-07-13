@@ -34,9 +34,9 @@ export class SearchComponent {
       this.updateSuggestions()
       this.ref.markForCheck()
 
-      setTimeout(() => {
-        document.getElementById('search_field')?.focus()
-      }, 80)
+      // setTimeout(() => {
+      //   document.getElementById('search_field')?.focus()
+      // }, 80)
     })
   }
 
@@ -95,6 +95,7 @@ export class SearchComponent {
 
   search() {
     this.hideFilters()
+    this.close()
     if (this.lastEvent != this.query)
       this.service.query = this.query
     this.lastEvent = this.query
