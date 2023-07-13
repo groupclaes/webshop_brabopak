@@ -86,4 +86,8 @@ body {
   pointer-events: none;
 }
 
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
+
 @import './theme/theme'
