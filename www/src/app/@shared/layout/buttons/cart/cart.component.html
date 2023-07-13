@@ -45,8 +45,10 @@
       </span>
     </div>
     <div class="flex" id="menu-basket-tax-cost" *ngIf="calcTotalPrice.totalTax > 0">
-      <small translate>pages.cart.taxCosts</small>
-      <span class="price">
+      <small translate>
+        pages.cart.taxCosts
+      </small>
+      <span class="flex-auto text-right font-bold inline-block">
         {{ calcTotalPrice.totalTax | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
       </span>
     </div>
