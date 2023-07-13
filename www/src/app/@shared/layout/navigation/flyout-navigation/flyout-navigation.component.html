@@ -29,6 +29,9 @@
   </div>
 </div>
 
+<div class="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 backdrop-blur transition-opacity" *ngIf="active"
+  (click)="activate()"></div>
+
 <div class="absolute inset-x-0 top-full text-sm text-gray-500 z-49" *ngIf="active">
   <div class="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true"></div>
 
@@ -38,9 +41,9 @@
         <div class="w-1/4 content-start grid grid-cols-1 py-16 gap-y-4">
           <div class=" text-sm" *ngFor="let category of categories">
             <p class="text-md font-bold text-gray-900 dark:text-gray-100">
-              <a [routerLink]="['/products', itemName(category)] | localize" class="hover:underline"
-                [queryParams]="{id: category.id}" (mouseover)="activateCategory(category)" (click)="close()"
-                [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</a>
+              <span class="hover:underline" (mouseover)="activateCategory(category)"
+                (click)="activateCategory(category)"
+                [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</span>
             </p>
           </div>
         </div>
@@ -60,6 +63,10 @@
               </ul>
             </div>
           </div>
+          <a *ngIf="activeCategory" [routerLink]="['/products', itemName(activeCategory)] | localize"
+            [queryParams]="{id: activeCategory.id}">
+            Bekijk alles
+          </a>
         </div>
       </div>
     </div>
