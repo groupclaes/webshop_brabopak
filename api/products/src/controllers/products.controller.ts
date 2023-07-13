@@ -72,8 +72,8 @@ export const get = async (request: FastifyRequest<{
 
     if (resp && response.product) {
       response.product.stock = resp !== undefined ? resp.stock : -1
-      response.product.availableOn = resp !== undefined ? resp.availableOn : null
-      response.product.inBackorder = resp !== undefined ? resp.inBackorder : false
+      response.product.available_on = resp !== undefined ? resp.availableOn : null
+      response.product.in_backorder = resp !== undefined ? resp.inBackorder : false
     }
 
     const stock = resp !== undefined ? resp.stock : -1

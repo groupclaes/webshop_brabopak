@@ -46,7 +46,7 @@ export class ProductsApiService {
   }
 }
 
-export interface IGetProductResponse extends IBaseApiResponse { 
+export interface IGetProductResponse extends IBaseApiResponse {
   data: { product: IProduct }
 }
 export interface IGetProductBaseResponse extends IBaseApiResponse {
@@ -72,6 +72,9 @@ export interface IProduct extends IProductBase {
   description: string
   favorite?: any[]
   supplier_id: string
+  delivery_time: number
+  available_on?: Date
+  in_backorder?: boolean
   attributes?: any[]
   breadcrumbs: any[]
   features?: any[]

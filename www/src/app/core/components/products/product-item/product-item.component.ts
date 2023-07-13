@@ -68,12 +68,12 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   }
 
   get availableDescription(): string | null {
-    // if (this.item.availableOn) {
-    //   if (this.item.availableOn?.toISOString() === this.availableLimit.toISOString()) {
-    //     return this.translate.instant('availableOnUnknown')
-    //   }
-    //   return `${this.translate.instant('availableOn')} ${this.datePipe.transform(this.item.availableOn, 'dd/MM/yyyy')}`
-    // }
+    if (this.item?.available_on) {
+      if (this.item.available_on?.toISOString() === this.availableLimit.toISOString()) {
+        return this.translate.instant('availableOnUnknown')
+      }
+      return `${this.translate.instant('availableOn')} ${this.datePipe.transform(this.item.available_on, 'dd/MM/yyyy')}`
+    }
     return ''
   }
 
