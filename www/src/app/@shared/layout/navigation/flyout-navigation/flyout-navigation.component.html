@@ -63,8 +63,9 @@
               </ul>
             </div>
           </div>
-          <a *ngIf="activeCategory" [routerLink]="['/products', itemName(activeCategory)] | localize"
-            [queryParams]="{id: activeCategory.id}">
+          <a class="hover:text-primary hover:underline dark:hover:text-accent" *ngIf="activeCategory"
+            [routerLink]="['/products', itemName(activeCategory)] | localize" [queryParams]="{id: activeCategory.id}"
+            (click)="close()">
             Bekijk alles
           </a>
         </div>
