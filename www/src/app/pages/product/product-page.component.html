@@ -37,6 +37,12 @@
         <bra-product-prices *ngIf="product.prices && auth.canViewPrices" [prices]="product.prices"
           [unit]="product.unit.toLocaleLowerCase()"></bra-product-prices>
 
+        <ng-container *ngIf="auth.canViewPrices">
+          <div class="text-gray-500 text-md italic mt-2" *ngFor="let tax of product.taxes">
+            {{ tax.description }}: {{ tax.amount | currency:'EUR':'symbol-narrow':'0.2-2':culture }}
+          </div>
+        </ng-container>
+
 
         <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
         <i class="fas fa-star text-lg text-info"></i>
