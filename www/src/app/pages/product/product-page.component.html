@@ -43,6 +43,28 @@
           </div>
         </ng-container>
 
+        <div class="flex items-center mt-2" *ngIf="product.type === 'B' && product.delivery_time > 1">
+          <i class="fal fa-fw text-lg fa-clock"></i>&nbsp;
+          Levertermijn: {{ product.delivery_time }}
+        </div>
+
+        <div class="product-available-on" *ngIf="product.available_on">
+          <p class="emphasize">
+            <span *ngIf="product.available_on < availableLimit">
+              <span translate="availableOn"></span>
+              <span [innerText]="product.available_on | date:'dd/MM/yyyy'"></span>
+            </span>
+            <span *ngIf="product.available_on >= availableLimit">
+              <span translate="availableOnUnknown"></span>
+            </span>
+          </p>
+        </div>
+
+        <div class="product-backorder emphasize" *ngIf="product.in_backorder"
+          [attr.title]="'inBackorder' | translate">
+          <i color="danger" class="fas fa-fw fa-business-time"></i>
+          {{ 'inBackorder' | translate }}
+        </div>
 
         <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
         <i class="fas fa-star text-lg text-info"></i>

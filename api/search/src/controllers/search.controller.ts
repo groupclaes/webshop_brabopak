@@ -111,8 +111,8 @@ export const post = async (request: FastifyRequest<{
           const oeRes = resp.find(e => e.itemNum === product.itemNum)
 
           product.stock = oeRes !== undefined ? oeRes.stock : -1
-          product.availableOn = oeRes !== undefined ? oeRes.availableOn : null
-          product.inBackorder = oeRes !== undefined ? oeRes.inBackorder : false
+          product.available_on = oeRes !== undefined ? oeRes.availableOn : null
+          product.in_backorder = oeRes !== undefined ? oeRes.inBackorder : false
         })
       }
     }
