@@ -29,7 +29,7 @@
           <div class="relative transform overflow-hidden rounded-lg backdrop-blur text-left shadow-xl transition-all
             sm:my-8 sm:w-full sm:max-w-lg" onclick="$event.stopPropagation()">
             <ng-template [ngSwitchDefault]>
-              <div class="bg-white dark:bg-gray-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div class="bg-white dark:bg-gray-950 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                   <ng-container [ngSwitch]="modal.template">
                     <div *ngSwitchCase="'alert'"
@@ -63,7 +63,7 @@
               <!-- <button type="button"
             class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button> -->
               <button type="button" (click)="modal.close.emit()" *ngIf="modal.buttons.length === 0"
-                class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm border ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto dark:text-white dark:bg-gray-900 dark:hover:bg-gray-700"
+                class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm border ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto dark:text-white dark:bg-gray-950 dark:hover:bg-gray-700"
                 translate>Sluiten</button>
               <ng-template [ngIf]="modal.buttons.length > 0">
                 <button type="button" *ngFor="let button of modal.buttons" (click)="modal.click(button)"

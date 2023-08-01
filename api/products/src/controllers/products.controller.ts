@@ -147,7 +147,7 @@ export const putFavorite = async (request: FastifyRequest<{
     id: number
   },
   Querystring: {
-    usercode: number,
+    usercode: string,
     mode: number
   }
 }>, reply: FastifyReply) => {
@@ -155,11 +155,11 @@ export const putFavorite = async (request: FastifyRequest<{
 
     const repo = new Product()
     const id = request.params.id
-    const usercode = request.query.usercode
+    const usercode = +request.query.usercode
     const mode = request.query.mode
 
     const product = await repo.getBase(id, usercode, 'nl')
-    const customer = await repo.getUserSettings(+request.query.usercode)
+    const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
       console.debug(customer)
@@ -212,3 +212,52 @@ export const putFavorite = async (request: FastifyRequest<{
       })
   }
 }
+
+export const putDescription = async (request: FastifyRequest<{
+  Params: {
+    id: number
+  },
+  Querystring: {
+    usercode: string
+  },
+  Body: {
+    description: string
+  }
+}>, reply: FastifyReply) => {
+  try {
+    const repo = new Product()
+    const id = request.params.id
+    const usercode = +request.query.usercode
+  } catch (err) {
+    return reply
+      .status(500)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to update product description'
+      })
+  }
+}
+
+export const deleteDescription = async (request: FastifyRequest<{
+  Params: {
+    id: number
+  },
+  Querystring: {
+    usercode: string
+  }
+}>, reply: FastifyReply) => {
+  try {
+    const repo = new Product()
+    const id = request.params.id
+    const usercode = +request.query.usercode
+  } catch (err) {
+    return reply
+      .status(500)
+      .send({
+        status: 'error',
+        code: 500,
+        message: 'failed to remove product description'
+      })
+  }
+} 

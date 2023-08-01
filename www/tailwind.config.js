@@ -51,18 +51,6 @@ module.exports = {
         'danger': '#FF6347', // tomato
         'success': '#228B22', // forest green
         'warning': '#FFD700', // gold
-        'lynch': {
-          '50': '#f4f6f7',
-          '100': '#e2e8eb',
-          '200': '#c8d4d9',
-          '300': '#a2b6be',
-          '400': '#74909c',
-          '500': '#607d8b',
-          '600': '#4d616d',
-          '700': '#42515c',
-          '800': '#3c474e',
-          '900': '#353d44'
-        }
       },
       spacing: {
         '18': '4.5rem',

@@ -30,7 +30,7 @@ export class ModalsContainerComponent {
         return 'bg-red-600 text-white border-red-700 hover:bg-red-500'
 
       default:
-        return 'bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-900'
+        return 'bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-950'
     }
   }
 

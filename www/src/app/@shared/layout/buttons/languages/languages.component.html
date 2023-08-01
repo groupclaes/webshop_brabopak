@@ -1,7 +1,7 @@
 <button type="menu" tabindex="0" id="language-selector" [matMenuTriggerFor]="lang"
   class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent">
   <i title="language" class="text-2xl fal fa-globe-europe"></i>
-  <mat-menu #lang class="shadow-2xl bg-white border space-y-4 rounded dark:bg-gray-900">
+  <mat-menu #lang class="shadow-2xl bg-white border space-y-4 rounded dark:bg-gray-950">
     <ng-template matMenuContent>
       <button class="rounded dark:text-white hover:bg-gray-100" mat-menu-item *ngFor="let lang of languages"
         (click)="updateLanguage(lang, $event)">
