@@ -15,4 +15,14 @@ export default [{
   url: '/:id/favorite',
   handler: productsController.putFavorite,
   requiredPermissions: []
+}, {
+  method: 'PUT',
+  url: '/:id/description',
+  handler: productsController.putDescription,
+  requiredPermissions: []
+}, {
+  method: 'DELTE',
+  url: '/:id/description',
+  handler: productsController.deleteDescription,
+  requiredPermissions: []
 }]
