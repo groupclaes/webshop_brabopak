@@ -37,6 +37,7 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
 import { MobileNavigationComponent } from './navigation/mobile-navigation/mobile-navigation.component'
 import { ModalsModule } from 'src/app/core/components/modals/modals.module'
 import { ModalsModule as ModalsContainerModule } from '../modals/modals.module'
+import { BannerComponent } from './banner/banner.component'
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ModalsModule as ModalsContainerModule } from '../modals/modals.module'
     VerticalNavigationAsideItemComponent,
     FlyoutNavigationComponent,
     FlyoutNavigationGroupComponent,
-    MobileNavigationComponent
+    MobileNavigationComponent,
+    BannerComponent
   ],
   imports: [
     CommonModule,
