@@ -228,6 +228,37 @@ export const putDescription = async (request: FastifyRequest<{
     const repo = new Product()
     const id = request.params.id
     const usercode = +request.query.usercode
+
+    const product = await repo.getBase(id, usercode, 'nl')
+    const customer = await repo.getUserSettings(usercode)
+
+    if (product && customer) {
+      const success = await repo.putDescription(id, customer.customer_id, customer.address_id, request.body.description)
+      if (success) {
+        return {
+          status: 'success',
+          code: 200,
+          data: {
+            success
+          }
+        }
+      }
+
+      return {
+        status: 'fail',
+        code: 404,
+        message: 'Failed to update database record',
+        data: {
+          success
+        }
+      }
+    }
+
+    return {
+      status: 'error',
+      code: 404,
+      message: 'product or customer not found'
+    }
   } catch (err) {
     return reply
       .status(500)
@@ -251,6 +282,37 @@ export const deleteDescription = async (request: FastifyRequest<{
     const repo = new Product()
     const id = request.params.id
     const usercode = +request.query.usercode
+
+    const product = await repo.getBase(id, usercode, 'nl')
+    const customer = await repo.getUserSettings(usercode)
+
+    if (product && customer) {
+      const success = await repo.deleteDescription(id, customer.customer_id, customer.address_id)
+      if (success) {
+        return {
+          status: 'success',
+          code: 200,
+          data: {
+            success
+          }
+        }
+      }
+
+      return {
+        status: 'fail',
+        code: 404,
+        message: 'Failed to remove database record',
+        data: {
+          success
+        }
+      }
+    }
+
+    return {
+      status: 'error',
+      code: 404,
+      message: 'product or customer not found'
+    }
   } catch (err) {
     return reply
       .status(500)

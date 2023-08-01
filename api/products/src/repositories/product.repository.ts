@@ -74,6 +74,41 @@ export default class Product {
     }
   }
 
+  async putDescription(id: number, customer_id: number, address_id: number, description: string) {
+    try {
+      const r = new sql.Request(await db.get(DB_NAME))
+      r.input('product_id', sql.Int, id)
+      r.input('customer_id', sql.Int, customer_id)
+      r.input('address_id', sql.Int, address_id)
+      r.input('description', sql.VarChar, description)
+      const result = await r.execute(this.schema + '[usp_putDescription]')
+
+      if (result.rowsAffected.length > 0) {
+        return result.rowsAffected[0] > 0
+      }
+      return undefined
+    } catch (err) {
+      throw err
+    }
+  }
+
+  async deleteDescription(id: number, customer_id: number, address_id: number) {
+    try {
+      const r = new sql.Request(await db.get(DB_NAME))
+      r.input('product_id', sql.Int, id)
+      r.input('customer_id', sql.Int, customer_id)
+      r.input('address_id', sql.Int, address_id)
+      const result = await r.execute(this.schema + '[usp_deleteDescription]')
+
+      if (result.rowsAffected.length > 0) {
+        return result.rowsAffected[0] > 0
+      }
+      return undefined
+    } catch (err) {
+      throw err
+    }
+  }
+
   async getUserSettings(usercode: number): Promise<undefined | any> {
     try {
       const r = new sql.Request(await db.get(DB_NAME))
