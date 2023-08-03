@@ -44,6 +44,26 @@ export class ProductsApiService {
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
+
+  putDescription({ id, usercode, description }: any): Promise<IBaseApiResponse> {
+    const params = trimParameters({
+      usercode
+    })
+
+    return firstValueFrom(this.http.put<IBaseApiResponse>(`${environment.api}products/${id}/description`, description, { params })
+      .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
+      .pipe(delay(environment.performance.delay_medium)))
+  }
+
+  deleteDescription({ id, usercode }: any): Promise<IBaseApiResponse> {
+    const params = trimParameters({
+      usercode
+    })
+
+    return firstValueFrom(this.http.delete<IBaseApiResponse>(`${environment.api}products/${id}/description`, { params })
+      .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
+      .pipe(delay(environment.performance.delay_medium)))
+  }
 }
 
 export interface IGetProductResponse extends IBaseApiResponse {
@@ -70,6 +90,7 @@ export interface IProductBase {
 
 export interface IProduct extends IProductBase {
   description: string
+  custom_description?: string
   favorite?: any[]
   supplier_id: string
   delivery_time: number
