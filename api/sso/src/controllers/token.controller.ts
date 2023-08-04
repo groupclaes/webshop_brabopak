@@ -19,6 +19,7 @@ export const get = async (request: FastifyRequest<{
     const code = request.query.code
 
     if (grant_type !== 'authorization_code') {
+      request.log.warn('Invalid \'grant_type\' specified!')
       return reply
         .code(400)
         .send({
@@ -29,6 +30,7 @@ export const get = async (request: FastifyRequest<{
     }
 
     if (!code) {
+      request.log.warn('Parameter \'code\' not specified!')
       return reply
         .code(400)
         .send({
@@ -42,6 +44,7 @@ export const get = async (request: FastifyRequest<{
     const authorization_code = await repo.sso.getAuthorizationCode(code)
 
     if (!authorization_code) {
+      request.log.warn('Invalid \'code\' specified!')
       return reply
         .code(404)
         .send({
@@ -52,6 +55,7 @@ export const get = async (request: FastifyRequest<{
     }
 
     if (authorization_code.expires < new Date()) {
+      request.log.warn('\'code\' has expired!')
       return reply
         .code(403)
         .send({
