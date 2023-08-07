@@ -55,27 +55,13 @@ export const post = async (request: FastifyRequest<{
       try {
         // Check recaptcha
         const result = await verify(recaptcha.toString(), 'login')
-        if (!result) {
-          await repo.sso.addAuthLog(null, false, 0, 'Bot detected!', ip_address, rating, user_agent)
-          request.log.warn({ username, reason: 'Bot detected!' }, 'Failed to authenticate!')
-          return reply
-            .code(403)
-            .send({
-              error: 'Bot detected!'
-            })
-        }
+        if (!result)
+          return await failedAuth(request, reply, repo, 403, 'Bot detected!', username, null, false, 0, 'Bot detected!', ip_address, rating, user_agent)
       } catch (err) {
         request.log.warn({ username, reason: 'Failed to verify reCAPTCHA!', err }, 'Failed to authenticate!')
       }
-    } else {
-      await repo.sso.addAuthLog(null, false, 0, 'No reCAPTCHA challenge!', ip_address, rating, user_agent)
-      request.log.warn({ username, reason: 'No reCAPTCHA challenge!' }, 'No reCAPTCHA challenge!')
-      return reply
-        .code(403)
-        .send({
-          error: 'No reCAPTCHA challenge!'
-        })
-    }
+    } else
+      return await failedAuth(request, reply, repo, 403, 'No reCAPTCHA challenge!', username, null, false, 0, 'No reCAPTCHA challenge!', ip_address, rating, user_agent)
 
     const impersonation = getImpersonation(username)
     if (impersonation) {
@@ -84,62 +70,29 @@ export const post = async (request: FastifyRequest<{
     }
 
     let failedAttempts = await repo.sso.getFailedAuthAttempts(null, ip_address)
-    if (failedAttempts.ip.length >= 20) {
-      await repo.sso.addAuthLog(null, false, 3, 'too many failed attempts', ip_address, rating, user_agent)
-      return reply
-        .code(429)
-        .send({
-          reason: 'too many failed attempts'
-        })
-    }
+    if (failedAttempts.ip.length >= 20)
+      return await failedAuth(request, reply, repo, 429, 'too many failed attempts', username, null, false, 3, 'too many failed attempts', ip_address, rating, user_agent)
+
 
     const user = await repo.sso.get(username)
-    if (!user) {
-      await repo.sso.addAuthLog(null, false, 0, 'wrong username', ip_address, rating, user_agent)
-      request.log.warn({ username, reason: 'wrong username' }, 'Failed to authenticate!')
-      return reply
-        .code(404)
-        .send({
-          error: 'Username or password is incorrect!'
-        })
-    }
+    if (!user)
+      return await failedAuth(request, reply, repo, 404, 'Username or password is incorrect!', username, null, false, 0, 'wrong username', ip_address, rating, user_agent)
 
     failedAttempts = await repo.sso.getFailedAuthAttempts(user.id.toString(), null)
-    if (failedAttempts.user.length >= 10) {
-      await repo.sso.addAuthLog(user?.id.toString(), false, 2, 'too many failed attempts', ip_address, rating, user_agent)
-      request.log.warn({ username, reason: 'Too many failed attempts!' }, 'Too many failed attempts!')
-      return reply
-        .code(429)
-        .send({
-          reason: 'too many failed attempts'
-        })
-    }
+    if (failedAttempts.user.length >= 10)
+      return await failedAuth(request, reply, repo, 429, 'too many failed attempts', username, user.id.toString(), false, 2, 'too many failed attempts', ip_address, rating, user_agent)
 
-    if (!user.active) {
-      await repo.sso.addAuthLog(user?.id.toString(), false, 0, 'user is inactive', ip_address, rating, user_agent)
-      request.log.warn({ username }, 'Inactive user tried to authenticate!')
-      return reply
-        .code(404)
-        .send({
-          error: 'Username or password is incorrect!'
-        })
-    }
+    if (!user.active)
+      return await failedAuth(request, reply, repo, 404, 'Username or password is incorrect!', username, user.id.toString(), false, 0, 'user is inactive', ip_address, rating, user_agent)
 
     // check password
     if (bcrypt.compareSync(password, user.password)) {
       // user has bcrypt password
-    } else if (password === user.password) {
+    } else if (password === user.password)
       // user is using plaintext password
       await repo.updatePassword(user.id.toString(), bcrypt.hashSync(password, +((env['BCRYPT_COST']) ?? 13)))
-    } else {
-      await repo.sso.addAuthLog(user.id.toString(), false, 0, 'wrong password', ip_address, rating, user_agent)
-      request.log.warn({ username, reason: 'wrong password' }, 'Failed to authenticate!')
-      return reply
-        .code(404)
-        .send({
-          error: 'Username or password is incorrect!'
-        })
-    }
+    else
+      return await failedAuth(request, reply, repo, 404, 'Username or password is incorrect!', username, user.id.toString(), false, 0, 'wrong password', ip_address, rating, user_agent)
 
     let errors: any[] = []
     if ('password_policy' in config) {
@@ -155,9 +108,8 @@ export const post = async (request: FastifyRequest<{
 
     let impersonated_user: undefined | any
 
-    if (_impersonatedUser !== undefined) {
+    if (_impersonatedUser !== undefined)
       impersonated_user = await repo.sso.get(_impersonatedUser)
-    }
 
     let authorization_code
     let mfa_required
@@ -180,13 +132,7 @@ export const post = async (request: FastifyRequest<{
           }
         }
       } else {
-        await repo.sso.addAuthLog(user.id.toString(), false, 0, 'mfa_info missing', ip_address, rating, user_agent)
-        request.log.warn({ username, reason: 'mfa_info not found' }, 'Failed to authenticate!')
-        return reply
-          .code(404)
-          .send({
-            error: 'Username or password is incorrect!'
-          })
+        return await failedAuth(request, reply, repo, 404, 'Username or password is incorrect!', username, user.id.toString(), false, 0, 'mfa_info missing', ip_address, rating, user_agent)
       }
     }
     return {
@@ -206,4 +152,12 @@ function badRequest(request: FastifyRequest, reply: FastifyReply, error: string)
     .send({
       error: error
     })
+}
+
+async function failedAuth(request: FastifyRequest, reply: FastifyReply, repo: User, code: number, error: string, username: string, user_id?: string | null, success: boolean = false, result: number = 0, reason: null | string = null, ip: null | string = '127.0.0.1', rating: number = 50, user_agent: null | string = null) {
+  await repo.sso.addAuthLog(user_id, success, result, reason, ip, rating, user_agent)
+  request.log.warn({ username, reason }, 'Failed to authenticate!')
+  return reply
+    .code(code)
+    .send({ error })
 }
