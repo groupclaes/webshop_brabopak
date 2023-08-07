@@ -1,0 +1,8 @@
+## other configuration excluded from example...
+exclude_patterns:
+- "tests/"
+- "spec/"
+- "**/vendor/"
+- "db.ts"
+- "routes.ts"
+- "index.ts"
