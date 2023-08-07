@@ -50,23 +50,9 @@ export const post = async (request: FastifyRequest<{
     const rating = getTrustRating(user_agent)
     // const redirect_uri = request.query.redirect_uri
 
-    if (response_type !== 'code') {
-      request.log.warn('Invalid \'response_type\' specified!')
-      return reply
-        .code(400)
-        .send({
-          error: `Invalid 'response_type' specified!`
-        })
-    }
-
-    if (!scope) {
-      request.log.warn('Parameter \'scope\' not specified!')
-      return reply
-        .code(400)
-        .send({
-          error: `Parameter 'scope' not specified!`
-        })
-    }
+    if (!response_type) return badRequest(request, reply, 'parameter \'response_type\' not specified!')
+    if (response_type !== 'code') return badRequest(request, reply, 'invalid \'response_type\' specified!')
+    if (!scope) return badRequest(request, reply, 'parameter \'scope\' not specified!')
 
     const recaptcha = request.headers['g-recaptcha-response']
     if (recaptcha) {
@@ -214,4 +200,13 @@ export const post = async (request: FastifyRequest<{
   } catch (err) {
     throw err
   }
+}
+
+function badRequest(request: FastifyRequest, reply: FastifyReply, error: string): FastifyReply {
+  request.log.warn(error)
+  return reply
+    .code(400)
+    .send({
+      error: error
+    })
 }
