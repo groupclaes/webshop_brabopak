@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { success, error } from '@groupclaes/fastify-elastic/responses'
 import { JWTPayload } from 'jose'
 
 import Dashboard from '../repositories/dashboard.repository'
@@ -8,21 +9,16 @@ export const get = async (request: FastifyRequest<{
   Querystring: {
     usercode: number
     culture?: string
-  }
+  },
+  token: JWTPayload
 }>, reply: FastifyReply) => {
   try {
     const repo = new Dashboard()
-    const token: JWTPayload = request['token'] || { sub: null }
+    const token: JWTPayload = request['token']
     const culture = request.query.culture ?? 'nl'
 
     if (!token.sub)
-      return reply
-        .status(401)
-        .send({
-          status: 'fail',
-          code: 401,
-          message: 'Unauthorized'
-        })
+      return
 
     const user = await repo.getUserInfo(token.sub)
     let canViewPrices = false
@@ -32,9 +28,7 @@ export const get = async (request: FastifyRequest<{
     const dashboard: any[] | undefined = await repo.get(request.query.usercode, token.sub, culture)
 
     if (!dashboard)
-      return reply
-        .status(204)
-        .send()
+      return success(reply, undefined, 204)
 
     const blocks = dashboard.map(x => x[0])
     if (!canViewPrices) {
@@ -53,23 +47,9 @@ export const get = async (request: FastifyRequest<{
 
     // const data = dashboard.map(dashboard => dashboard[0])
 
-    return {
-      status: 'success',
-      code: 200,
-      data: {
-        blocks
-      }
-    }
+    return success(reply, { blocks })
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get dashboard',
-        data: {
-          error: err
-        }
-      })
+    request.log.error({ error: err }, 'failed to get dashboard')
+    return error(reply, 'failed to get dashboard')
   }
 }

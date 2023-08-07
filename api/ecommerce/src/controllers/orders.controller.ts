@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { success, fail, error } from '@groupclaes/fastify-elastic/responses'
 import { JWTPayload } from 'jose'
 
 import oe from '@groupclaes/oe-connector'
@@ -12,9 +13,10 @@ export const get = async (request: FastifyRequest<{
     id: number
   }
 }>, reply) => {
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Cart()
-    const token: JWTPayload = request['token'] || { sub: null }
 
     if (token.sub) {
       const user = await repo.getUserInfo(token.sub)
@@ -37,29 +39,14 @@ export const get = async (request: FastifyRequest<{
 
       request.log.info({ order_id: request.params.id, customer_id: customer.customer_id, address_id: customer.address_id, user, customer }, 'Get order')
 
-      if (oeResponse && oeResponse.status === 200) {
-        return {
-          status: 'success',
-          code: oeResponse.status,
-          data: oeResponse.result
-        }
-      }
+      if (oeResponse && oeResponse.status === 200)
+        return success(reply, oeResponse.result)
 
-      return {
-        status: 'fail',
-        code: oeResponse.status,
-        data: oeResponse.result
-      }
+      return fail(reply, oeResponse.result, oeResponse.status)
     }
   } catch (err) {
     request.log.fatal(request.body, 'failed to get order!')
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get order'
-      })
+    return error(reply, 'failed to get order')
   }
 }
 
@@ -69,9 +56,10 @@ export const getHistory = async (request: FastifyRequest<{
     usercode: number
   }
 }>, reply: FastifyReply) => {
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Cart()
-    const token: JWTPayload = request['token'] || { sub: null }
 
     if (token.sub) {
       const user = await repo.getUserInfo(token.sub)
@@ -95,36 +83,13 @@ export const getHistory = async (request: FastifyRequest<{
 
       request.log.info({ customer_id: customer.customer_id, address_id: customer.address_id, user, customer }, 'Get orders history')
 
-      if (oeResponse && oeResponse.status === 200) {
-        return {
-          status: 'success',
-          code: oeResponse.status,
-          data: oeResponse.result
-        }
-      }
+      if (oeResponse && oeResponse.status === 200)
+        return success(reply, oeResponse.result)
 
-      return {
-        status: 'fail',
-        code: oeResponse.status,
-        data: oeResponse.result
-      }
+      return fail(reply, oeResponse.result, oeResponse.status)
     }
-
-    return reply
-      .status(401)
-      .send({
-        status: 'fail',
-        code: 401,
-        message: 'Unauthorized'
-      })
   } catch (err) {
     request.log.fatal(request.body, 'failed to get history!')
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get order history'
-      })
+    return error(reply, 'failed to get order history')
   }
 }
