@@ -53,7 +53,7 @@ export default class Search {
     }
   }
 
-  async getUserInfo(user_id: string): Promise<undefined | any> {
+  async getUserInfo(user_id?: string): Promise<undefined | any> {
     if (!user_id) return undefined
     
     const r = new sql.Request(await db.get(DB_NAME))
