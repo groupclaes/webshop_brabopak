@@ -33,11 +33,6 @@ export const post = async (request: FastifyRequest<{
 
     let username = request.body.username.toLowerCase()
     let password = request.body.password
-    const mfa_code = request.body.mfa_code
-
-    const response_type = request.query.response_type
-    const scope = request.query.scope
-    const client_id = request.query.client_id
 
     let ip_address = '127.0.0.1'
     let client_ip = request.headers['x-client-ip']
@@ -50,9 +45,10 @@ export const post = async (request: FastifyRequest<{
     const rating = getTrustRating(user_agent)
     // const redirect_uri = request.query.redirect_uri
 
-    if (!response_type) return badRequest(request, reply, 'parameter \'response_type\' not specified!')
-    if (response_type !== 'code') return badRequest(request, reply, 'invalid \'response_type\' specified!')
-    if (!scope) return badRequest(request, reply, 'parameter \'scope\' not specified!')
+    if (!request.query.response_type) return badRequest(request, reply, 'parameter \'response_type\' not specified!')
+    if (request.query.response_type !== 'code') return badRequest(request, reply, 'invalid \'response_type\' specified!')
+    if (!request.query.scope) return badRequest(request, reply, 'parameter \'scope\' not specified!')
+    if (!request.query.client_id) return badRequest(request, reply, 'parameter \'client_id\' not specified!')
 
     const recaptcha = request.headers['g-recaptcha-response']
     if (recaptcha) {
@@ -144,6 +140,7 @@ export const post = async (request: FastifyRequest<{
           error: 'Username or password is incorrect!'
         })
     }
+
     let errors: any[] = []
     if ('password_policy' in config) {
       // Audit password
@@ -164,21 +161,21 @@ export const post = async (request: FastifyRequest<{
 
     let authorization_code
     let mfa_required
-    if (mfa_code === undefined) {
-      authorization_code = await repo.sso.createAuthorizationCode(client_id, impersonated_user ?? user.id.toString(), scope)
-      const mfa = new MFA(user, client_id, { authorization_code })
+    if (request.body.mfa_code === undefined) {
+      authorization_code = await repo.sso.createAuthorizationCode(request.query.client_id, impersonated_user ?? user.id.toString(), request.query.scope)
+      const mfa = new MFA(user, request.query.client_id, { authorization_code })
       if (mfa.challengeRequired() === true) {
         mfa_required = true
         await mfa.challenge()
       }
     } else {
       // Get mfa info by code
-      const mfa_info = await repo.sso.getMfaInfo(mfa_code)
+      const mfa_info = await repo.sso.getMfaInfo(request.body.mfa_code)
       if (mfa_info) {
         if (!mfa_info.used) {
-          const mfa = new MFA(user, client_id, mfa_info)
-          if (mfa.complete(mfa_code)) {
-            await mfa.use(mfa_code)
+          const mfa = new MFA(user, request.query.client_id, mfa_info)
+          if (mfa.complete(request.body.mfa_code)) {
+            await mfa.use(request.body.mfa_code)
             authorization_code = mfa_info.authorization_code
           }
         }
