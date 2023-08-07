@@ -16,14 +16,16 @@ export const get = async (request: FastifyRequest<{
     culture?: string
   }
 }>, reply: FastifyReply) => {
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
-    const token: JWTPayload = request['token'] || { sub: null }
 
     const { id } = request.params
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
-    let resp
+
+    request.log.debug({ user_id: token.sub, product_id: id, usercode, culture }, 'fetching product')
 
     const itemnum = await repo.findItemNumById(id)
 
@@ -33,22 +35,22 @@ export const get = async (request: FastifyRequest<{
       simpleParameters: true
     })
 
-    let oeResponse = await oe.run('getProdInfo', [
-      'BRA',
-      0,
-      0,
-      [{
-        itemNum: itemnum
-      }],
-      undefined
-    ])
+    const promises = [
+      repo.get(id, usercode, culture, token.sub),
+      oe.run('getProdInfo', [
+        'BRA',
+        0,
+        0,
+        [{
+          itemNum: itemnum
+        }],
+        undefined
+      ])
+    ]
 
-    if (oeResponse && oeResponse.status === 200) {
-      resp = oeResponse.result
-    }
-
+    const responses = await Promise.all(promises)
     const response = {
-      product: await repo.get(id, usercode, culture, token.sub)
+      product: responses[0]
     }
 
     if (response.product === null)
@@ -57,17 +59,17 @@ export const get = async (request: FastifyRequest<{
     if (response.product.error)
       return error(reply, response.product.error)
 
-    if (resp && response.product) {
-      response.product.stock = resp !== undefined ? resp.stock : -1
-      response.product.available_on = resp !== undefined ? resp.availableOn : null
-      response.product.in_backorder = resp !== undefined ? resp.inBackorder : false
+    if (responses[1] && responses[1].status === 200 && response.product) {
+      response.product.stock = responses[1].result.stock
+      response.product.available_on = responses[1].result.availableOn
+      response.product.in_backorder = responses[1].result.inBackorder
     }
 
-    const stock = resp !== undefined ? resp.stock : -1
-
-    request.log.info({ productId: id, usercode, stock, culture }, 'Get product details')
+    request.log.info({ product_id: id, usercode, culture }, 'Get product details')
     return success(reply, response)
   } catch (err) {
+
+    request.log.error({ user_id: token.sub, err }, 'failed to get product information')
     return error(reply, 'failed to get product information')
   }
 }
@@ -84,11 +86,15 @@ export const getBase = async (request: FastifyRequest<{
     culture?: string
   }
 }>, reply: FastifyReply) => {
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
     const id = request.params.id
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
+
+    request.log.debug({ user_id: token.sub, product_id: id, usercode, culture }, 'fetching product base')
 
     const response = {
       product: await repo.getBase(id, usercode, culture)
@@ -102,6 +108,7 @@ export const getBase = async (request: FastifyRequest<{
 
     return success(reply, response)
   } catch (err) {
+    request.log.error({ user_id: token.sub, err }, 'failed to get base product information')
     return error(reply, 'failed to get base product information')
   }
 }
@@ -115,8 +122,9 @@ export const putFavorite = async (request: FastifyRequest<{
     mode: number
   }
 }>, reply: FastifyReply) => {
-  try {
+  const token: JWTPayload = request['token']
 
+  try {
     const repo = new Product()
     const id = request.params.id
     const usercode = +request.query.usercode
@@ -157,6 +165,7 @@ export const putFavorite = async (request: FastifyRequest<{
       return fail(reply, oeResponse.result, oeResponse.status)
     }
   } catch (err) {
+    request.log.error({ user_id: token.sub, err }, 'failed to update product favorite')
     return error(reply, 'failed to update product favorite status')
   }
 }
@@ -172,6 +181,8 @@ export const putDescription = async (request: FastifyRequest<{
     description: string
   }
 }>, reply: FastifyReply) => {
+  // const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
     const id = request.params.id
@@ -185,11 +196,14 @@ export const putDescription = async (request: FastifyRequest<{
       if (successfully)
         return success(reply, { success: successfully })
 
+      request.log.warn('Failed to update database record')
       return fail(reply, { success: successfully, reason: 'Failed to update database record' })
     }
 
+    request.log.error({ product_id: id, usercode }, 'product or customer not found')
     return error(reply, 'product or customer not found', 404)
   } catch (err) {
+    request.log.error({ err }, 'failed to update product description')
     return error(reply, 'failed to update product description')
   }
 }
@@ -202,6 +216,8 @@ export const deleteDescription = async (request: FastifyRequest<{
     usercode: string
   }
 }>, reply: FastifyReply) => {
+  // const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
     const id = request.params.id
@@ -215,11 +231,14 @@ export const deleteDescription = async (request: FastifyRequest<{
       if (successfully)
         return success(reply, { success: successfully })
 
+      request.log.warn('Failed to remove database record')
       return fail(reply, { success: successfully, reason: 'Failed to remove database record' })
     }
 
+    request.log.error({ product_id: id, usercode }, 'product or customer not found')
     return error(reply, 'product or customer not found', 404)
   } catch (err) {
+    request.log.error({ err }, 'failed to remove product description')
     return error(reply, 'failed to remove product description')
   }
 } 
