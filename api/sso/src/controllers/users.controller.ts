@@ -33,6 +33,7 @@ export const postSignOn = async (request: FastifyRequest<{
 
     const user = await repo.sso.get(username)
     if (user) {
+      request.log.warn({ username, code, reason: 'user already exists' }, 'Failed to register!')
       return reply
         .status(403)
         .send({
@@ -59,6 +60,8 @@ export const postSignOn = async (request: FastifyRequest<{
         if (await repo.create(username, bcrypt.hashSync(password, +(env['BCRYPT_COST'] ?? 13)), appuser.usercode)) {
           // insert/update user.settings
           await repo.checkSettings(appuser)
+
+          request.log.debug({ username, code }, 'User successfully registered!')
           return {
             status: 'success',
             code: 200,
@@ -67,6 +70,7 @@ export const postSignOn = async (request: FastifyRequest<{
             }
           }
         }
+        request.log.debug({ username, code, reason: 'error while creating new user entry' }, 'Failed to register user!')
         return reply
           .status(500)
           .send({
@@ -75,6 +79,7 @@ export const postSignOn = async (request: FastifyRequest<{
             message: 'error while creating new user entry'
           })
       }
+      request.log.debug({ username, code, reason: 'error with usersettings!' }, 'Failed to register user!')
       return reply
         .status(500)
         .send({
@@ -83,6 +88,7 @@ export const postSignOn = async (request: FastifyRequest<{
           message: 'error with usersettings!'
         })
     } else {
+      request.log.debug({ username, code, reason: 'error while retrieving registration info!' }, 'Failed to register user!')
       return reply
         .status(500)
         .send({
@@ -92,6 +98,7 @@ export const postSignOn = async (request: FastifyRequest<{
         })
     }
   } catch (err) {
+    request.log.debug({ reason: 'unknown error', err }, 'Failed to register user!')
     return reply
       .status(500)
       .send({

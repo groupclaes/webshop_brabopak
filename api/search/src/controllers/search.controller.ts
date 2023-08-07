@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { success, fail, error } from '@groupclaes/fastify-elastic/responses'
 import { JWTPayload } from 'jose'
 import oe from '@groupclaes/oe-connector'
 
@@ -12,28 +13,19 @@ export const get = async (request: FastifyRequest<{
   }
 }>, reply: FastifyReply) => {
   const start = performance.now()
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Search()
-    const token: JWTPayload = request['token'] || { sub: null }
     const query = request.query.query
     const culture = request.query.culture ?? 'nl'
     const category_id = request.query.category_id
 
     const data = await repo.getQueries({ user_id: token.sub, query, culture, category_id })
-    return {
-      status: 'success',
-      code: 200,
-      data,
-      executionTime: performance.now() - start
-    }
+    return success(reply, data, 200, performance.now() - start)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get search queries'
-      })
+    request.log.error({ err }, 'failed to get search queries')
+    return error(reply, 'failed to get search queries')
   }
 }
 
@@ -57,9 +49,10 @@ export const post = async (request: FastifyRequest<{
   }
 }>, reply: FastifyReply) => {
   const start = performance.now()
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Search()
-    const token: JWTPayload = request['token'] || { sub: null }
 
     const userCode = request.query.usercode
     const filter = request.body ?? {}
@@ -129,26 +122,12 @@ export const post = async (request: FastifyRequest<{
       }
     }
 
-    return {
-      status: 'success',
-      code: 200,
-      data: {
-        productCount: response.count,
-        products,
-        breadcrumbs: response.breadcrumbs,
-      },
-      executionTime: performance.now() - start
-    }
+    return success(reply, {
+      productCount: response.count,
+      products,
+      breadcrumbs: response.breadcrumbs,
+    }, 200, performance.now() - start)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to search in products',
-        data: {
-          err
-        }
-      })
+    return error(reply, 'failed to search in products')
   }
 }

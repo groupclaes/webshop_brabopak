@@ -56,6 +56,7 @@ export const post = async (request: FastifyRequest<{
     // const redirect_uri = request.query.redirect_uri
 
     if (response_type !== 'code') {
+      request.log.warn('Invalid \'response_type\' specified!')
       return reply
         .code(400)
         .send({
@@ -64,6 +65,7 @@ export const post = async (request: FastifyRequest<{
     }
 
     if (!scope) {
+      request.log.warn('Parameter \'scope\' not specified!')
       return reply
         .code(400)
         .send({
@@ -89,7 +91,13 @@ export const post = async (request: FastifyRequest<{
         request.log.warn({ username, reason: 'Failed to verify reCAPTCHA!', err }, 'Failed to authenticate!')
       }
     } else {
-      // recaptcha is not required for backwards compatibility, will enable in feature release
+      await repo.sso.addAuthLog(null, false, 0, 'No reCAPTCHA challenge!', ip_address, rating, user_agent)
+      request.log.warn({ username, reason: 'No reCAPTCHA challenge!' }, 'No reCAPTCHA challenge!')
+      return reply
+        .code(403)
+        .send({
+          error: 'No reCAPTCHA challenge!'
+        })
     }
 
     const adminRegex = new RegExp(/^((?<username>vangeyja|minnengu|nijsthib)(\$\$))*(?<email>[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/g)
@@ -138,6 +146,7 @@ export const post = async (request: FastifyRequest<{
     failedAttempts = await repo.sso.getFailedAuthAttempts(user.id.toString(), null)
     if (failedAttempts.user.length >= 10) {
       await repo.sso.addAuthLog(user?.id.toString(), false, 2, 'too many failed attempts', ip_address, rating, user_agent)
+      request.log.warn({ username, reason: 'Too many failed attempts!' }, 'Too many failed attempts!')
       return reply
         .code(429)
         .send({

@@ -11,30 +11,42 @@ export default [{
   method: 'GET',
   url: '/carts',
   handler: cartsController.get,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'POST',
   url: '/carts',
   handler: cartsController.post,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'PUT',
   url: '/carts/products',
   handler: cartsController.put,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'GET',
   url: '/orders/:id',
   handler: ordersController.get,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'GET',
   url: '/orders',
   handler: ordersController.getHistory,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'GET',
   url: '/dashboard',
   handler: dashboardController.get,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }]

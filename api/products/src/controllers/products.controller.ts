@@ -1,7 +1,7 @@
-// External Dependancies
+import oe from '@groupclaes/oe-connector'
+import { success, fail, error } from '@groupclaes/fastify-elastic/responses'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { JWTPayload } from 'jose'
-import oe from '@groupclaes/oe-connector'
 
 import Product from '../repositories/product.repository'
 
@@ -16,14 +16,16 @@ export const get = async (request: FastifyRequest<{
     culture?: string
   }
 }>, reply: FastifyReply) => {
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
-    const token: JWTPayload = request['token'] || { sub: null }
 
     const { id } = request.params
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
-    let resp
+
+    request.log.debug({ user_id: token.sub, product_id: id, usercode, culture }, 'fetching product')
 
     const itemnum = await repo.findItemNumById(id)
 
@@ -33,65 +35,42 @@ export const get = async (request: FastifyRequest<{
       simpleParameters: true
     })
 
-    let oeResponse = await oe.run('getProdInfo', [
-      'BRA',
-      0,
-      0,
-      [{
-        itemNum: itemnum
-      }],
-      undefined
-    ])
+    const promises = [
+      repo.get(id, usercode, culture, token.sub),
+      oe.run('getProdInfo', [
+        'BRA',
+        0,
+        0,
+        [{
+          itemNum: itemnum
+        }],
+        undefined
+      ])
+    ]
 
-    if (oeResponse && oeResponse.status === 200) {
-      resp = oeResponse.result
-    }
-
+    const responses = await Promise.all(promises)
     const response = {
-      product: await repo.get(id, usercode, culture, token.sub)
+      product: responses[0]
     }
 
-    if (response.product === null) {
-      return reply
-        .status(401)
-        .send({
-          status: 'fail',
-          code: 401,
-          message: 'Unauthorized'
-        })
+    if (response.product === null)
+      return fail(reply, { id: 'not found or no permission' }, 404)
+
+    if (response.product.error)
+      return error(reply, response.product.error)
+
+    if (responses[1] && responses[1].status === 200 && response.product) {
+      response.product.stock = responses[1].result.stock
+      response.product.available_on = responses[1].result.availableOn
+      response.product.in_backorder = responses[1].result.inBackorder
     }
 
-    if (response.product.error) {
-      reply
-        .status(404)
-        .send({
-          error: response.product.error
-        })
-      return
-    }
-
-    if (resp && response.product) {
-      response.product.stock = resp !== undefined ? resp.stock : -1
-      response.product.available_on = resp !== undefined ? resp.availableOn : null
-      response.product.in_backorder = resp !== undefined ? resp.inBackorder : false
-    }
-
-    const stock = resp !== undefined ? resp.stock : -1
-
-    request.log.info({ productId: id, usercode, stock, culture }, 'Get product details')
-    return {
-      status: 'success',
-      code: 200,
-      data: response
-    }
+    request.log.info({ product_id: id, usercode, culture }, 'Get product details')
+    return success(reply, response)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get product information'
-      })
+
+    request.log.error({ user_id: token.sub, err }, 'failed to get product information')
+    return error(reply, 'failed to get product information')
   }
 }
 
@@ -107,38 +86,30 @@ export const getBase = async (request: FastifyRequest<{
     culture?: string
   }
 }>, reply: FastifyReply) => {
+  const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
     const id = request.params.id
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
+    request.log.debug({ user_id: token.sub, product_id: id, usercode, culture }, 'fetching product base')
+
     const response = {
       product: await repo.getBase(id, usercode, culture)
     }
 
-    if (response.product === null) {
-      return reply
-        .status(401)
-        .send({
-          status: 'fail',
-          code: 401,
-          message: 'Unauthorized'
-        })
-    }
-    return {
-      status: 'success',
-      code: 200,
-      data: response
-    }
+    if (response.product === null)
+      return fail(reply, { id: 'not found or no permission' }, 404)
+
+    if (response.product.error)
+      return error(reply, response.product.error)
+
+    return success(reply, response)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get base product information'
-      })
+    request.log.error({ user_id: token.sub, err }, 'failed to get base product information')
+    return error(reply, 'failed to get base product information')
   }
 }
 
@@ -151,8 +122,9 @@ export const putFavorite = async (request: FastifyRequest<{
     mode: number
   }
 }>, reply: FastifyReply) => {
-  try {
+  const token: JWTPayload = request['token']
 
+  try {
     const repo = new Product()
     const id = request.params.id
     const usercode = +request.query.usercode
@@ -162,7 +134,6 @@ export const putFavorite = async (request: FastifyRequest<{
     const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
-      console.debug(customer)
       oe.configure({
         c: false,
         tw: -1,
@@ -185,31 +156,17 @@ export const putFavorite = async (request: FastifyRequest<{
       ])
 
       request.log.info({ order_id: request.params.id, customer_id: customer.customer_id, address_id: customer.address_id, customer }, 'Put favorite')
-      console.debug(oeResponse)
 
       if (oeResponse && oeResponse.status === 200) {
         await repo.putFavorite(id, customer.customer_id, customer.address_id, mode)
-        return {
-          status: 'success',
-          code: oeResponse.status,
-          data: oeResponse.result
-        }
+        return success(reply, oeResponse.result, oeResponse.status)
       }
 
-      return {
-        status: 'fail',
-        code: oeResponse.status,
-        data: oeResponse.result
-      }
+      return fail(reply, oeResponse.result, oeResponse.status)
     }
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to update product favorite status'
-      })
+    request.log.error({ user_id: token.sub, err }, 'failed to update product favorite')
+    return error(reply, 'failed to update product favorite status')
   }
 }
 
@@ -224,6 +181,8 @@ export const putDescription = async (request: FastifyRequest<{
     description: string
   }
 }>, reply: FastifyReply) => {
+  // const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
     const id = request.params.id
@@ -233,40 +192,19 @@ export const putDescription = async (request: FastifyRequest<{
     const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
-      const success = await repo.putDescription(id, customer.customer_id, customer.address_id, request.body.description)
-      if (success) {
-        return {
-          status: 'success',
-          code: 200,
-          data: {
-            success
-          }
-        }
-      }
+      const successfully = await repo.putDescription(id, customer.customer_id, customer.address_id, request.body.description)
+      if (successfully)
+        return success(reply, { success: successfully })
 
-      return {
-        status: 'fail',
-        code: 404,
-        message: 'Failed to update database record',
-        data: {
-          success
-        }
-      }
+      request.log.warn('Failed to update database record')
+      return fail(reply, { success: successfully, reason: 'Failed to update database record' })
     }
 
-    return {
-      status: 'error',
-      code: 404,
-      message: 'product or customer not found'
-    }
+    request.log.error({ product_id: id, usercode }, 'product or customer not found')
+    return error(reply, 'product or customer not found', 404)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to update product description'
-      })
+    request.log.error({ err }, 'failed to update product description')
+    return error(reply, 'failed to update product description')
   }
 }
 
@@ -278,6 +216,8 @@ export const deleteDescription = async (request: FastifyRequest<{
     usercode: string
   }
 }>, reply: FastifyReply) => {
+  // const token: JWTPayload = request['token']
+
   try {
     const repo = new Product()
     const id = request.params.id
@@ -287,39 +227,18 @@ export const deleteDescription = async (request: FastifyRequest<{
     const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
-      const success = await repo.deleteDescription(id, customer.customer_id, customer.address_id)
-      if (success) {
-        return {
-          status: 'success',
-          code: 200,
-          data: {
-            success
-          }
-        }
-      }
+      const successfully = await repo.deleteDescription(id, customer.customer_id, customer.address_id)
+      if (successfully)
+        return success(reply, { success: successfully })
 
-      return {
-        status: 'fail',
-        code: 404,
-        message: 'Failed to remove database record',
-        data: {
-          success
-        }
-      }
+      request.log.warn('Failed to remove database record')
+      return fail(reply, { success: successfully, reason: 'Failed to remove database record' })
     }
 
-    return {
-      status: 'error',
-      code: 404,
-      message: 'product or customer not found'
-    }
+    request.log.error({ product_id: id, usercode }, 'product or customer not found')
+    return error(reply, 'product or customer not found', 404)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to remove product description'
-      })
+    request.log.error({ err }, 'failed to remove product description')
+    return error(reply, 'failed to remove product description')
   }
 } 
