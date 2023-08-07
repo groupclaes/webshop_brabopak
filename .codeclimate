@@ -1,8 +1,10 @@
+version: "2"
+
 ## other configuration excluded from example...
 exclude_patterns:
 - "tests/"
 - "spec/"
 - "**/vendor/"
-- "api/**/src/db.ts"
-- "api/**/src/routes.ts"
-- "api/**/src/index.ts"
+- "**/db.ts"
+- "**/routes.ts"
+- "**/index.ts"
