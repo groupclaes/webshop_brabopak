@@ -14,15 +14,21 @@ export default [{
   method: 'PUT',
   url: '/:id/favorite',
   handler: productsController.putFavorite,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'PUT',
   url: '/:id/description',
   handler: productsController.putDescription,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'DELTE',
   url: '/:id/description',
   handler: productsController.deleteDescription,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }]

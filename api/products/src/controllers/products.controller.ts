@@ -1,7 +1,7 @@
-// External Dependancies
+import oe from '@groupclaes/oe-connector'
+import { success, fail, error } from '@groupclaes/fastify-elastic/responses'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { JWTPayload } from 'jose'
-import oe from '@groupclaes/oe-connector'
 
 import Product from '../repositories/product.repository'
 
@@ -51,24 +51,11 @@ export const get = async (request: FastifyRequest<{
       product: await repo.get(id, usercode, culture, token.sub)
     }
 
-    if (response.product === null) {
-      return reply
-        .status(401)
-        .send({
-          status: 'fail',
-          code: 401,
-          message: 'Unauthorized'
-        })
-    }
+    if (response.product === null)
+      return fail(reply, { id: 'not found or no permission' }, 404)
 
-    if (response.product.error) {
-      reply
-        .status(404)
-        .send({
-          error: response.product.error
-        })
-      return
-    }
+    if (response.product.error)
+      return error(reply, response.product.error)
 
     if (resp && response.product) {
       response.product.stock = resp !== undefined ? resp.stock : -1
@@ -79,19 +66,9 @@ export const get = async (request: FastifyRequest<{
     const stock = resp !== undefined ? resp.stock : -1
 
     request.log.info({ productId: id, usercode, stock, culture }, 'Get product details')
-    return {
-      status: 'success',
-      code: 200,
-      data: response
-    }
+    return success(reply, response)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get product information'
-      })
+    return error(reply, 'failed to get product information')
   }
 }
 
@@ -117,28 +94,15 @@ export const getBase = async (request: FastifyRequest<{
       product: await repo.getBase(id, usercode, culture)
     }
 
-    if (response.product === null) {
-      return reply
-        .status(401)
-        .send({
-          status: 'fail',
-          code: 401,
-          message: 'Unauthorized'
-        })
-    }
-    return {
-      status: 'success',
-      code: 200,
-      data: response
-    }
+    if (response.product === null)
+      return fail(reply, { id: 'not found or no permission' }, 404)
+
+    if (response.product.error)
+      return error(reply, response.product.error)
+
+    return success(reply, response)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to get base product information'
-      })
+    return error(reply, 'failed to get base product information')
   }
 }
 
@@ -162,7 +126,6 @@ export const putFavorite = async (request: FastifyRequest<{
     const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
-      console.debug(customer)
       oe.configure({
         c: false,
         tw: -1,
@@ -185,31 +148,16 @@ export const putFavorite = async (request: FastifyRequest<{
       ])
 
       request.log.info({ order_id: request.params.id, customer_id: customer.customer_id, address_id: customer.address_id, customer }, 'Put favorite')
-      console.debug(oeResponse)
 
       if (oeResponse && oeResponse.status === 200) {
         await repo.putFavorite(id, customer.customer_id, customer.address_id, mode)
-        return {
-          status: 'success',
-          code: oeResponse.status,
-          data: oeResponse.result
-        }
+        return success(reply, oeResponse.result, oeResponse.status)
       }
 
-      return {
-        status: 'fail',
-        code: oeResponse.status,
-        data: oeResponse.result
-      }
+      return fail(reply, oeResponse.result, oeResponse.status)
     }
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to update product favorite status'
-      })
+    return error(reply, 'failed to update product favorite status')
   }
 }
 
@@ -233,40 +181,16 @@ export const putDescription = async (request: FastifyRequest<{
     const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
-      const success = await repo.putDescription(id, customer.customer_id, customer.address_id, request.body.description)
-      if (success) {
-        return {
-          status: 'success',
-          code: 200,
-          data: {
-            success
-          }
-        }
-      }
+      const successfully = await repo.putDescription(id, customer.customer_id, customer.address_id, request.body.description)
+      if (successfully)
+        return success(reply, { success: successfully })
 
-      return {
-        status: 'fail',
-        code: 404,
-        message: 'Failed to update database record',
-        data: {
-          success
-        }
-      }
+      return fail(reply, { success: successfully, reason: 'Failed to update database record' })
     }
 
-    return {
-      status: 'error',
-      code: 404,
-      message: 'product or customer not found'
-    }
+    return error(reply, 'product or customer not found', 404)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to update product description'
-      })
+    return error(reply, 'failed to update product description')
   }
 }
 
@@ -287,39 +211,15 @@ export const deleteDescription = async (request: FastifyRequest<{
     const customer = await repo.getUserSettings(usercode)
 
     if (product && customer) {
-      const success = await repo.deleteDescription(id, customer.customer_id, customer.address_id)
-      if (success) {
-        return {
-          status: 'success',
-          code: 200,
-          data: {
-            success
-          }
-        }
-      }
+      const successfully = await repo.deleteDescription(id, customer.customer_id, customer.address_id)
+      if (successfully)
+        return success(reply, { success: successfully })
 
-      return {
-        status: 'fail',
-        code: 404,
-        message: 'Failed to remove database record',
-        data: {
-          success
-        }
-      }
+      return fail(reply, { success: successfully, reason: 'Failed to remove database record' })
     }
 
-    return {
-      status: 'error',
-      code: 404,
-      message: 'product or customer not found'
-    }
+    return error(reply, 'product or customer not found', 404)
   } catch (err) {
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to remove product description'
-      })
+    return error(reply, 'failed to remove product description')
   }
 } 
