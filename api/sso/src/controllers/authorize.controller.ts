@@ -8,6 +8,7 @@ import User from '../repositories/user.repository'
 import verify from '../providers/google-recaptcha'
 import { PasswordPolicy } from '../providers/password-policy'
 import { MFA } from '../providers/mfa'
+import { getImpersonation, getTrustRating } from '../tools'
 
 // https://shop.brabopak.com/api/v1/sso/authorize?response_type=code&scope=openid&client_id=hBK4c2uZK5&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
 /**
@@ -46,13 +47,7 @@ export const post = async (request: FastifyRequest<{
       ip_address = client_ip[0].split(',')[0]
     }
     const user_agent = request.headers['user-agent']
-    let rating = 50
-    if (user_agent &&
-      !user_agent.includes('Mozilla') &&
-      !user_agent.includes('Chrome') &&
-      !user_agent.includes('Safari')) {
-      rating = 20
-    }
+    const rating = getTrustRating(user_agent)
     // const redirect_uri = request.query.redirect_uri
 
     if (response_type !== 'code') {
@@ -100,26 +95,10 @@ export const post = async (request: FastifyRequest<{
         })
     }
 
-    const adminRegex = new RegExp(/^((?<username>vangeyja|minnengu|nijsthib)(\$\$))*(?<email>[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/g)
-    const r = adminRegex.exec(username)
-
-    // check if user is being impersonated by an admin
-    if (r && r.groups && r.groups.username) {
-      console.warn('user is being impersonated by admin')
-      _impersonatedUser = r.groups.email
-      switch (r.groups.username) {
-        case 'vangeyja':
-          username = "jamie.vangeysel@groupclaes.be"
-          break
-
-        case 'minnengu':
-          username = "guy.minnen@groupclaes.be"
-          break
-
-        case 'nijsthib':
-          username = "thibaut.nijs@groupclaes.be"
-          break
-      }
+    const impersonation = getImpersonation(username)
+    if (impersonation) {
+      username = impersonation.username
+      _impersonatedUser = impersonation.impersonated_user
     }
 
     let failedAttempts = await repo.sso.getFailedAuthAttempts(null, ip_address)

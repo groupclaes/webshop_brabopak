@@ -12,21 +12,21 @@
     "url": "https://jamievangeysel.be"
   },
   "dependencies": {
-    "@fastify/cors": "^8.2.1",
-    "@fastify/static": "^6.10.1",
-    "@groupclaes/fastify-authhandler": "^2.0.0",
-    "@groupclaes/fastify-elastic": "^2.0.4",
+    "@fastify/cors": "^8.3.0",
+    "@fastify/static": "^6.10.2",
+    "@groupclaes/fastify-authhandler": "^2.2.0",
+    "@groupclaes/fastify-elastic": "^3.0.7",
     "@groupclaes/oe-connector": "^1.2.5",
     "bcrypt": "^5.1.0",
-    "fastify": "^4.17.0",
+    "fastify": "^4.21.0",
     "jose": "^4.14.4",
-    "mssql": "^8.1.4",
-    "nodemailer": "^6.9.2"
+    "mssql": "^6.4.1",
+    "nodemailer": "^6.9.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
-    "@types/mssql": "^8.1.2",
-    "@types/node": "^18.16.8",
-    "@types/nodemailer": "^6.4.7"
+    "@types/mssql": "^6.0.8",
+    "@types/node": "^18.17.3",
+    "@types/nodemailer": "^6.4.9"
   }
 }
