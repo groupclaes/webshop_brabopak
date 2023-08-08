@@ -1,8 +1,7 @@
 <button type="menu" tabindex="1" (click)="toggle()"
   class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 hover:text-primary dark:hover:text-accent">
   <div class="relative">
-    <img class="w-7 h-7 rounded-full" loading="lazy" alt="user_avatar" [src]="avatar" *ngIf="showAvatar">
-    <i title="account" class="text-2xl fal fa-user-circle" *ngIf="!showAvatar"></i>
+    <i title="account" class="text-2xl fal fa-user-circle"></i>
     <span class="absolute right-0 bottom-0 w-2 h-2 rounded-full mr-px mb-px"
       [ngClass]="{ 'bg-red-500': !authenticated, 'bg-green-500': authenticated }"></span>
   </div>

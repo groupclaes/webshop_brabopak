@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } from '@angular/core'
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { AuthService, ICustomer } from 'src/app/auth/auth.service'
-import { LayoutService } from '../../layout.service'
 
 @Component({
   selector: 'claes-account',
@@ -34,10 +32,9 @@ export class AccountComponent {
 
   constructor(
     private ref: ChangeDetectorRef,
-    public auth: AuthService,
-    private sanitizer: DomSanitizer
+    public auth: AuthService
   ) {
-    this.auth.change.subscribe(provider => {
+    this.auth.change.subscribe(() => {
       this.ref.markForCheck()
     })
   }
@@ -75,22 +72,12 @@ export class AccountComponent {
     return this.auth.customers
   }
 
-  get avatar(): SafeResourceUrl | undefined {
-    if (this.auth.id_token)
-      return this.sanitizer.bypassSecurityTrustResourceUrl(this.auth.id_token?.picture)
-    return undefined
-  }
-
   get displayName(): string | undefined {
     return this.auth.id_token?.name
   }
 
   get email(): string | undefined {
     return this.auth.id_token?.email
-  }
-
-  get showAvatar(): boolean {
-    return false // !(['futuristic', 'classy'].includes(this.layout.current))
   }
 
   get authenticated(): boolean {
