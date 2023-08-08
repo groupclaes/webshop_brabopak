@@ -56,17 +56,10 @@ export const post = async (request: FastifyRequest<{
 
     const userCode = request.query.usercode
     const filter = request.body ?? {}
-
     const culture = request.query.culture ?? filter.culture ?? 'nl'
-    const query = filter.query ?? ''
-    const oFavorites = filter.only_favorites ?? false
-    const oPromo = filter.only_promo ?? false
-    const oNew = filter.only_new ?? false
-    const page = filter.page ?? 0
-    const perPage = filter.per_page ?? 48
 
     // Get a list of itemNums
-    const response = await repo.search(userCode, culture, query, oFavorites, oPromo, oNew, page, perPage, filter.category_id, token.sub)
+    const response = await repo.search(userCode, culture, filter, token.sub)
 
     const user: any | undefined = await repo.getUserInfo(token.sub)
 
