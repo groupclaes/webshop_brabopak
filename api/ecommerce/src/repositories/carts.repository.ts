@@ -7,50 +7,38 @@ export default class Cart {
   schema: string = '[ecommerce].'
 
   async get(usercode: number, user_id?: string, culture: string = 'nl') {
-    try {
-      const r = new sql.Request(await db.get(DB_NAME))
-      r.input('user_id', sql.Int, user_id)
-      r.input('usercode', sql.Int, usercode)
-      r.input('culture', sql.VarChar, culture)
-      const result = await r.execute(this.schema + '[usp_getCart]')
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('user_id', sql.Int, user_id)
+    r.input('usercode', sql.Int, usercode)
+    r.input('culture', sql.VarChar, culture)
+    const result = await r.execute(this.schema + '[usp_getCart]')
 
-      if (result.recordset.length > 0) {
-        return result.recordset[0]
-      }
-      return undefined
-    } catch (err) {
-      throw err
+    if (result.recordset.length > 0) {
+      return result.recordset[0]
     }
+    return undefined
   }
 
   async updateProduct(usercode: number, user_id: string, product_id: number, amount: number) {
-    try {
-      const r = new sql.Request(await db.get(DB_NAME))
-      r.input('user_id', sql.Int, user_id)
-      r.input('usercode', sql.Int, usercode)
-      r.input('product_id', sql.Int, product_id)
-      r.input('amount', sql.SmallInt, amount)
-      const result = await r.execute(this.schema + '[usp_updateCartProduct]')
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('user_id', sql.Int, user_id)
+    r.input('usercode', sql.Int, usercode)
+    r.input('product_id', sql.Int, product_id)
+    r.input('amount', sql.SmallInt, amount)
+    const result = await r.execute(this.schema + '[usp_updateCartProduct]')
 
-      return result.rowsAffected[0] > 0
-    } catch (err) {
-      throw err
-    }
+    return result.rowsAffected[0] > 0
   }
 
   async getProductInfo(product_id: number) {
-    try {
-      const r = new sql.Request(await db.get(DB_NAME))
-      r.input('product_id', sql.Int, product_id)
-      const result = await r.execute(this.schema + '[usp_getCartProductInfo]')
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('product_id', sql.Int, product_id)
+    const result = await r.execute(this.schema + '[usp_getCartProductInfo]')
 
-      if (result.recordset.length > 0) {
-        return result.recordset[0]
-      }
-      return undefined
-    } catch (err) {
-      throw err
+    if (result.recordset.length > 0) {
+      return result.recordset[0]
     }
+    return undefined
   }
 
   async getProductInfos(products: any[]) {
