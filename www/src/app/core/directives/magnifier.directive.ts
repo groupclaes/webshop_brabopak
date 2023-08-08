@@ -57,7 +57,6 @@ export class MagnifierDirective {
 
   getCursorPos(e: MouseEvent) {
     let a, x = 0, y = 0
-    e = e
     /* get the x and y positions of the image: */
     a = this.img.getBoundingClientRect()
     /* calculate the cursor's x and y coordinates, relative to the image: */

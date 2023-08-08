@@ -16,7 +16,7 @@ export class SignupPageComponent implements OnInit {
 
   signupForm1: FormGroup = this.fb.group({
     companyName: ['', [Validators.required]], // Simplintho
-    companyVat: ['', [Validators.required, Validators.pattern('^((AT)?U\d{8}|(BE)?0\d{9}|(BG)?\d{9,10}|(CY)?\d{8}L|(CZ)?\d{8,10}|(DE)?\d{9}|(DK)?\d{8}|(EE)?\d{9}|(EL|GR)?\d{9}|(ES)?[0-9A-Z]\d{7}[0-9A-Z]|(FI)?\d{8}|(FR)?[0-9A-Z]{2}\d{9}|(GB)?(\d{9}(\d{3})?|[A-Z]{2}\d{3})|(HU)?\d{8}|(IE)?\dS\d{5}L|(IT)?\d{11}|(LT)?(\d{9}|\d{12})|(LU)?\d{8}|(LV)?\d{11}|(MT)?\d{8}|(NL)?\d{9}B\d{2}|(PL)?\d{10}|(PT)?\d{9}|(RO)?\d{2,10}|(SE)?\d{12}|(SI)?\d{8}|(SK)?\d{10})$')]], // BE0646994651
+    companyVat: ['', [Validators.required, Validators.pattern('^((AT)?U[\d]{8}|(BE)?0[\d]{9}|(BG)?[\d]{9,10}|(CY)?[\d]{8}L|(CZ)?[\d]{8,10}|(DE)?[\d]{9}|(DK)?[\d]{8}|(EE)?[\d]{9}|(EL|GR)?[\d]{9}|(ES)?[0-9A-Z][\d]{7}[0-9A-Z]|(FI)?[\d]{8}|(FR)?[0-9A-Z]{2}[\d]{9}|(GB)?([\d]{9}([\d]{3})?|[A-Z]{2}[\d]{3})|(HU)?[\d]{8}|(IE)?[\d]S[\d]{5}L|(IT)?[\d]{11}|(LT)?([\d]{9}|[\d]{12})|(LU)?[\d]{8}|(LV)?[\d]{11}|(MT)?[\d]{8}|(NL)?[\d]{9}B[\d]{2}|(PL)?[\d]{10}|(PT)?[\d]{9}|(RO)?[\d]{2,10}|(SE)?[\d]{12}|(SI)?[\d]{8}|(SK)?[\d]{10})$')]], // BE0646994651
     companyPhone: ['', [Validators.required]], // 0471389116
   })
   signupForm2: FormGroup = this.fb.group({
@@ -37,26 +37,26 @@ export class SignupPageComponent implements OnInit {
     country: ['', [Validators.required]], // België
   })
   signupForm4: FormGroup = this.fb.group({
-    moAmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    moAmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    moPmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    moPmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    tuAmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    tuAmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    tuPmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    tuPmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    weAmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    weAmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    wePmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    wePmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    thAmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    thAmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    thPmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    thPmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    frAmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    frAmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    frPmFr: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]],
-    frPmTo: ['', [Validators.pattern(/^([01]?\d|2[0-3]):[0-5]\d$/)]]
+    moAmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    moAmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    moPmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    moPmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    tuAmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    tuAmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    tuPmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    tuPmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    weAmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    weAmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    wePmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    wePmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    thAmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    thAmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    thPmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    thPmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    frAmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    frAmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    frPmFr: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]],
+    frPmTo: ['', [Validators.pattern(/^([01]?[\d]|2[0-3]):[0-5][\d]$/)]]
   })
   signupForm5: FormGroup = this.fb.group({
     name: ['', [Validators.required]],
