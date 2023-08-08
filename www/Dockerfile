@@ -14,7 +14,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY package.json /app/package.json
 ENV NODE_ENV test
-RUN npm install
+RUN npm install --ignore-scripts
 ENV NODE_ENV production
 
 # add app
