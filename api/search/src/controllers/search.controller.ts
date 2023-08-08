@@ -3,7 +3,7 @@ import { success, error } from '@groupclaes/fastify-elastic/responses'
 import { JWTPayload } from 'jose'
 import oe from '@groupclaes/oe-connector'
 
-import Search from '../repositories/search.repository'
+import Search, { ISearchFilters } from '../repositories/search.repository'
 
 export const get = async (request: FastifyRequest<{
   Querystring: {
@@ -37,16 +37,7 @@ export const post = async (request: FastifyRequest<{
     usercode: number,
     culture?: string
   },
-  Body: {
-    culture?: string
-    query?: string
-    only_favorites?: boolean
-    only_promo?: boolean
-    only_new?: boolean
-    page?: number
-    per_page?: number
-    category_id?: number
-  }
+  Body: ISearchFilters
 }>, reply: FastifyReply) => {
   const start = performance.now()
   const token: JWTPayload = request['token']
