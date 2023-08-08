@@ -3,7 +3,7 @@
 #############
 
 # base image
-FROM docker-registry.groupclaes.be/node-npm:latest as build
+FROM docker-registry.groupclaes.be/node-npm:latest AS build
 
 # set working directory
 WORKDIR /app
