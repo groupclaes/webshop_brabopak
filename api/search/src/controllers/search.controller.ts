@@ -64,70 +64,75 @@ export const post = async (request: FastifyRequest<{
     const oNew = filter.only_new ?? false
     const page = filter.page ?? 0
     const perPage = filter.per_page ?? 48
-    const category = filter.category_id ?? null
 
     // Get a list of itemNums
-    const response = await repo.search(userCode, culture, query, oFavorites, oPromo, oNew, page, perPage, category, token.sub)
-    const products = response.results
+    const response = await repo.search(userCode, culture, query, oFavorites, oPromo, oNew, page, perPage, filter.category_id, token.sub)
 
-    const user = await repo.getUserInfo(token.sub)
-    let canViewPrices = false
-    if (user)
-      canViewPrices = user.user_type === 2 || user.user_type === 3
+    const user: any | undefined = await repo.getUserInfo(token.sub)
 
-    if (userCode !== 0) {
-      // get oeInfo
-      let resp: any
-
-      oe.configure({
-        c: false,
-        tw: 1000,
-        simpleParameters: true
-      })
-
-      let oeResponse = await oe.run('getProdInfo', [
-        'BRA',
-        0,
-        0,
-        response.results.map(e => ({
-          id: e.id,
-          itemNum: e.itemNum
-        })),
-        undefined
-      ])
-
-      if (oeResponse && oeResponse.status === 200) {
-        resp = oeResponse.result.id !== undefined ? [oeResponse.result] : oeResponse.result
-
-        products.forEach(product => {
-          // find oe resp
-          const oeRes = resp.find(e => e.itemNum === product.itemNum)
-
-          product.stock = oeRes !== undefined ? oeRes.stock : -1
-          product.available_on = oeRes !== undefined ? oeRes.availableOn : null
-          product.in_backorder = oeRes !== undefined ? oeRes.inBackorder : false
-        })
+    if (userCode > 0) {
+      try {
+        await applyOpenedgeInformation(response.results)
+      } catch (err) {
+        request.log.error({ err }, 'error while retrieving product information from openedge')
       }
     }
 
-    if (!canViewPrices) {
-      for (const product of products) {
-        if (!product.prices) continue
-        for (const price of product.prices) {
-          price.base = 0
-          delete price.amount
-          delete price.discount
-          delete price.quantity
-        }
-      }
-    }
+    if (user === undefined || !user?.can_view_prices)
+      removePriceDetails(response.results)
 
     return success(reply, {
       productCount: response.count,
-      products,
+      products: response.results,
       breadcrumbs: response.breadcrumbs,
     }, 200, performance.now() - start)
   } catch (err) {
     return error(reply, 'failed to search in products')
+  }
+}
+
+async function applyOpenedgeInformation(products: any[]) {
+  let resp: any
+
+  oe.configure({
+    c: false,
+    tw: 1000,
+    simpleParameters: true
+  })
+
+  let oeResponse: any | undefined = await oe.run('getProdInfo', [
+    'BRA',
+    0,
+    0,
+    products.map(e => ({
+      id: e.id,
+      itemNum: e.itemNum
+    })),
+    undefined
+  ])
+
+  if (oeResponse?.status === 200) {
+    resp = oeResponse.result.id !== undefined ? [oeResponse.result] : oeResponse.result
+
+    products.forEach(product => {
+      // find oe resp
+      const oeRes = resp.find(e => e.itemNum === product.itemNum)
+
+      product.stock = oeRes !== undefined ? oeRes.stock : -1
+      product.available_on = oeRes !== undefined ? oeRes.availableOn : null
+      product.in_backorder = oeRes !== undefined ? oeRes.inBackorder : false
+    })
+  }
+}
+
+function removePriceDetails(products: any[]) {
+  for (const product of products) {
+    if (!product.prices) continue
+    for (const price of product.prices) {
+      price.base = 0
+      delete price.amount
+      delete price.discount
+      delete price.quantity
+    }
   }
 }

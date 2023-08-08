@@ -24,7 +24,7 @@ export default class Search {
     }
   }
 
-  async search(usercode: number, culture: string, query: string, only_favorites: boolean, only_promo: boolean, only_new: boolean, page: number, per_page: number, category: number | null, user_id?: string) {
+  async search(usercode: number, culture: string, query: string, only_favorites: boolean, only_promo: boolean, only_new: boolean, page: number, per_page: number, category?: number, user_id?: string) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('usercode', sql.Int, usercode)
