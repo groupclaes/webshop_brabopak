@@ -35,6 +35,8 @@ export class ProductPageComponent implements OnDestroy {
   error: boolean = false
   loading: boolean = true
 
+  description_touched: boolean = false
+
   constructor(
     private ref: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -139,10 +141,10 @@ export class ProductPageComponent implements OnDestroy {
     let update = false
 
     if (mode === 0) {
-      const modal = new Modal('alert', 'Product verwijderen?', 'Ben je zeker dat je dit product uit je favorieten wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' },])
+      const modal = new Modal('alert', 'Product verwijderen?', 'Ben je zeker dat je dit product uit je favorieten wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }])
       update = await this.modalCtrl.show(modal)
     } else {
-      const modal = new Modal('success', 'Product toevoegen?', 'Ben je zeker dat je dit product wilt toevoegen aan je favorieten?', [{ title: 'Toevoegen', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' },])
+      const modal = new Modal('success', 'Product toevoegen?', 'Ben je zeker dat je dit product wilt toevoegen aan je favorieten?', [{ title: 'Toevoegen', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' }])
       update = await this.modalCtrl.show(modal)
     }
 
@@ -198,8 +200,31 @@ export class ProductPageComponent implements OnDestroy {
     this.router.navigate([this.localize.translateRoute('/')])
   }
 
-  updateDescription(description: string) {
-    
+  enableSave(): void {
+    this.description_touched = true
+    this.ref.markForCheck()
+  }
+
+  async updateDescription() {
+    if (!this._product || !this.auth.currentCustomer) return
+    let modal: Modal
+
+    if (this._product.customer_description && this._product.customer_description?.trim().length > 0) {
+      modal = new Modal('success', 'Klantspecifieke omschrijving wijzigen?', 'Ben je zeker dat je je omschrijving wilt wijzigen?', [{ title: 'Opslaan', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' }])
+    } else {
+      modal = new Modal('alert', 'Klantspecifieke omschrijving verwijderen?', 'Ben je zeker dat je je omschrijving wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }])
+    }
+
+    if (await this.modalCtrl.show(modal)) {
+      if (this._product.customer_description && this._product.customer_description?.trim().length > 0) {
+        await this.api.putDescription({ id: this._product.id, usercode: this.auth.currentCustomer.usercode, description: this._product.customer_description.trim() })
+      } else {
+        await this.api.deleteDescription({ id: this._product.id, usercode: this.auth.currentCustomer.usercode })
+      }
+
+      this.description_touched = false
+      this.ref.markForCheck()
+    }
   }
 
   get featuresExpanded(): boolean {

@@ -50,7 +50,7 @@ export class ProductsApiService {
       usercode
     })
 
-    return firstValueFrom(this.http.put<IBaseApiResponse>(`${environment.api}products/${id}/description`, description, { params })
+    return firstValueFrom(this.http.put<IBaseApiResponse>(`${environment.api}products/${id}/description`, { description }, { params })
       .pipe(retryWhen(errors => errors.pipe(delay(environment.performance.time_out), take(environment.performance.retries))))
       .pipe(delay(environment.performance.delay_medium)))
   }
