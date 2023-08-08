@@ -24,11 +24,11 @@ export default class Search {
     }
   }
 
-  async search(usercode: number, culture: string, filter: ISearchFilters, user_id?: string) {
+  async search(usercode: number, culture: string | undefined, filter: ISearchFilters, user_id?: string) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('usercode', sql.Int, usercode)
-    r.input('culture', sql.VarChar, culture)
+    r.input('culture', sql.VarChar, culture ?? filter.culture)
     r.input('query', sql.VarChar, filter.query)
     r.input('only_favorites', sql.Bit, filter.only_favorites)
     r.input('only_promo', sql.Bit, filter.only_promo)

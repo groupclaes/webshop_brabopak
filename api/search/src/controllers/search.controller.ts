@@ -54,16 +54,12 @@ export const post = async (request: FastifyRequest<{
   try {
     const repo = new Search()
 
-    const userCode = request.query.usercode
-    const filter = request.body ?? {}
-    const culture = request.query.culture ?? filter.culture ?? 'nl'
-
     // Get a list of itemNums
-    const response = await repo.search(userCode, culture, filter, token.sub)
+    const response = await repo.search(request.query.usercode, request.query.culture, request.body ?? {}, token.sub)
 
     const user: any | undefined = await repo.getUserInfo(token.sub)
 
-    if (userCode > 0) {
+    if (request.query.usercode > 0) {
       try {
         await applyOpenedgeInformation(response.results)
       } catch (err) {
