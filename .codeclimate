@@ -1,10 +1,16 @@
 version: "2"
 
+plugins:
+  duplication:
+    enabled: true
+    exclude_patterns:
+      - "src/db.ts"
+      - "src/routes.ts"
+      - "src/index.ts"
+      - "www/src/environments/**.ts"
+
 ## other configuration excluded from example...
 exclude_patterns:
 - "tests/"
 - "spec/"
 - "**/vendor/"
-- "**/db.ts"
-- "**/routes.ts"
-- "**/index.ts"

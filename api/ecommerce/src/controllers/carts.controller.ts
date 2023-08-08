@@ -77,42 +77,10 @@ export const post = async (request: FastifyRequest<{
       const order: any = request.body
       // get user info from db
       const user = await repo.getUserInfo(token.sub)
-      // get cart info from db
-      const products: any[] = []
+      // get products info from db
+      const products = await repo.getProductInfos(order.products)
 
-      for (const p of order.products) {
-        const info = await repo.getProductInfo(p.id)
-        products.push({
-          itemnum: info.itemnum,
-          quantity: p.quantity,
-          unit: info.unit
-        })
-      }
-
-      const oe_payload = {
-        dsOrders: {
-          ttOrdMst: [{
-            CustNum: order.customer.id,
-            DelvAdr: order.customer.address_id,
-            CustCol: order.deliveryInfo.method !== 'transport',
-            ComplDelv: order.deliveryInfo.option !== 'parts',
-            CustRef: order.invoiceInfo.reference,
-            DelvDate: undefined,
-            NextDelv: order.invoiceInfo.nextDate,
-            OrdWay: user.user_type === 1 || user.user_type === 4 ? 's_k' : 's_v'
-            //Username: user.username
-          }],
-          ttOrdDtl: products.map((product, i) => ({
-            ItemNum: product.itemnum,
-            Qty: product.quantity,
-            SalUnit: product.unit,
-            TmpOrdLine: i
-          })),
-          ttOrdMstText: [{
-            InfoText: order.invoiceInfo.comment
-          }]
-        }
-      }
+      const oe_payload = mapPayload(order, user, products)
 
       oe.configure({
         c: false
@@ -147,5 +115,32 @@ export const post = async (request: FastifyRequest<{
   } catch (err) {
     request.log.fatal({ user_id: token.sub, body: request.body, err }, 'failed to send order!')
     return error(reply, 'failed to send order!')
+  }
+}
+
+function mapPayload(order: any, user: any, products: any[]) {
+  return {
+    dsOrders: {
+      ttOrdMst: [{
+        CustNum: order.customer.id,
+        DelvAdr: order.customer.address_id,
+        CustCol: order.deliveryInfo.method !== 'transport',
+        ComplDelv: order.deliveryInfo.option !== 'parts',
+        CustRef: order.invoiceInfo.reference,
+        DelvDate: undefined,
+        NextDelv: order.invoiceInfo.nextDate,
+        OrdWay: user.user_type === 1 || user.user_type === 4 ? 's_k' : 's_v'
+        //Username: user.username
+      }],
+      ttOrdDtl: products.map((product, i) => ({
+        ItemNum: product.itemnum,
+        Qty: product.quantity,
+        SalUnit: product.unit,
+        TmpOrdLine: i
+      })),
+      ttOrdMstText: [{
+        InfoText: order.invoiceInfo.comment
+      }]
+    }
   }
 }

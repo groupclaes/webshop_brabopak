@@ -53,6 +53,21 @@ export default class Cart {
     }
   }
 
+  async getProductInfos(products: any[]) {
+    const res: any[] = []
+
+    for (const p of products) {
+      const info = await this.getProductInfo(p.id)
+      res.push({
+        itemnum: info.itemnum,
+        quantity: p.quantity,
+        unit: info.unit
+      })
+    }
+
+    return res
+  }
+
   async getUserInfo(user_id: string): Promise<undefined | any> {
     if (!user_id) return undefined
 
