@@ -3,16 +3,6 @@ import { CommonModule } from '@angular/common'
 import { LayoutComponent } from './layout.component'
 import { EcommerceLayoutComponent } from './ecommerce-layout/ecommerce-layout.component'
 import { EmptyLayoutComponent } from './empty-layout/empty-layout.component'
-import { EnterpriseLayoutComponent } from './enterprise-layout/enterprise-layout.component'
-import { CenteredLayoutComponent } from './centered-layout/centered-layout.component'
-import { ModernLayoutComponent } from './modern-layout/modern-layout.component'
-import { DenseLayoutComponent } from './dense-layout/dense-layout.component'
-import { ClassicLayoutComponent } from './classic-layout/classic-layout.component'
-import { ClassyLayoutComponent } from './classy-layout/classy-layout.component'
-import { CompactLayoutComponent } from './compact-layout/compact-layout.component'
-import { FuturisticLayoutComponent } from './futuristic-layout/futuristic-layout.component'
-import { MaterialLayoutComponent } from './material-layout/material-layout.component'
-import { ThinLayoutComponent } from './thin-layout/thin-layout.component'
 import { MatMenuModule } from '@angular/material/menu'
 import { TranslateModule } from '@ngx-translate/core'
 import { FooterComponent } from './footer/footer.component'
@@ -42,18 +32,8 @@ import { BannerComponent } from './banner/banner.component'
 @NgModule({
   declarations: [
     LayoutComponent,
-    CenteredLayoutComponent,
-    ClassicLayoutComponent,
-    ClassyLayoutComponent,
-    CompactLayoutComponent,
-    DenseLayoutComponent,
     EcommerceLayoutComponent,
     EmptyLayoutComponent,
-    EnterpriseLayoutComponent,
-    FuturisticLayoutComponent,
-    MaterialLayoutComponent,
-    ModernLayoutComponent,
-    ThinLayoutComponent,
     FooterComponent,
     SettingsComponent,
     FullscreenComponent,
