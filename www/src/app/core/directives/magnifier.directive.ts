@@ -57,7 +57,7 @@ export class MagnifierDirective {
   }
 
   getCursorPos (e: any) {
-    var a, x = 0, y = 0
+    let a, x = 0, y = 0
     e = e || window.event
     /* get the x and y positions of the image: */
     a = this.img.getBoundingClientRect()

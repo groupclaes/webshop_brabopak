@@ -128,10 +128,10 @@ const error_code = {
 }
 
 const generate_code = (): string => {
-  var result = ''
+  let result = ''
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   crypto.getRandomValues(new Uint32Array(characters.length))
-  for (var i = 0; i < 8; i++) {
+  for (let i = 0; i < 8; i++) {
     result += characters.charAt(Math.floor(randomFloat() * characters.length))
   }
   return result;
