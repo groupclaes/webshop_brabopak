@@ -31,26 +31,17 @@ export function app(): express.Express {
 
   // Create app renderer to catch errors
   const ngApp = (req: any, res: any) => {
-
-    // if (!req.url.startsWith('/assets/') && !req.url.startsWith('/nl')) {
-    //   const defaultLang = 'nl'
-    //   const lang = req.acceptsLanguages(languages)
-
-    //   const definedLang = lang || defaultLang
-
-    //   res.redirect(301, `/${definedLang}${req.url}`)
-    // }
     res.render(
       indexHtml,
       { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] },
-      (err: Error, html: string) => {
+      (err: Error, html: string | undefined) => {
         let status = 200
 
-        if (html && html.includes('404-error')) {
+        if (html?.includes('404-error')) {
           status = 404
         }
 
-        if (html && html.includes('401-error')) {
+        if (html?.includes('401-error')) {
           status = 401
         }
 
@@ -102,7 +93,7 @@ function run(): void {
 // The below code is to ensure that the server is run only when not requiring the bundle.
 declare const __non_webpack_require__: NodeRequire
 const mainModule = __non_webpack_require__.main
-const moduleFilename = mainModule && mainModule.filename || ''
+const moduleFilename = mainModule?.filename || ''
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run()
 }
