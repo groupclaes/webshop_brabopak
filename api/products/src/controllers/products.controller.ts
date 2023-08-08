@@ -36,7 +36,7 @@ export const get = async (request: FastifyRequest<{
     })
 
     const promises = [
-      repo.get(id, usercode, culture, token.sub),
+      repo.get(id, usercode, culture, token?.sub),
       oe.run('getProdInfo', [
         'BRA',
         0,
