@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
 import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 

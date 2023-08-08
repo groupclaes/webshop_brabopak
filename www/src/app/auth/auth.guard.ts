@@ -1,12 +1,9 @@
 import { inject } from '@angular/core'
 import { ActivatedRouteSnapshot, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
-// import { environment } from 'src/environments/environment'
 import { AuthService } from './auth.service'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
-// const client_id = environment.sso.client_id
-// const scope = environment.sso.scope
 
 export const authGuard = async (route: ActivatedRouteSnapshot): Promise<boolean> => {
   const auth = inject(AuthService)
@@ -42,7 +39,3 @@ export const authGuard = async (route: ActivatedRouteSnapshot): Promise<boolean>
   router.navigate([localize.translateRoute('/auth/sign-in')])
   return false
 }
-
-// const login = () => {
-//   window.location.href = `https://login.foodpartners-international.com?client_id=${client_id}&scope=${scope}&redirect_url=https%3A%2F%2F${location.hostname}${encodeURIComponent(location.pathname)}%3Fauthorization_code%3D`
-// }

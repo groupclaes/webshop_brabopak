@@ -66,8 +66,7 @@ export class HomePageComponent implements OnDestroy {
   }
 
   get name(): string | undefined {
-    return this.auth.currentCustomer?.name
-    // return this.auth.id_token?.given_name
+    return this.auth.currentCustomer?.name ?? ''
   }
 
   get abandonedCart(): { count: number } | undefined {

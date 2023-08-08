@@ -1,4 +1,3 @@
-import { CurrencyPipe } from '@angular/common'
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'

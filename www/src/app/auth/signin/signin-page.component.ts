@@ -7,6 +7,7 @@ import { Subscription, firstValueFrom } from 'rxjs'
 import { AuthService } from '../auth.service'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
+import { TranslateService } from '@ngx-translate/core'
 
 @Component({
   selector: 'bra-signin-page',
@@ -34,7 +35,8 @@ export class SigninPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private localize: LocalizeRouterService,
     private recaptchaV3Service: ReCaptchaV3Service,
-    private modalCtrl: ModalsService
+    private modalCtrl: ModalsService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -150,10 +152,10 @@ export class SigninPageComponent implements OnInit, OnDestroy {
   handleError(authorizeResponse: IAuthorizeResponse) {
     const error = authorizeResponse.errors.find(err => err.error === 'PasswordPolicy')
     if (error) {
-      // if (confirm(this.translate.instant(`errors.PasswordPolicy-${error.error_code}`, { length: error.args?.length }))) {
-      //   this.router.navigate(['/account/password-change'])
-      //   return
-      // }
+      if (confirm(this.translate.instant(`errors.PasswordPolicy-${error.error_code}`, { length: error.args?.length }))) {
+        this.router.navigate(['/account/password-change'])
+        return
+      }
     }
     this.goToDashboard()
   }

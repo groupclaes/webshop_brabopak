@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, ElementRef, Inject } from '@angular/core'
 import pck from '../../package.json'
 
 import { DOCUMENT, registerLocaleData } from '@angular/common'
@@ -8,7 +8,6 @@ import { TranslateService } from '@ngx-translate/core'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { filter, map, mergeMap } from 'rxjs'
 import { MetaService } from './@shared/services/meta.service'
-import { environment } from 'src/environments/environment'
 
 registerLocaleData(localeNlBE)
 registerLocaleData(localeFrBE)
@@ -33,7 +32,6 @@ export class AppComponent {
   ) {
     document.documentElement.lang = translate.currentLang
     _elementRef.nativeElement.removeAttribute('ng-version')
-    // this.initTranslateService(translate)
 
     this.ngOnInit(translate)
   }

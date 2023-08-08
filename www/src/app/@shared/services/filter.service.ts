@@ -167,7 +167,8 @@ export class FilterService {
   set CategoryId(value: number | undefined) {
     if (!value || isNaN(value)) {
       value = 0
-    } else if (this._categoryId !== value) {
+    }
+    if (this._categoryId !== value) {
       this._categoryId = value
       if (this._catSub !== undefined) {
         this._catSub.next(value)

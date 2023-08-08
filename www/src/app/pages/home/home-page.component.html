@@ -21,44 +21,4 @@
       [items]="block.products">
     </bra-products-block>
   </ng-container>
-
-  <!-- <bra-products-block class="border-b" header="Uitgelichte producten" [items]="dashboard.spotlight">
-  </bra-products-block>
-  <bra-products-block class="border-b" header="Toppers van deze maand" [items]="dashboard.bestSelling">
-  </bra-products-block>
-  <div class="flex flex-col p-8 border-b dark:rounded-xl dark:bg-gray-800">
-    <div class="flex flex-row justify-between items-center mb-6">
-      <div class="text-xl md:text-3xl font-semibold tracking-tight leading-8">
-        Kruiden & Marinades in de spotlight
-      </div>
-      <div class="text-primary dark:text-accent">
-        Bekijk alle Kruiden & Marinades <i class="fal far fa-arrow-right"></i>
-      </div>
-    </div>
-    <div class="flex flex-row w-full font-serif">
-      <div class="flex justify-between space-x-2 w-full">
-        <a class="flex flex-col w-1/4 max-w-[15rem]" [routerLink]="['/product', item.id, itemName(item)] | localize"
-          *ngFor="let item of items">
-          <img [src]="item.url" [ngStyle]="{background: '#' + item.color}"
-            class="mx-auto w-60 h-60 border drop-shadow rounded-xl cursor-pointer hover:opacity-75" alt="">
-
-          <div class="flex flex-row justify-between space-x-4 mt-2 cursor-pointer group">
-            <div class="flex flex-col">
-              <div class="text-md group-hover:text-primary group-hover:underline group-hover:dark:text-accent">
-                {{ item.name }}</div>
-              <div class="text-sm text-secondary-500 font-light mt-1">{{ item.unit }}</div>
-            </div>
-            <div class="flex flex-col text-lg font-medium leading-tight">
-              {{ item.price | currency:'EUR':'symbol-narrow':'0.2-2':culture }}
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-
-  </div>
-  <bra-products-block class="border-b" header="Nieuw in ons gamma" [items]="dashboard.newP"></bra-products-block>
-  <bra-products-block class="border-b" header="Recent door jouw bekeken" [items]="dashboard.recent">
-  </bra-products-block>
-  <bra-products-block class="" header="Aanbevolen voor jouw" [items]="dashboard.favorites"></bra-products-block> -->
 </div>
