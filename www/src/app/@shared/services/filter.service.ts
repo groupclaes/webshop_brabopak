@@ -112,7 +112,7 @@ export class FilterService {
 
     this.router.navigate([route], {
       queryParams: {
-        page: this._page || 0 > 0 ? this._page : undefined,
+        page: (this._page || 0) > 0 ? this._page : undefined,
         query: this._query,
         favorites: this._favorites,
         promo: this._promo,
