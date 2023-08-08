@@ -8,8 +8,8 @@ import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router'
 import { CartComponentsModule } from 'src/app/core/components/cart/cart.module'
 import { ProductComponentsModule } from 'src/app/core/components/products/products.module'
 import { DirectivesModule } from 'src/app/core/directives/directives.module'
-import { PipesModule } from 'src/app/core/pipes/pipes.module'
 import { NgMathPipesModule } from 'ngx-pipes'
+import { FormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { NgMathPipesModule } from 'ngx-pipes'
     CartComponentsModule,
     DirectivesModule,
     ProductComponentsModule,
+    FormsModule,
     TranslateModule.forChild(),
     NgMathPipesModule,
     LocalizeRouterModule,

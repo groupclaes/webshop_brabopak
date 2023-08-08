@@ -73,7 +73,11 @@
           <i class="far fa-star text-lg text-secondary-300"></i>
         </div> -->
 
-        <!-- <input type="text" [(ngModel)]="product.customer_description" > -->
+        <div class="form-control w-full mt-2" *ngIf="auth.isAuthenticated()">
+          <label class="block font-medium mb-1">Klantspecifieke omschrijving</label>
+          <input type="text" class="flex items-center h-10 border shadow-sm bg-transparent rounded-md px-4 w-100"
+            [(ngModel)]="product.customer_description">
+        </div>
 
         <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line"
           [innerHTML]="product.description"></p>

@@ -90,7 +90,7 @@ export interface IProductBase {
 
 export interface IProduct extends IProductBase {
   description: string
-  custom_description?: string
+  customer_description?: string
   favorite?: any[]
   supplier_id: string
   delivery_time: number

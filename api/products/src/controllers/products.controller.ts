@@ -16,7 +16,7 @@ export const get = async (request: FastifyRequest<{
     culture?: string
   }
 }>, reply: FastifyReply) => {
-  const token: JWTPayload = request['token']
+  const token: JWTPayload | undefined = request['token']
 
   try {
     const repo = new Product()
@@ -25,7 +25,7 @@ export const get = async (request: FastifyRequest<{
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
-    request.log.debug({ user_id: token.sub, product_id: id, usercode, culture }, 'fetching product')
+    request.log.debug({ user_id: token?.sub, product_id: id, usercode, culture }, 'fetching product')
 
     const itemnum = await repo.findItemNumById(id)
 
@@ -69,7 +69,7 @@ export const get = async (request: FastifyRequest<{
     return success(reply, response)
   } catch (err) {
 
-    request.log.error({ user_id: token.sub, err }, 'failed to get product information')
+    request.log.error({ user_id: token?.sub, err }, 'failed to get product information')
     return error(reply, 'failed to get product information')
   }
 }
@@ -86,7 +86,7 @@ export const getBase = async (request: FastifyRequest<{
     culture?: string
   }
 }>, reply: FastifyReply) => {
-  const token: JWTPayload = request['token']
+  const token: JWTPayload | undefined = request['token']
 
   try {
     const repo = new Product()
@@ -94,7 +94,7 @@ export const getBase = async (request: FastifyRequest<{
     const usercode = request.query.usercode
     const culture = request.query.culture ?? 'nl'
 
-    request.log.debug({ user_id: token.sub, product_id: id, usercode, culture }, 'fetching product base')
+    request.log.debug({ user_id: token?.sub, product_id: id, usercode, culture }, 'fetching product base')
 
     const response = {
       product: await repo.getBase(id, usercode, culture)
@@ -108,7 +108,7 @@ export const getBase = async (request: FastifyRequest<{
 
     return success(reply, response)
   } catch (err) {
-    request.log.error({ user_id: token.sub, err }, 'failed to get base product information')
+    request.log.error({ user_id: token?.sub, err }, 'failed to get base product information')
     return error(reply, 'failed to get base product information')
   }
 }

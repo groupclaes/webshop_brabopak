@@ -198,6 +198,10 @@ export class ProductPageComponent implements OnDestroy {
     this.router.navigate([this.localize.translateRoute('/')])
   }
 
+  updateDescription(description: string) {
+    
+  }
+
   get featuresExpanded(): boolean {
     return true
   }

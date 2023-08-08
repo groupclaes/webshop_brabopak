@@ -37,7 +37,7 @@ export class SearchService {
   ) {
     this.route.queryParams.subscribe(params => {
       let filters: any = {}
-      if (params['id']) {
+      if (params['id'] && +params['id'] > 0) {
         filters.category_id = +params['id']
       }
 
@@ -221,11 +221,11 @@ export class SearchService {
 
   set category_id(value: number | undefined) {
     if (!value || isNaN(value)) {
-      value = 0
+      value = undefined
     }
     if (this._category_id !== value) {
       this._category_id = value
-      if (this._catSub !== undefined) {
+      if (this._catSub !== undefined && value) {
         this._catSub.next(value)
       }
     }
