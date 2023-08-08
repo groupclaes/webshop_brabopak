@@ -22,7 +22,7 @@ export class ProductsBlockComponent {
   }
 
   get culture(): string {
-    return environment.supportedLanguages.find(e => e.startsWith(this.translate.currentLang)) || environment.defaultLanguage
+    return environment.supportedLanguages.find(e => e.startsWith(this.translate.currentLang)) ?? environment.defaultLanguage
   }
 
   get url(): string {

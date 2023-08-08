@@ -81,98 +81,92 @@ export class CartCopyPageComponent {
   }
 
   async loadCart(type: string, id: any): Promise<void> {
-    switch (type) {
-      case 'order':
-        try {
-          const apiResponse = await this.api.order(id, this.auth.currentCustomer?.usercode || 0)
+    if (type === 'order') {
+      try {
+        const apiResponse = await this.api.order(id, this.auth.currentCustomer?.usercode || 0)
 
-          if (apiResponse && apiResponse.code === 200) {
-            const order = apiResponse.data.orders[0]
-            // remove line wich are no longer available
-            order.orderLines = order.orderLines.filter((e: any) => !e.isUnavailable)
-            this.order = order
-          }
-        } catch { } finally {
-          this.isLoading = false
-          this.calculateCartImpact('merge')
-          this.ref.markForCheck()
+        if (apiResponse && apiResponse.code === 200) {
+          const order = apiResponse.data.orders[0]
+          // remove line wich are no longer available
+          order.orderLines = order.orderLines.filter((e: any) => !e.isUnavailable)
+          this.order = order
         }
-        break
-
-      default:
-        alert(new Error('Unknown cart type!'))
-        break
+      } catch { } finally {
+        this.isLoading = false
+        this.calculateCartImpact('merge')
+        this.ref.markForCheck()
+      }
     }
+    else
+      alert(new Error('Unknown cart type!'))
   }
 
   calculateCartImpact(type: string) {
+    if (!this.order) return
+
+    const temp: any[] = []
+
     switch (type) {
       case 'replace':
-        if (this.order) {
-          this.target = this.order.orderLines.map((product: any) => ({
-            id: product.id,
-            count: product.count,
-            itemNum: product.itemNum,
-            itemName: product.itemName,
-            change: this.findCountChange(product.id, null, product.count)
-          }))
+        this.target = this.order.orderLines.map((product: any) => ({
+          id: product.id,
+          count: product.count,
+          itemNum: product.itemNum,
+          itemName: product.itemName,
+          change: this.findCountChange(product.id, null, product.count)
+        }))
 
-          // add missing lines to target
-          const temp: any[] = []
-          this.current.forEach((product, index, arr) => {
-            // check if is in target
-            if (!this.target.find(e => e.id === product.id)) {
-              temp.push({
-                id: product.id,
-                count: 0,
-                itemNum: product.itemNum,
-                itemName: product.itemName,
-                change: this.findCountChange(product.id, null, 0)
-              })
-            }
+        // add missing lines to target
+        this.current.forEach((product, index, arr) => {
+          // check if is in target
+          if (!this.target.find(e => e.id === product.id)) {
+            temp.push({
+              id: product.id,
+              count: 0,
+              itemNum: product.itemNum,
+              itemName: product.itemName,
+              change: this.findCountChange(product.id, null, 0)
+            })
+          }
 
-            if (index === arr.length - 1) {
-              temp.forEach((v, i) => {
-                this.target.splice(i, 0, v)
-              })
-              this.ref.markForCheck()
-            }
-          })
-        }
+          if (index === arr.length - 1) {
+            temp.forEach((v, i) => {
+              this.target.splice(i, 0, v)
+            })
+            this.ref.markForCheck()
+          }
+        })
         break
 
       case 'merge':
-        if (this.order) {
-          this.target = this.order.orderLines.map((product: any) => ({
-            id: product.id,
-            count: this.findCountSum(product.id, null, product.count),
-            itemNum: product.itemNum,
-            itemName: product.itemName,
-            change: product.count
-          }))
+        this.target = this.order.orderLines.map((product: any) => ({
+          id: product.id,
+          count: this.findCountSum(product.id, null, product.count),
+          itemNum: product.itemNum,
+          itemName: product.itemName,
+          change: product.count
+        }))
 
-          // add missing lines to target
-          const temp: any[] = []
-          this.current.forEach((product, index, arr) => {
-            // check if is in target
-            if (!this.target.find(e => e.id === product.id)) {
-              temp.push({
-                id: product.id,
-                count: product.count,
-                itemNum: product.itemNum,
-                itemName: product.itemName,
-                change: this.findCountChange(product.id, null, product.count)
-              })
-            }
+        // add missing lines to target
+        this.current.forEach((product, index, arr) => {
+          // check if is in target
+          if (!this.target.find(e => e.id === product.id)) {
+            temp.push({
+              id: product.id,
+              count: product.count,
+              itemNum: product.itemNum,
+              itemName: product.itemName,
+              change: this.findCountChange(product.id, null, product.count)
+            })
+          }
 
-            if (index === arr.length - 1) {
-              temp.forEach((v, i) => {
-                this.target.splice(i, 0, v)
-              })
-              this.ref.markForCheck()
-            }
-          })
-        }
+          if (index === arr.length - 1) {
+            temp.forEach((v, i) => {
+              this.target.splice(i, 0, v)
+            })
+            this.ref.markForCheck()
+          }
+        })
         break
 
       default:

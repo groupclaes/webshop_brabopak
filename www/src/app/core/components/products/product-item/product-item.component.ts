@@ -50,7 +50,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   get currentPrice(): string | null {
     if (this.item?.prices) {
-      if (this.item.prices && this.item.prices.some((e: any) => e.amount > 0)) {
+      if (this.item.prices.some((e: any) => e.amount > 0)) {
         let myprice: any = this.item.prices.find((e: any) => e.quantity === 1)
         return this.currencyPipe.transform(myprice.amount, 'EUR', 'symbol-narrow', '0.2-2', 'nl-BE')
       } else if (this.item.prices.some((e: any) => e.amount === -1)) {

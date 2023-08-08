@@ -16,9 +16,8 @@ export class MagnifierDirective {
 
     this.img.onload = () => {
       // remove all preexisting magnifiers
-      const elems = document.getElementsByClassName('magnifier-glass')
-      for (let i = 0; i < elems.length; i++) {
-        elems[i].remove()
+      for (const element of document.getElementsByClassName('magnifier-glass')) {
+        element.remove()
       }
 
       this.createMagnifier()
@@ -51,14 +50,14 @@ export class MagnifierDirective {
     this.glass.addEventListener("mousemove", this.moveMagnifier)
     this.img.addEventListener("mousemove", this.moveMagnifier)
     /*and also for touch screens:*/
-    this.glass.addEventListener("touchmove", this.moveMagnifier)
-    this.img.addEventListener("touchmove", this.moveMagnifier)
+    // this.glass.addEventListener("touchmove", this.moveMagnifier)
+    // this.img.addEventListener("touchmove", this.moveMagnifier)
     this.glass.style.display = 'none'
   }
 
-  getCursorPos (e: any) {
+  getCursorPos(e: MouseEvent) {
     let a, x = 0, y = 0
-    e = e || window.event
+    e = e
     /* get the x and y positions of the image: */
     a = this.img.getBoundingClientRect()
     /* calculate the cursor's x and y coordinates, relative to the image: */
@@ -70,7 +69,7 @@ export class MagnifierDirective {
     return { x: x, y: y }
   }
 
-  moveMagnifier (e: any) {
+  moveMagnifier(e: MouseEvent) {
     /* prevent any other actions that may occur when moving over the image */
     e.preventDefault()
     /* get the cursor's x and y positions: */
