@@ -2,6 +2,8 @@ import sql from 'mssql'
 import nodemailer from 'nodemailer'
 import fs from 'fs'
 
+import crypto from 'crypto'
+
 import db from '../db'
 
 const DB_NAME = 'brabopak'
@@ -126,14 +128,20 @@ const error_code = {
 }
 
 const generate_code = (): string => {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var charactersLength = characters.length;
+  var result = ''
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  var charactersLength = characters.length
+  crypto.getRandomValues(new Uint32Array(characters.length))
   for (var i = 0; i < 8; i++) {
-    result += characters.charAt(Math.floor(Math.random() *
+    result += characters.charAt(Math.floor(randomFloat() *
       charactersLength));
   }
   return result;
+}
+
+const randomFloat = function () {
+  const int = window.crypto.getRandomValues(new Uint32Array(1))[0]
+  return int / 2 ** 32
 }
 
 export class MFAError extends Error {
