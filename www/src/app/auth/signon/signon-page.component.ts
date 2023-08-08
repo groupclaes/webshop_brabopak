@@ -1,15 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 import { AuthService } from '../auth.service'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
+import { ActivatedRoute } from '@angular/router'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'bra-signon-page',
   templateUrl: './signon-page.component.html'
 })
-export class SignonPageComponent implements OnInit {
+export class SignonPageComponent implements OnDestroy {
   isLoading = false
   signonForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
@@ -17,15 +19,30 @@ export class SignonPageComponent implements OnInit {
     code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[A-Z]{12}$')]], // SGWQVXPQWZEM  --  FTPGIAPQDOSO
   })
 
+  $sub: Subscription
+
   constructor(
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
     private auth: AuthService,
     private translate: TranslateService,
-    private modalCtrl: ModalsService
-  ) { }
+    private modalCtrl: ModalsService,
+    private route: ActivatedRoute
+  ) {
+    this.$sub = this.route.queryParamMap.subscribe({
+      next: (params) => {
+        if (params.has('username'))
+          this.signonForm.controls['username'].setValue(params.get('username'))
+        if (params.has('login_hint'))
+          this.signonForm.controls['username'].setValue(params.get('login_hint'))
+        if (params.has('code'))
+          this.signonForm.controls['code'].setValue(params.get('code'))
+      }
+    })
+  }
 
-  ngOnInit(): void {
+  ngOnDestroy(): void {
+    this.$sub?.unsubscribe()
   }
 
   async signon() {
