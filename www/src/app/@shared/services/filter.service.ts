@@ -310,7 +310,7 @@ export class FilterService {
   }
 
   setPage(page?: number) {
-    this._page = (page || 0 > 0) ? page : undefined
+    this._page = (page || 0) > 0 ? page : undefined
     this.applyFilter()
   }
 

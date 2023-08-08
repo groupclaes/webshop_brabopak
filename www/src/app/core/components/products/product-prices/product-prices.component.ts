@@ -34,7 +34,7 @@ export class ProductPricesComponent {
     } else if (this.prices.some((e: any) => e.amount === -1)) {
       return this.translate.instant('price.request')
     }
-    return
+    return undefined
   }
 
   get prices(): IProductPrice[] {

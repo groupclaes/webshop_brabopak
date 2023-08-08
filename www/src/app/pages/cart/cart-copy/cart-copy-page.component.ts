@@ -221,11 +221,7 @@ export class CartCopyPageComponent {
   apply() {
     // check if products are still purchaseable
     this.target.forEach(product => {
-      try {
-        this.cart.update(product, product.count)
-      } catch (err) {
-        console.error(err)
-      }
+      this.cart.update(product, product.count).catch(console.error)
     })
     this.router.navigate(['/products'])
   }

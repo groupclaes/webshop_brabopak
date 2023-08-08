@@ -36,7 +36,8 @@
             <div *ngSwitchCase="1">
               <div class="flex flex-row border-b last:border-b-0" [id]="'product-' + product.id"
                 *ngFor="let product of service.products">
-                <img style="width:120px;height:120px" [src]="product.url | thumbSmall">
+                <img style="width:120px;height:120px" [alt]="'product image for ' + product.name"
+                  [src]="product.url | thumbSmall">
                 <div class="flex flex-row w-full p-2 space-x-4">
                   <div class="flex-auto">
                     <a [routerLink]="['/products']" class="text-lg font-bold text-primary-700"
