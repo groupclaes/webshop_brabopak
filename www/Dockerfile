@@ -14,11 +14,15 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY package.json /app/package.json
 ENV NODE_ENV test
-RUN npm install --legacy-peer-deps
+RUN npm install
 ENV NODE_ENV production
 
 # add app
-COPY . /app
+COPY ./src /app/src
+COPY server.ts /app/server.ts
+COPY angular.json /app/angular.json
+COPY tsconfig.json /app/tsconfig.json
+COPY tailwind.config.js /app/tailwind.config.js
 
 # run tests
 # RUN ng test --watch=false
@@ -35,6 +39,7 @@ RUN ng build --configuration staging --output-path=dist
 
 # base image
 FROM docker-registry.groupclaes.be/nginx:latest
+USER nginx
 
 #remove all content form html
 RUN rm -rf /usr/share/nginx/html/*
