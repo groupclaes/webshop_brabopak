@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
 import { SearchService } from './search.service'
-import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { SearchApiService } from 'src/app/core/api/search-api.service'
 
@@ -33,10 +32,6 @@ export class SearchComponent {
       this.query = this.service.query
       this.updateSuggestions()
       this.ref.markForCheck()
-
-      // setTimeout(() => {
-      //   document.getElementById('search_field')?.focus()
-      // }, 80)
     })
   }
 

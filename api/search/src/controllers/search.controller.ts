@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { success, fail, error } from '@groupclaes/fastify-elastic/responses'
+import { success, error } from '@groupclaes/fastify-elastic/responses'
 import { JWTPayload } from 'jose'
 import oe from '@groupclaes/oe-connector'
 
