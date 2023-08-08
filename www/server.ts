@@ -49,7 +49,7 @@ export function app(): express.Express {
           status = 500
         }
 
-        res.status(status).send(html || err.message)
+        res.status(status).send(html ?? err.message)
       }
     )
   }
@@ -61,7 +61,7 @@ export function app(): express.Express {
     const defaultLang = 'nl'
     const lang = req.acceptsLanguages(languages)
 
-    const definedLang = lang || defaultLang
+    const definedLang = lang ?? defaultLang
 
     res.redirect(301, `/${definedLang}`)
   })
@@ -93,7 +93,7 @@ function run(): void {
 // The below code is to ensure that the server is run only when not requiring the bundle.
 declare const __non_webpack_require__: NodeRequire
 const mainModule = __non_webpack_require__.main
-const moduleFilename = mainModule?.filename || ''
+const moduleFilename = mainModule?.filename ?? ''
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run()
 }
