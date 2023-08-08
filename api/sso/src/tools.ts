@@ -15,8 +15,7 @@ export function getTrustRating(user_agent?: string): number {
 export function getImpersonation(username: string): { username: string, impersonated_user: string } | undefined {
   const r = adminReg.exec(username)
 
-  if (!r || !r.groups || !r.groups.username)
-    return
+  if (!r?.groups?.username) return
   
   const impersonated_user = r.groups.email
   switch (r.groups.username) {
