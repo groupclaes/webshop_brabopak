@@ -26,7 +26,7 @@ USER node
 WORKDIR /usr/src/app
 
 # copy file from build
-COPY --chmod=440 --chown=node:node --from=build /usr/src/app ./
+COPY --from=build /usr/src/app ./
 
 # command to run when intantiate an image
 CMD ["node","index.min.js"]
