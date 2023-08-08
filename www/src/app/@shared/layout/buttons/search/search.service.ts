@@ -265,7 +265,7 @@ export class SearchService {
   }
 
   set only_favorites(value: boolean | undefined) {
-    this._only_favorites = value || undefined
+    this._only_favorites = value === true ? true : undefined
     this._page = undefined
     this.apply()
   }
@@ -275,7 +275,7 @@ export class SearchService {
   }
 
   set only_promo(value: boolean | undefined) {
-    this._only_promo = value || undefined
+    this._only_promo = value === true ? true : undefined
     this._page = undefined
     this.apply()
   }
@@ -285,7 +285,7 @@ export class SearchService {
   }
 
   set only_new(value: boolean | undefined) {
-    this._only_new = value || undefined
+    this._only_new = value === true ? true : undefined
     this._page = undefined
     this.apply()
   }
@@ -295,7 +295,7 @@ export class SearchService {
   }
 
   set only_best_selling(value: boolean | undefined) {
-    this._only_best_selling = value || undefined
+    this._only_best_selling = value === true ? true : undefined
     this._page = undefined
     this.apply()
   }
@@ -305,7 +305,7 @@ export class SearchService {
   }
 
   set only_spotlight(value: boolean | undefined) {
-    this._only_spotlight = value || undefined
+    this._only_spotlight = value === true ? true : undefined
     this._page = undefined
     this.apply()
   }
@@ -315,7 +315,7 @@ export class SearchService {
   }
 
   set only_recent(value: boolean | undefined) {
-    this._only_recent = value || undefined
+    this._only_recent = value === true ? true : undefined
     this._page = undefined
     this.apply()
   }
