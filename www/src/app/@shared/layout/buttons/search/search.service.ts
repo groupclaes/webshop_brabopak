@@ -222,7 +222,8 @@ export class SearchService {
   set category_id(value: number | undefined) {
     if (!value || isNaN(value)) {
       value = 0
-    } else if (this._category_id !== value) {
+    }
+    if (this._category_id !== value) {
       this._category_id = value
       if (this._catSub !== undefined) {
         this._catSub.next(value)
