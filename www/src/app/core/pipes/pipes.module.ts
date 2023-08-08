@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { FilterEmptyPipe } from './filter-empty.pipe';
-import { ThumbSmallPipe } from './thumb-small.pipe';
+import { FilterEmptyPipe } from './filter-empty.pipe'
+import { ThumbSmallPipe } from './thumb-small.pipe'
 import { ActivePagesPipe } from './active-pages.pipe'
 
 @NgModule({

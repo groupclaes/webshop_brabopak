@@ -25,7 +25,7 @@ export default [{
     undefined
   ]
 }, {
-  method: 'DELTE',
+  method: 'DELETE',
   url: '/:id/description',
   handler: productsController.deleteDescription,
   requiredPermissions: [
