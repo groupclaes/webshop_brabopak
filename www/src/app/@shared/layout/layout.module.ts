@@ -15,9 +15,6 @@ import { BookmarksComponent } from './buttons/bookmarks/bookmarks.component'
 import { NotificationsComponent } from './buttons/notifications/notifications.component'
 import { AccountComponent } from './buttons/account/account.component'
 import { HorizontalNavigationComponent } from './navigation/horizontal-navigation/horizontal-navigation.component'
-import { VerticalNavigationComponent } from './navigation/vertical-navigation/vertical-navigation.component'
-import { VerticalNavigationGroupItemComponent } from './navigation/vertical-navigation-group-item/vertical-navigation-group-item.component'
-import { VerticalNavigationAsideItemComponent } from './navigation/vertical-navigation-aside-item/vertical-navigation-aside-item.component'
 import { RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { CartComponent } from './buttons/cart/cart.component'
@@ -45,9 +42,6 @@ import { BannerComponent } from './banner/banner.component'
     NotificationsComponent,
     AccountComponent,
     HorizontalNavigationComponent,
-    VerticalNavigationComponent,
-    VerticalNavigationGroupItemComponent,
-    VerticalNavigationAsideItemComponent,
     FlyoutNavigationComponent,
     FlyoutNavigationGroupComponent,
     MobileNavigationComponent,
