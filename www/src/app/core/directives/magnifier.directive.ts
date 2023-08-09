@@ -47,8 +47,8 @@ export class MagnifierDirective {
     this.w = this.glass.offsetWidth / 2
     this.h = this.glass.offsetHeight / 2
     /*execute a function when someone moves the magnifier glass over the image:*/
-    this.glass.addEventListener("mousemove", this.moveMagnifier)
-    this.img.addEventListener("mousemove", this.moveMagnifier)
+    this.glass.addEventListener("mousemove", e => this.moveMagnifier(e))
+    this.img.addEventListener("mousemove", e => this.moveMagnifier(e))
     /*and also for touch screens:*/
     // this.glass.addEventListener("touchmove", this.moveMagnifier)
     // this.img.addEventListener("touchmove", this.moveMagnifier)

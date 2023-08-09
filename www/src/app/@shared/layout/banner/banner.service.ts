@@ -18,12 +18,18 @@ export class BannerService {
 
     auth.customerChange.subscribe({
       next: () => {
-        if (auth.isMultiUser()) {
+        if (auth.isMultiUser() && auth.currentCustomer) {
           update()
           return
         }
 
         this._content = undefined
+      }
+    })
+
+    auth.change.subscribe({
+      next: (token) => {
+        if (!token) this._content = undefined
       }
     })
 

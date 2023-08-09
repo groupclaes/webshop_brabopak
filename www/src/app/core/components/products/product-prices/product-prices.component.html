@@ -5,6 +5,7 @@
   <div class="flex flex-row items-center space-x-2">
     <span class="text-xl md:text-4xl font-light">
       {{ price }}
+      <span class="text-md text-gray-600" *ngIf="unitPrice" [title]="unitTitle">({{ unitPrice }})</span>
     </span>
     <span *ngIf="prices[prices.length-1].discount > 0"
       class="bg-red-500 text-white text-md font-medium mr-2 px-4 py-2 rounded dark:bg-red-300 dark:text-red-900">

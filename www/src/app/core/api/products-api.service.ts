@@ -94,6 +94,10 @@ export interface IProduct extends IProductBase {
   favorite?: any[]
   supplier_id: string
   delivery_time: number
+  content_unit?: {
+    quantity: number
+    name: string
+  }
   available_on?: Date
   in_backorder?: boolean
   attributes?: any[]

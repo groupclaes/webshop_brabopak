@@ -29,6 +29,8 @@ export class ProductPageComponent implements OnDestroy {
 
   private _active_image: number = 0
 
+  private _id: number | undefined
+
   breadcrumbs: IBreadcrumb[] = [{ name: 'Producten' }]
 
   availableLimit: Date = new Date(2050, 11, 31)
@@ -50,16 +52,15 @@ export class ProductPageComponent implements OnDestroy {
   ) {
     this._subs.push(this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
-        const id = +params['id']
+        this._id = +params['id']
         // const name = params['name'].replace(/---/g, ' - ').replace(/-/g, ' ')
-
-        this.load(id)
+        this.load(this._id)
       }
     }))
 
     this._subs.push(this.auth.customerChange.subscribe(() => {
-      if (this._product)
-        this.load(this._product.id)
+      if (this._id)
+        this.load(this._id)
     }))
   }
 
@@ -76,6 +77,7 @@ export class ProductPageComponent implements OnDestroy {
       this.ref.markForCheck()
       return
     }
+    this._product = undefined
     this.loading = true
     this.ref.markForCheck()
 

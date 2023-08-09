@@ -14,6 +14,7 @@ import { IProductPrice } from 'src/app/core/api/products-api.service'
 export class ProductPricesComponent {
   @Input() culture: string = 'nl-BE'
   @Input() unit: string = ''
+  @Input('content-unit') content_unit?: { quantity: number, name: string }
   @Input() set prices(value: IProductPrice[]) {
     this._prices = value
     this.ref.markForCheck()
@@ -34,6 +35,26 @@ export class ProductPricesComponent {
     } else if (this.prices.some((e: any) => e.amount === -1)) {
       return this.translate.instant('price.request')
     }
+    return undefined
+  }
+
+  get unitPrice(): string | undefined {
+    if (this.content_unit && this.prices.some((e: any) => e.amount > 0)) {
+      const myprice: any = this.prices.find((e: any) => e.quantity === 1)
+      let unit_price = myprice.amount / this.content_unit.quantity
+      let price_string = this.currencyPipe.transform(unit_price > 1 ? unit_price : unit_price * 100, 'EUR', 'symbol-narrow', '0.2-2', this.culture)
+      if (price_string && unit_price < 1)
+        price_string = price_string?.replace('€', '¢')
+
+      if (price_string)
+        return `${price_string}/${this.content_unit.name}`
+    }
+    return undefined
+  }
+
+  get unitTitle(): string | undefined {
+    if (this.content_unit)
+      return `Prijs per ${this.content_unit.name} steeds indicatief, facturatie is altijd per ${this.unit}`
     return undefined
   }
 

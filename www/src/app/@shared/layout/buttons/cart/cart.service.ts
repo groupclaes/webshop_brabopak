@@ -50,7 +50,7 @@ export class CartService {
       const response = await this.api.cart(this.auth.currentCustomer.usercode)
 
       this._initialized = true
-      if (response) {
+      if (response?.data) {
         this._products = response.data[0].products ?? []
         this._modified = response.data[0].modified
       } else {

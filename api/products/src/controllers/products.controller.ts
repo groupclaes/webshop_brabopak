@@ -48,7 +48,9 @@ export const get = async (request: FastifyRequest<{
       ])
     ]
 
-    const responses = await Promise.all(promises)
+    const responses = await Promise.all(promises).catch(err => {
+      request.log.error({ err }, 'error in promise.all')
+    })
     const response = {
       product: responses[0]
     }
@@ -68,7 +70,6 @@ export const get = async (request: FastifyRequest<{
     request.log.info({ product_id: id, usercode, culture }, 'Get product details')
     return success(reply, response)
   } catch (err) {
-
     request.log.error({ user_id: token?.sub, err }, 'failed to get product information')
     return error(reply, 'failed to get product information')
   }
