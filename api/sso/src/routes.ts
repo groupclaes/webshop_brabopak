@@ -32,4 +32,8 @@ export default [{
   method: 'POST',
   url: '/users/update-password',
   handler: usersController.postUpdatePassword
+}, {
+  method: 'POST',
+  url: '/users/reset-password',
+  handler: usersController.postRequestPasswordReset
 }]
