@@ -236,4 +236,31 @@ export class SSO {
       ip: []
     }
   }
+
+  async createResetToken(user_id: string, ip: string = '127.0.0.1'): Promise<string | undefined> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('user_id', sql.Int, user_id)
+    r.input('ip', sql.VarChar, ip)
+
+    const res = await r.execute(`${this.schema}.[usp_createResetToken]`)
+    return res.recordset[0]?.token
+  }
+
+  async revokeResetToken(token: string, ip: string = '127.0.0.1', reason?: string): Promise<boolean> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('token', sql.VarChar, token)
+    r.input('ip', sql.VarChar, ip)
+    r.input('reason', sql.VarChar, reason)
+
+    const res = await r.execute(`${this.schema}.[usp_revokeResetToken]`)
+    return res.rowsAffected.length > 0 && res.rowsAffected[0] > 0
+  }
+
+  async getResetToken(token: string): Promise<string | undefined> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('token', sql.VarChar, token)
+
+    const res = await r.execute(`${this.schema}.[usp_getResetToken]`)
+    return res.recordset[0]?.user_id
+  }
 }

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResetPasswordComponent } from './reset-password.component';
+import { ResetPasswordPageComponent } from './reset-password-page.component';
 
 
 
 @NgModule({
   declarations: [
-    ResetPasswordComponent
+    ResetPasswordPageComponent
   ],
   imports: [
     CommonModule
   ]
 })
-export class ResetPasswordModule { }
+export class ResetPasswordPageModule { }

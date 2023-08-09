@@ -17,7 +17,6 @@ import { TranslateService } from '@ngx-translate/core'
 export class SigninPageComponent implements OnInit, OnDestroy {
   mfaRequired = false
   isLoading = false
-  showIncorrectCredentials = false
 
   signinForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.email]],

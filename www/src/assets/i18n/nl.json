@@ -51,6 +51,19 @@
         }
       }
     },
+    "forgot-password": {
+      "form": {
+        "title": "Wachtwoord vergeten",
+        "username": "E-mail",
+        "button": "Wachtwoord herstellen",
+        "action1": "Inloggen",
+        "action2": "Aanmelden",
+        "errors": {
+          "username-required": "E-mailadres is een verplicht veld",
+          "username-email": "E-mailadres bevat een syntaxfout"
+        }
+      }
+    },
     "home": {
       "header": {
         "title": "Welkom terug {{name}}"

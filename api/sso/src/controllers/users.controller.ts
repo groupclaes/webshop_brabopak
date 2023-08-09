@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import { JWTPayload } from 'jose'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { env } from 'process'
+import { success, fail, error } from '@groupclaes/fastify-elastic/responses'
 import oe from '@groupclaes/oe-connector'
 
 import User from '../repositories/user.repository'
@@ -99,16 +100,7 @@ export const postSignOn = async (request: FastifyRequest<{
     }
   } catch (err) {
     request.log.debug({ reason: 'unknown error', err }, 'Failed to register user!')
-    return reply
-      .status(500)
-      .send({
-        status: 'error',
-        code: 500,
-        message: 'failed to register user',
-        data: {
-          error: err
-        }
-      })
+    return error(reply, 'failed to register user')
   }
 }
 
@@ -116,7 +108,7 @@ export const postSignOn = async (request: FastifyRequest<{
  * Revoke current or supplied refreshToken
  */
 export const postRevokeToken = async (request: FastifyRequest, reply: FastifyReply) => {
-
+  return fail(reply, { reason: 'Method not implemented' })
 }
 
 /**
@@ -199,7 +191,72 @@ export const postUpdatePassword = async (request: FastifyRequest<{
     }
     return
   } catch (err) {
-    throw err
+    request.log.error({ err }, 'error while updating password')
+    return error(reply, 'error while updating password')
+  }
+}
+
+/**
+ * Request user password reset
+ * @param {FastifyRequest} request
+ * @param {FastifyReply} reply
+ */
+export const postRequestPasswordReset = async (request: FastifyRequest<{
+  Body: {
+    username: string
+    password?: string
+  },
+  Querystring: {
+    reset_token?: string
+  }
+}>, reply: FastifyReply) => {
+  let ip_address = '127.0.0.1'
+  let client_ip = request.headers['x-client-ip']
+  if (typeof client_ip === 'string') {
+    ip_address = client_ip.split(',')[0]
+  } else if (client_ip) {
+    ip_address = client_ip[0].split(',')[0]
+  }
+
+  try {
+    const repo = new User()
+
+    const user = await repo.sso.get(request.body.username)
+
+    if (!user?.active)
+      return fail(reply, { username: 'account not found!' })
+
+    if (request.query.reset_token) {
+      // user is completing password reset using reset_token
+      const user_id = await repo.sso.getResetToken(request.query.reset_token)
+
+      if (!user_id)
+        return fail(reply, { reset_token: 'token not found!' })
+
+      if (!request.body.password)
+        return fail(reply, { password: 'missing in payload' })
+
+      const hashed_password = bcrypt.hashSync(request.body.password, +(env['BCRYPT_COST'] ?? 13))
+
+      if (await repo.updatePassword(user_id, hashed_password)) {
+        await repo.sso.revokeResetToken(request.query.reset_token, ip_address, 'used')
+        return success(reply, { success: true })
+      }
+
+      return error(reply, 'failed to update password in db')
+    } else {
+      // user is requesting a new reset_token
+      const token = await repo.sso.createResetToken(user.id.toString(), ip_address)
+
+      if (!token)
+        return error(reply, 'error creating new reset token')
+
+      return success(reply, { success: true, token })
+    }
+    // return fail(reply, { username: 'mallformed username supplied' })
+  } catch (err) {
+    request.log.error({ err }, 'error while requesting password reset')
+    return error(reply, 'error while requesting password reset')
   }
 }
 

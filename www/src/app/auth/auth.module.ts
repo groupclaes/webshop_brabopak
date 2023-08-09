@@ -20,6 +20,14 @@ import { RouterModule } from '@angular/router'
         {
           path: 'sign-up',
           loadChildren: () => import('./signup/signup-page.module').then(m => m.SignupPageModule)
+        },
+        {
+          path: 'reset-password',
+          loadChildren: () => import('./reset-password/reset-password-page.module').then(m => m.ResetPasswordPageModule)
+        },
+        {
+          path: 'forgot-password',
+          loadChildren: () => import('./forgot-password/forgot-password-page.module').then(m => m.ForgotPasswordPageModule)
         }
       ]
     }])
