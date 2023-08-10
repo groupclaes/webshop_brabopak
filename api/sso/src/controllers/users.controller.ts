@@ -223,6 +223,7 @@ export const postRequestPasswordReset = async (request: FastifyRequest<{
   }
 
   const culture = request.query.culture ?? 'nl'
+  request.log.debug({ reset_token: request.query.reset_token, username: request.body.username }, 'request pasword reset')
 
   try {
     const repo = new User()
