@@ -42,7 +42,7 @@ COPY nginx.conf /app/nginx.conf
 
 # base image
 FROM docker-registry.groupclaes.be/nginx:latest
-USER nginx
+# USER nginx
 
 #remove all content form html
 RUN rm -rf /usr/share/nginx/html/*
