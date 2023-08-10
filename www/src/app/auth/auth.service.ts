@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment'
 import { isPlatformBrowser } from '@angular/common'
 import { Router } from '@angular/router'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
+import { IBaseApiResponse } from '../core/api'
 
 const api_url = environment.sso.url
 const client_id = environment.sso.client_id
@@ -170,9 +171,9 @@ export class AuthService {
   }
 
   private async syncCustomers() {
-    const result = await firstValueFrom(this.http.get<any[] | undefined>(`${api_url}users/customers`))
-    if (result && result.length > 0) {
-      this._customer_cache = result
+    const result = await firstValueFrom(this.http.get<IBaseApiResponse>(`${api_url}users/customers`))
+    if (result?.data) {
+      this._customer_cache = result.data.customers
       window.sessionStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(result))
       this.customerChange.next()
     }
