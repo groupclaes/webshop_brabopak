@@ -3,7 +3,7 @@
     <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
       <div class="text-4xl font-extrabold tracking-tight leading-tight" translate="pages.signon.form.title"></div>
       <div class="flex items-baseline mt-0.5 font-medium">
-        <div>Al een account?</div>
+        <div>Reeds aangemeld?</div>
         <a class="ml-1 text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-in'] | localize"
           [queryParams]="{ login_hint: currentUsername }">Inloggen</a>
       </div>
@@ -18,6 +18,24 @@
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signonForm.get('username')?.hasError('email') && myform.submitted"
             translate="pages.signon.form.errors.username-email"></div>
+        </div>
+
+        <div class="form-control w-full mt-2">
+          <label class="block font-medium mb-1" for="given_name" translate="pages.signon.form.given_name"></label>
+          <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
+          invalid:border-danger" formControlName="given_name" required id="given_name" autocomplete="given-name" type="text">
+          <div class="text-sm font-medium text-danger mt-1"
+            *ngIf="signonForm.get('given_name')?.hasError('required') && myform.submitted"
+            translate="pages.signon.form.errors.given_name-required"></div>
+        </div>
+
+        <div class="form-control w-full mt-2">
+          <label class="block font-medium mb-1" for="family_name" translate="pages.signon.form.family_name"></label>
+          <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
+          invalid:border-danger" formControlName="family_name" required id="family_name" autocomplete="family-name" type="text">
+          <div class="text-sm font-medium text-danger mt-1"
+            *ngIf="signonForm.get('family_name')?.hasError('required') && myform.submitted"
+            translate="pages.signon.form.errors.family_name-required"></div>
         </div>
 
         <div class="form-control w-full mt-2">
@@ -54,7 +72,7 @@
           <a class="text-md font-medium text-primary dark:text-accent hover:underline"
             [routerLink]="['/auth/forgot-password']" [queryParams]="{ code: currentUsername }"
             translate="pages.signon.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/new-up']"
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-up']"
             translate="pages.signon.form.action2"></a>
         </div>
 

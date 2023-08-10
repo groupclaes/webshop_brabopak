@@ -1,53 +1,53 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core'
+import { ChangeDetectorRef, Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 import { AuthService } from '../auth.service'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { ActivatedRoute } from '@angular/router'
-import { Subscription } from 'rxjs'
+import { firstValueFrom } from 'rxjs'
 
 @Component({
   selector: 'bra-signon-page',
   templateUrl: './signon-page.component.html'
 })
-export class SignonPageComponent implements OnDestroy {
+export class SignonPageComponent {
   isLoading = false
-  signonForm: FormGroup = this.fb.group({
-    username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
-    password: ['', [Validators.required, Validators.minLength(8)]], // shop2069
-    code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[A-Z]{12}$')]], // SGWQVXPQWZEM  --  FTPGIAPQDOSO
-  })
-
-  $sub: Subscription
+  signonForm: FormGroup
 
   constructor(
+    route: ActivatedRoute,
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
     private auth: AuthService,
     private translate: TranslateService,
-    private modalCtrl: ModalsService,
-    private route: ActivatedRoute
+    private modalCtrl: ModalsService
   ) {
-    this.$sub = this.route.queryParamMap.subscribe({
-      next: (params) => {
-        if (params.has('username'))
-          this.signonForm.controls['username'].setValue(params.get('username'))
-        if (params.has('login_hint'))
-          this.signonForm.controls['username'].setValue(params.get('login_hint'))
-        if (params.has('code'))
-          this.signonForm.controls['code'].setValue(params.get('code'))
-      }
+    this.signonForm = this.fb.group({
+      username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
+      password: ['', [Validators.required, Validators.minLength(8)]], // shop2069
+      given_name: ['', [Validators.required]],
+      family_name: ['', [Validators.required]],
+      code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[A-Z]{12}$')]] // SGWQVXPQWZEM  --  FTPGIAPQDOSO
     })
-  }
 
-  ngOnDestroy(): void {
-    this.$sub?.unsubscribe()
+    firstValueFrom(route.queryParams).then((params) => {
+      if (params['username'])
+        this.signonForm.controls['username'].setValue(params['username'])
+
+      if (params['login_hint'])
+        this.signonForm.controls['username'].setValue(params['login_hint'])
+
+      if (params['code'])
+        this.signonForm.controls['code'].setValue(params['code'])
+    })
   }
 
   async signon() {
     if (!this.signonForm.valid)
       return
+
+    // check if reg is with brabopak mail
 
     await this.signonSso()
   }

@@ -15,8 +15,11 @@ import User from '../repositories/user.repository'
  */
 export const postSignOn = async (request: FastifyRequest<{
   Body: {
-    username: string,
-    password: string,
+    username: string
+    password: string
+    given_name: string
+    family_name: string
+    phone_number?: string
     code: string
   }
 }>, reply: FastifyReply) => {
