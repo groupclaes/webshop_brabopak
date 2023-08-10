@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment'
 import { isPlatformBrowser } from '@angular/common'
 import { Router } from '@angular/router'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
-import { IBaseApiResponse } from '../core/api'
+import { IBaseApiResponse, trimParameters } from '../core/api'
 
 const api_url = environment.sso.url
 const client_id = environment.sso.client_id
@@ -81,6 +81,17 @@ export class AuthService {
 
   public signon(credentials: { username: string, password: string, code: string }): Promise<any> {
     return firstValueFrom(this.http.post<any>(`${api_url}users/signon`, credentials))
+  }
+
+  public resetPassword(form: { username: string, password?: string, reset_token?: string }) {
+    const params = trimParameters({
+      reset_token: form.reset_token
+    })
+    delete form?.reset_token
+
+    return firstValueFrom(this.http.post<IBaseApiResponse>(`${api_url}users/reset-password`, form, {
+      params
+    }))
   }
 
   public getToken(authorization_code: string) {
