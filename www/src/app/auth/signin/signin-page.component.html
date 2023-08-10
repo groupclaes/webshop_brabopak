@@ -30,7 +30,7 @@
             *ngIf="signinForm.get('password')?.hasError('required') && myform.submitted"
             translate="pages.signin.form.errors.password-required"></div>
           <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signinForm.get('password')?.hasError('minlength') && myform.submitted"
+            *ngIf="signinForm.get('password')?.hasError('minLength') && myform.submitted"
             translate="pages.signin.form.errors.password-minLength"></div>
         </div>
 

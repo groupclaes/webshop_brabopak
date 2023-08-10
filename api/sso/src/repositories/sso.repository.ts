@@ -10,10 +10,12 @@ export class SSO {
    * Get user information
    */
   async get(username: string): Promise<undefined | {
-    id: number,
-    username: string,
-    password: string,
-    usercode: number,
+    id: number
+    username: string
+    password: string
+    given_name: string
+    family_name: string
+    usercode: number
     active: boolean
   }> {
     const r = new sql.Request(await db.get(DB_NAME))
@@ -49,7 +51,7 @@ export class SSO {
 
     const result = await r.execute(`${this.schema}.[usp_updateUserPassword]`)
 
-    if (result.recordset.length > 0) {
+    if (result.rowsAffected.length > 0) {
       return result.rowsAffected[0] > 0
     }
     return undefined
@@ -253,7 +255,7 @@ export class SSO {
     r.input('reason', sql.VarChar, reason)
 
     const res = await r.execute(`${this.schema}.[usp_revokeResetToken]`)
-    return res.rowsAffected.length > 0 && res.rowsAffected[0] > 0
+    return res.rowsAffected?.length > 0 && res.rowsAffected[0] > 0
   }
 
   async getResetToken(token: string): Promise<string | undefined> {

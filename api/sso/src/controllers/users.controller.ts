@@ -211,6 +211,7 @@ export const postRequestPasswordReset = async (request: FastifyRequest<{
   },
   Querystring: {
     reset_token?: string
+    culture?: string
   }
 }>, reply: FastifyReply) => {
   let ip_address = '127.0.0.1'
@@ -220,6 +221,8 @@ export const postRequestPasswordReset = async (request: FastifyRequest<{
   } else if (client_ip) {
     ip_address = client_ip[0].split(',')[0]
   }
+
+  const culture = request.query.culture ?? 'nl'
 
   try {
     const repo = new User()
@@ -254,7 +257,10 @@ export const postRequestPasswordReset = async (request: FastifyRequest<{
       if (!token)
         return error(reply, 'error creating new reset token')
 
-      return success(reply, { success: true, token })
+      // send with token to user
+      await repo.sendResetToken(user.username, user.given_name, token, culture)
+
+      return success(reply, { success: true })
     }
     // return fail(reply, { username: 'mallformed username supplied' })
   } catch (err) {
@@ -272,7 +278,7 @@ export const getCustomers = async (request: FastifyRequest<any>, reply: FastifyR
 
     if (token.sub) {
       const customers = await repo.getCustomers(token.sub)
-      
+
       if (customers?.length ?? 0 > 0)
         return success(reply, { customers }, 200, performance.now() - start)
       return success(reply, { customers: [] }, 200, performance.now() - start)

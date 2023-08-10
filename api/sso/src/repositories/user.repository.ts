@@ -1,6 +1,8 @@
 import sql from 'mssql'
 import * as jose from 'jose'
 import db from '../db'
+import nodemailer from 'nodemailer'
+import fs from 'fs'
 
 import config from './config'
 import { SSO } from './sso.repository'
@@ -137,4 +139,32 @@ export default class User {
     ],
     subject: user_id.toString()
   })
+
+  async sendResetToken(username: string, given_name: string, reset_token: string, culture: string = 'nl') {
+    let transporter = nodemailer.createTransport({
+      host: 'debian-smtp.groupclaes.be',
+      port: 25,
+      secure: false
+    })
+
+    const subject = culture === 'nl' ? `Wachtwoordherstel` : `Herstel de la woord de pass`
+
+    let html = fs.readFileSync(`./templates/template_${culture}.html`).toString('utf-8')
+    let button = `<a href="https://test.brabopak.com/${culture}/auth/reset-password?login_hint=${encodeURI(username)}&reset_token=${reset_token}"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td bgcolor="#ffffff" align="center" style="padding:30px 30px 40px"><table border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="border-radius:3px;" bgcolor="#001dbb"><span style="pointer-events:none;font-size:20px;font-family:Helvetica,Arial,sans-serif;color:#ffffff;text-decoration:none;color:#ffffff;text-decoration:none;padding:15px 25px;border-radius:2px;border:1px solid #24704C;display:inline-block;">@Button.Text</span></td></tr></table></td></tr></table></a>`
+    html = html.replace('@RenderTitle()', subject)
+    const body = `Hey ${given_name}, wachtwoord vergeten<br><br>Geen nood met 1 druk op de knop maak je een nieuw wachtwoord aan.`
+    button = button.replace('@Button.Text', 'Wachtwoord opnieuw instellen')
+    const footer = `Als je vragen hebt of om welke reden dan ook hulp nodig hebt, neem dan contact op met ons via <a href="mailto:info@brabopak.com" style="text-decoration:underline;">info@brabopak.com</a>.<br><br>Met vriendelijke groeten<br>Het ICT Team van Group Claes`
+
+    html = html.replace('@RenderHeader()', subject) // + ' ✔'
+    html = html.replace('@RenderBody()', body + button + footer)
+
+    return await transporter.sendMail({
+      from: '"Brabopak - webshop"<bestel@brabopak.com>',
+      to: username,
+      subject,
+      text: subject,
+      html
+    })
+  }
 }
