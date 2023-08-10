@@ -261,24 +261,23 @@ export const postRequestPasswordReset = async (request: FastifyRequest<{
 }
 
 export const getCustomers = async (request: FastifyRequest<any>, reply: FastifyReply) => {
+  const start = performance.now()
+
   try {
     const repo = new User()
-    const token: JWTPayload = request['token'] || { sub: null }
+    const token: JWTPayload = request['token']
 
     if (token.sub) {
-      return await repo.getCustomers(token.sub)
+      const customers = await repo.getCustomers(token.sub)
+      
+      if (customers?.length ?? 0 > 0)
+        return success(reply, { customers }, 200, performance.now() - start)
+      return success(reply, { customers: [] }, 200, performance.now() - start)
     }
-    return reply
-      .status(401)
-      .send({
-        status: 'fail',
-        code: 401,
-        message: 'Unauthorized'
-      })
+    return fail(reply, { token: 'precondition failed' })
   } catch (err) {
-    return reply
-      .status(500)
-      .send(err)
+    request.log.error({ err }, 'could not fetch customers')
+    return error(reply, 'could not fetch customers')
   }
 }
 
@@ -291,6 +290,6 @@ export interface IAppUser {
   promo: boolean
   bonus_percentage: number
   fostplus: boolean
-  customer_type: string
+  customer_type: number
   price_class: number
 }
