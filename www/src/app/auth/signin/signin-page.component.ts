@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ReCaptchaV3Service } from 'ng-recaptcha'
@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core'
   templateUrl: './signin-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SigninPageComponent implements OnInit, OnDestroy {
+export class SigninPageComponent {
   mfaRequired = false
   isLoading = false
 
@@ -27,56 +27,45 @@ export class SigninPageComponent implements OnInit, OnDestroy {
   subs: Subscription[] = []
 
   constructor(
+    route: ActivatedRoute,
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
     private auth: AuthService,
     private router: Router,
-    private route: ActivatedRoute,
     private localize: LocalizeRouterService,
     private recaptchaV3Service: ReCaptchaV3Service,
     private modalCtrl: ModalsService,
     private translate: TranslateService
-  ) { }
+  ) {
+    firstValueFrom(route.queryParams).then(params => {
+      if (params['login_hint'])
+        this.signinForm.controls['username'].setValue(params['login_hint'])
+    })
 
-  ngOnInit(): void {
-    this.subs.push(this.route.queryParams.subscribe(q => {
-      const { action, username, email, regcode } = q
-      if (action) {
-        if (action === 'signon')
-          this.router.navigate(['/register'], {
-            queryParams: {
-              username: email,
-              code: regcode
-            }
-          })
-        else if (action === 'signup')
-          this.router.navigate(['/new-customer'])
-        else
-          this.router.navigate(['/login'], { queryParams: { username } })
-      }
-      if (username) {
-        this.signinForm.controls['username'].setValue(username)
-      }
-    }))
+    firstValueFrom(auth.change).then(res => {
+      if (res && auth.id_token)
+        this.navigateByUserType(auth.id_token.user_type)
+    })
 
-    this.subs.push(this.auth.change.subscribe((auth) => {
-      if (auth && this.auth.id_token)
-        this.navigateByUserType(this.auth.id_token.user_type)
-    }))
-
-    if (this.auth.isAuthenticated() && this.auth.id_token && this.auth.id_token.usercode !== 0)
-      this.navigateByUserType(this.auth.id_token.user_type)
+    if (auth.isAuthenticated() && auth.id_token && auth.id_token.usercode !== 0)
+      this.navigateByUserType(auth.id_token.user_type)
   }
 
   navigateByUserType(user_type: number) {
-    if (user_type === 1)
-      this.router.navigate([this.localize.translateRoute('/')])
-    else if (user_type > 1 && user_type < 5)
-      this.router.navigate([this.localize.translateRoute('/')])
-  }
+    switch (user_type) {
+      case 1:
+        this.router.navigate([this.localize.translateRoute('/')])
+        break
 
-  async ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe())
+      case 2:
+      case 3:
+        this.router.navigate([this.localize.translateRoute('/products')])
+        break
+
+      case 4:
+        this.router.navigate([this.localize.translateRoute('/products')])
+        break
+    }
   }
 
   async signin() {

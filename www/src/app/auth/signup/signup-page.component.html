@@ -1,61 +1,61 @@
 <div class="flex flex-col flex-auto items-center sm:justify-center min-w-0">
   <div class="w-full sm:w-auto py-8 px-4 sm:p-12">
     <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
-      <div class="text-4xl font-extrabold tracking-tight leading-tight" translate="pages.signon.form.title"></div>
+      <div class="text-4xl font-extrabold tracking-tight leading-tight" translate="pages.signup.title"></div>
       <div class="flex items-baseline mt-0.5 font-medium">
-        <div>Al een account?</div>
+        <div>Reeds aangemeld?</div>
         <a class="ml-1 text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-in'] | localize"
           [queryParams]="{ login_hint: currentUsername }">Inloggen</a>
       </div>
       <form class="mt-8" [formGroup]="signupForm1" *ngIf="signupForm1" (submit)="signup()" #myform="ngForm">
-        <div class="form-control w-full">
-          <label class="block font-medium mb-1" for="username" translate="pages.signon.form.username"></label>
+        <!-- <div class="form-control w-full">
+          <label class="block font-medium mb-1" for="username" translate="pages.signup.form.username"></label>
           <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
           invalid:border-danger" formControlName="username" required id="username" autocomplete="email" type="email">
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signupForm1.get('username')?.hasError('required') && myform.submitted"
-            translate="pages.signon.form.errors.username-required"></div>
+            translate="pages.signup.form.errors.username-required"></div>
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signupForm1.get('username')?.hasError('email') && myform.submitted"
-            translate="pages.signon.form.errors.username-email"></div>
+            translate="pages.signup.form.errors.username-email"></div>
         </div>
 
         <div class="form-control w-full mt-2">
-          <label class="block font-medium mb-1" for="password" translate="pages.signon.form.password"></label>
+          <label class="block font-medium mb-1" for="password" translate="pages.signup.form.password"></label>
           <input
             class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full invalid:border-danger"
             formControlName="password" id="password" required minlength="8" autocomplete="current-password"
             type="password">
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signupForm1.get('password')?.hasError('required') && myform.submitted"
-            translate="pages.signon.form.errors.password-required"></div>
+            translate="pages.signup.form.errors.password-required"></div>
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signupForm1.get('password')?.hasError('minlength') && myform.submitted"
-            translate="pages.signon.form.errors.password-minLength"></div>
+            translate="pages.signup.form.errors.password-minLength"></div>
         </div>
 
         <div class="form-control w-full mt-2">
-          <label class="block font-medium mb-1" for="code" translate="pages.signon.form.code"></label>
+          <label class="block font-medium mb-1" for="code" translate="pages.signup.form.code"></label>
           <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
           invalid:border-danger" formControlName="code" required id="code" pattern="^[A-Z]{12}$">
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signupForm1.get('code')?.hasError('required') && myform.submitted"
-            translate="pages.signon.form.errors.code-required"></div>
+            translate="pages.signup.form.errors.code-required"></div>
           <div class="text-sm font-medium text-danger mt-1"
             *ngIf="signupForm1.get('code')?.hasError('pattern') && myform.submitted"
-            translate="pages.signon.form.errors.code-pattern"></div>
-        </div>
+            translate="pages.signup.form.errors.code-pattern"></div>
+        </div> -->
 
         <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in
-          duration-200 hover:text-white hover:bg-primary" id="signon" type="submit"
-          translate="pages.signon.form.button"></button>
+          duration-200 hover:text-white hover:bg-primary" id="signup" type="submit"
+          translate="pages.signup.form.button"></button>
 
         <div class="flex flex-col space-y-1 mt-4">
           <a class="text-md font-medium text-primary dark:text-accent hover:underline"
-            [routerLink]="['/auth/forgot-password']" [queryParams]="{ code: currentUsername }"
-            translate="pages.signon.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/new-up']"
-            translate="pages.signon.form.action2"></a>
+            [routerLink]="['/auth/forgot-password']" [queryParams]="{ login_hint: currentUsername }"
+            translate="pages.signup.form.action1"></a>
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-on']"
+            translate="pages.signup.form.action2"></a>
         </div>
 
         <div class="mt-6 text-sm text-gray-500">

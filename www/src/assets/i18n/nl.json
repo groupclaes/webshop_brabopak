@@ -36,14 +36,18 @@
       "form": {
         "title": "Aanmelden",
         "username": "E-mail",
+        "given_name": "Voornaam",
+        "family_name": "Naam",
         "password": "Wachtwoord",
         "code": "Registratiecode",
         "button": "Aanmelden",
         "action1": "Wachtwoord vergeten?",
-        "action2": "Inloggen",
+        "action2": "Klant worden",
         "errors": {
           "username-required": "E-mailadres is een verplicht veld",
           "username-email": "E-mailadres bevat een syntaxfout",
+          "given_name-required": "Voornaam is een verplicht veld",
+          "family_name-required": "Naam is een verplicht veld",
           "password-required": "Wachtwoord is een verplicht veld",
           "password-minLength": "Wachtwoord moet minimaal 8 tekens bevatten",
           "code-required": "Registratiecode is een verplicht veld",
@@ -51,9 +55,15 @@
         }
       }
     },
+    "signup": {
+      "title": "Registreren",
+      "form1": {},
+      "action1": "Wachtwoord vergeten?",
+      "action2": "Inloggen"
+    },
     "forgot-password": {
       "form": {
-        "title": "Wachtwoord vergeten",
+        "title": "Wachtwoordherstel",
         "username": "E-mail",
         "button": "Wachtwoord herstellen",
         "action1": "Inloggen",
@@ -61,6 +71,19 @@
         "errors": {
           "username-required": "E-mailadres is een verplicht veld",
           "username-email": "E-mailadres bevat een syntaxfout"
+        }
+      }
+    },
+    "reset-password": {
+      "form": {
+        "title": "Wachtwoordherstel",
+        "password": "Wachtwoord",
+        "button": "Wachtwoord wijzigen",
+        "action1": "Inloggen",
+        "action2": "Aanmelden",
+        "errors": {
+          "password-required": "Wachtwoord is een verplicht veld",
+          "password-minLength": "Wachtwoord moet minimaal 8 tekens bevatten"
         }
       }
     },
