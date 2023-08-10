@@ -1,9 +1,10 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { AuthService } from '../auth.service'
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 @Component({
   selector: 'bra-reset-password',
@@ -23,7 +24,9 @@ export class ResetPasswordPageComponent {
     route: ActivatedRoute,
     private fb: FormBuilder,
     private auth: AuthService,
-    private modalCtrl: ModalsService
+    private modalCtrl: ModalsService,
+    private router: Router,
+    private localize: LocalizeRouterService
   ) {
     firstValueFrom(route.queryParams).then(params => {
       if (params['login_hint'])
@@ -38,10 +41,11 @@ export class ResetPasswordPageComponent {
 
     try {
       const response = await this.auth.resetPassword(this.resetPasswordForm.value)
-      console.log(response)
       if (response.data?.success) {
         const modal = new Modal('success', 'Wachtwoord opgeslagen', 'Je kan nu met je nieuwe wachtwoord inloggen.')
-        this.modalCtrl.show(modal)
+        await this.modalCtrl.show(modal)
+
+        this.router.navigate([this.localize.translateRoute('/auth/sign-in')], { queryParams: { login_hint: this.currentUsername } })
       }
     } catch (err: any) {
       switch (err?.status) {

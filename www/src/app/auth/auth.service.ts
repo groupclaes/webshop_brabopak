@@ -87,7 +87,6 @@ export class AuthService {
     const params = trimParameters({
       reset_token: form.reset_token
     })
-    delete form?.reset_token
 
     return firstValueFrom(this.http.post<IBaseApiResponse>(`${api_url}users/reset-password`, form, {
       params
