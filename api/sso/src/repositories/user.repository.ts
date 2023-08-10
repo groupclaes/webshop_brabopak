@@ -104,7 +104,7 @@ export default class User {
     request.input('promo', sql.Bit, settings.promo)
     request.input('bonus_percentage', sql.Numeric, settings.bonus_percentage)
     request.input('fostplus', sql.Bit, settings.fostplus)
-    request.input('customer_type', sql.VarChar, settings.customer_type)
+    request.input('customer_type', sql.TinyInt, settings.customer_type)
     request.input('price_class', sql.Int, settings.price_class)
 
     const result = await request.execute(`${this.schema}.[usp_createOrUpdateSettings]`)

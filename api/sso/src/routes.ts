@@ -15,7 +15,9 @@ export default [{
   method: 'GET',
   url: '/users/customers',
   handler: usersController.getCustomers,
-  requiredPermissions: []
+  requiredPermissions: [
+    undefined
+  ]
 }, {
   method: 'POST',
   url: '/users/signon',
