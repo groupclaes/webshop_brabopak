@@ -14,14 +14,15 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY package.json /app/package.json
 ENV NODE_ENV test
-RUN npm install --ignore-scripts
+RUN npm install --ignore-scripts --legacy-peer-deps
 ENV NODE_ENV production
 
 # add app
 COPY ./src /app/src
-COPY server.ts /app/server.ts
+# COPY server.ts /app/server.ts
 COPY angular.json /app/angular.json
 COPY tsconfig.json /app/tsconfig.json
+COPY tsconfig.app.json /app/tsconfig.app.json
 COPY tailwind.config.js /app/tailwind.config.js
 
 # run tests
@@ -32,6 +33,8 @@ COPY tailwind.config.js /app/tailwind.config.js
 # RUN ng build --configuration production --output-path=dist
 RUN ng build --configuration staging --output-path=dist
 # RUN ng build --output-path=dist
+
+COPY nginx.conf /app/nginx.conf
 
 ############
 ### prod ###

@@ -4,8 +4,6 @@ import { firstValueFrom, Observable, of, Subject } from 'rxjs'
 import { map, shareReplay } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { isPlatformBrowser } from '@angular/common'
-import { Router } from '@angular/router'
-import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { IBaseApiResponse, trimParameters } from '../core/api'
 
 const api_url = environment.sso.url
@@ -34,8 +32,6 @@ export class AuthService {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    private router: Router,
-    private localize: LocalizeRouterService,
     private http: HttpClient
   ) {
     this.change.subscribe(response => {
@@ -323,7 +319,7 @@ export interface IdToken {
   sub: string
   name: string
   given_name: string
-  surname: string
+  family_name: string
   email: string
   preferred_username: string
 
