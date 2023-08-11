@@ -153,17 +153,11 @@ export class AuthService {
   }
 
   public isMultiUser(): boolean {
-    if (this.id_token) {
-      return this.id_token.user_type > 1
-    }
-    return false
+    return (this.id_token?.user_type ?? 0) > 1
   }
 
   public isAgent(): boolean {
-    if (this.id_token) {
-      return this.id_token.user_type === 2
-    }
-    return false
+    return (this.id_token?.user_type ?? 0) === 2
   }
 
   private saveTokens(tokens: IGetTokenResponse): void {
