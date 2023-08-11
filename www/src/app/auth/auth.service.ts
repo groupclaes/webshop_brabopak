@@ -180,7 +180,7 @@ export class AuthService {
     const result = await firstValueFrom(this.http.get<IBaseApiResponse>(`${api_url}users/customers`))
     if (result?.data) {
       this._customer_cache = result.data.customers
-      window.sessionStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(result))
+      window.sessionStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(result.data.customers))
       this.customerChange.next()
     }
   }
