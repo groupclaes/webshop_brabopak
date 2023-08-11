@@ -35,13 +35,8 @@ export class AuthService {
     private http: HttpClient
   ) {
     this.change.subscribe(response => {
-      if (response) {
-        this._id_token = response.id_token
-        this._access_token = response.access_token
-      } else {
-        this._id_token = undefined
-        this._access_token = undefined
-      }
+      this._id_token = response?.id_token
+      this._access_token = response?.access_token
     })
 
     if (window.sessionStorage.getItem(SESSION_STORAGE_KEY)) {
@@ -143,12 +138,10 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    if (this.id_token) {
-      if (new Date(this.id_token.exp * 1000) > new Date()) {
+    if (this.id_token)
+      if (new Date(this.id_token.exp * 1000) > new Date())
         return true
-      }
-      // must renew the id_token because it's expired
-    }
+    // must renew the id_token because it's expired
     return false
   }
 
@@ -206,9 +199,9 @@ export class AuthService {
   }
 
   get storage(): Storage {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId))
       return window.localStorage
-    } else {
+    else {
       return {
         clear: () => undefined,
         getItem: (key) => null,
@@ -221,9 +214,9 @@ export class AuthService {
   }
 
   get sessionStorage(): Storage {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId))
       return window.sessionStorage
-    } else {
+    else {
       return {
         clear: () => undefined,
         getItem: (key) => null,
@@ -284,15 +277,15 @@ export class AuthService {
 
             if (!customer) {
               this.storage.removeItem(CUSTOMER_STORAGE_KEY)
-              return undefined
+              return
             }
 
             return customer
           }
-          return undefined
+          return
       }
     }
-    return undefined
+    return
   }
 }
 
