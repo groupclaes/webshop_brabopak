@@ -16,7 +16,7 @@ export class MagnifierDirective {
 
     this.img.onload = () => {
       // remove all preexisting magnifiers
-      for (const element of document.getElementsByClassName('magnifier-glass')) {
+      for (const element of Array.from(document.getElementsByClassName('magnifier-glass'))) {
         element.remove()
       }
 

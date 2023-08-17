@@ -1,7 +1,7 @@
 import path from 'path'
 import { env } from 'process'
 
-import Fastify from '@groupclaes/fastify-elastic'
+import { Fastify } from '@groupclaes/fastify-elastic'
 import handle from '@groupclaes/fastify-authhandler'
 import config from './config'
 import routes from './routes'
@@ -9,7 +9,7 @@ import routes from './routes'
 /** Main loop */
 const main = async () => {
   const fastify = new Fastify(config.wrapper)
-  fastify.addAuthPreHandler(handle, 'token')
+  fastify.addAuthPreHandler(handle)
   fastify.routeMultiple(routes)
 
   const wk = env.APP_VERSION ? '/' + env.APP_VERSION : ''

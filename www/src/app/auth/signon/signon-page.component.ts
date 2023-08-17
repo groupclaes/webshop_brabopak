@@ -32,9 +32,6 @@ export class SignonPageComponent {
     })
 
     firstValueFrom(route.queryParams).then((params) => {
-      if (params['username'])
-        this.signonForm.controls['username'].setValue(params['username'])
-
       if (params['login_hint'])
         this.signonForm.controls['username'].setValue(params['login_hint'])
 
