@@ -1,7 +1,7 @@
 import path from 'path'
 import { env } from 'process'
 
-import { Fastify } from '@groupclaes/fastify-elastic'
+import Fastify from '@groupclaes/fastify-elastic'
 import handle from '@groupclaes/fastify-authhandler'
 import config from './config'
 import routes from './routes'
