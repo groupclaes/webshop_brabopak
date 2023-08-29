@@ -1,11 +1,26 @@
 import Fastify from '@groupclaes/fastify-elastic'
-import handle from '@groupclaes/fastify-authhandler'
+import { FastifyInstance } from 'fastify'
+import process, { env } from 'process'
 
-import routes from './routes'
+import config from './config'
+import productsController from './controllers/products.controller'
 
-(async () => {
-  const fastify = new Fastify(require('./config').wrapper)
-  fastify.addAuthPreHandler(handle, 'token')
-  fastify.routeMultiple(routes)
-  await fastify.start()
-})()
+let fastify: FastifyInstance | undefined
+
+/** Main loop */
+async function main() {
+  // add jwt configuration object to config
+  fastify = await Fastify({ ...config.wrapper, jwt: {} })
+  const version_prefix = '/api' + (env.APP_VERSION ? '/' + env.APP_VERSION : '')
+  await fastify.register(productsController, { prefix: `${version_prefix}/${config.wrapper.serviceName}` })
+  await fastify.listen({ port: +(env['PORT'] ?? 80), host: '::' })
+}
+
+['SIGTERM', 'SIGINT'].forEach(signal => {
+  process.on(signal, async () => {
+    await fastify?.close()
+    process.exit(0)
+  })
+})
+
+main()

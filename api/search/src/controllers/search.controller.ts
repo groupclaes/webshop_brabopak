@@ -1,75 +1,72 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
-import { success, error } from '@groupclaes/fastify-elastic/responses'
-import { JWTPayload } from 'jose'
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import oe from '@groupclaes/oe-connector'
 
 import Search, { ISearchFilters } from '../repositories/search.repository'
 
-export const get = async (request: FastifyRequest<{
-  Querystring: {
-    query: string
-    culture?: string
-    category_id?: number
-  }
-}>, reply: FastifyReply) => {
-  const start = performance.now()
-  const token: JWTPayload = request['token']
-
-  try {
-    const repo = new Search()
-    const query = request.query.query
-    const culture = request.query.culture ?? 'nl'
-    const category_id = request.query.category_id
-
-    const data = await repo.getQueries({ user_id: token.sub, query, culture, category_id })
-    return success(reply, data, 200, performance.now() - start)
-  } catch (err) {
-    request.log.error({ err }, 'failed to get search queries')
-    return error(reply, 'failed to get search queries')
-  }
-}
-
-/**
- * @route POST /api/v1/search
- */
-export const post = async (request: FastifyRequest<{
-  Querystring: {
-    usercode: number,
-    culture?: string
-  },
-  Body: ISearchFilters
-}>, reply: FastifyReply) => {
-  const start = performance.now()
-  const token: JWTPayload = request['token']
-
-  try {
-    const repo = new Search()
-
-    // Get a list of itemNums
-    const response = await repo.search(request.query.usercode, request.query.culture, request.body ?? {}, token.sub)
-
-    const user: any | undefined = await repo.getUserInfo(token.sub)
-
-    if (request.query.usercode > 0) {
-      try {
-        await applyOpenedgeInformation(response.results)
-      } catch (err) {
-        request.log.error({ err }, 'error while retrieving product information from openedge')
-      }
+export default async function (fastify: FastifyInstance) {
+  fastify.get('', async (request: FastifyRequest<{
+    Querystring: {
+      query: string
+      culture?: string
+      category_id?: number
     }
+  }>, reply: FastifyReply) => {
+    const start = performance.now()
 
-    if (user === undefined || !user?.can_view_prices)
-      removePriceDetails(response.results)
+    try {
+      const repo = new Search()
+      const query = request.query.query
+      const culture = request.query.culture ?? 'nl'
+      const category_id = request.query.category_id
 
-    return success(reply, {
-      productCount: response.count,
-      products: response.results,
-      breadcrumbs: response.breadcrumbs,
-    }, 200, performance.now() - start)
-  } catch (err) {
-    return error(reply, 'failed to search in products')
-  }
+      const data = await repo.getQueries({ user_id: request.jwt?.sub, query, culture, category_id })
+      return reply.success(data, 200, performance.now() - start)
+    } catch (err) {
+      request.log.error({ err }, 'failed to get search queries')
+      return reply.error('failed to get search queries')
+    }
+  })
+
+  /**
+   * @route POST /api/v1/search
+   */
+  fastify.post('', async (request: FastifyRequest<{
+    Querystring: {
+      usercode: number,
+      culture?: string
+    },
+    Body: ISearchFilters
+  }>, reply: FastifyReply) => {
+    const start = performance.now()
+    try {
+      const repo = new Search()
+
+      // Get a list of itemNums
+      const response = await repo.search(request.query.usercode, request.query.culture, request.body ?? {}, request.jwt?.sub)
+      const user: any | undefined = await repo.getUserInfo(request.jwt?.sub)
+
+      if (request.query.usercode > 0) {
+        try {
+          await applyOpenedgeInformation(response.results)
+        } catch (err) {
+          request.log.error({ err }, 'error while retrieving product information from openedge')
+        }
+      }
+
+      if (user === undefined || !user?.can_view_prices)
+        removePriceDetails(response.results)
+
+      return reply.success({
+        productCount: response.count,
+        products: response.results,
+        breadcrumbs: response.breadcrumbs,
+      }, 200, performance.now() - start)
+    } catch (err) {
+      return reply.error('failed to search in products')
+    }
+  })
 }
+
 
 async function applyOpenedgeInformation(products: any[]) {
   let resp: any
