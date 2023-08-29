@@ -9,7 +9,6 @@ export class BannerService {
 
   constructor(auth: AuthService) {
     const update = () => {
-      console.debug('BannerService()', auth.currentCustomer)
       if (auth.currentCustomer?.address_id && auth.currentCustomer?.address_id > 0)
         this._content = `Huidige klant: ${auth.currentCustomer?.id} ${auth.currentCustomer?.name} - ${auth.currentCustomer?.address_id} ${auth.currentCustomer?.address_name} - ${auth.currentCustomer?.address_city}`
       else

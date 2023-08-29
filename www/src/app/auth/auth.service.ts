@@ -132,6 +132,7 @@ export class AuthService {
     this.sessionStorage.removeItem(CUSTOMERS_STORAGE_KEY)
     this.storage.removeItem(CUSTOMER_STORAGE_KEY)
     this.storage.removeItem(REFRESH_STORAGE_KEY)
+    this._customer_cache = []
     this.change.next(undefined)
 
     // this.router.navigate([this.localize.translateRoute('/auth/sign-in')])
@@ -282,7 +283,7 @@ export class AuthService {
 
             return customer
           }
-          return
+          break
       }
     }
     return
@@ -337,4 +338,5 @@ export interface ICustomer {
   address_country: string
 
   usercode: number
+  promo: boolean
 }

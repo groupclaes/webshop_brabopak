@@ -58,7 +58,6 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     }))
 
     this._subs.push(this.searchService.Refresh.subscribe((reload: boolean) => {
-      console.log(reload, this.searchService.current)
       if (reload) {
         this.load(this.searchService.current)
         this.ref.markForCheck()

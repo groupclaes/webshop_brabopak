@@ -25,7 +25,7 @@ export class FlyoutNavigationComponent {
       this._categories = r.data
       this.ref.markForCheck()
     })
-    auth.change.subscribe({
+    auth.customerChange.subscribe({
       next: () => this.ref.markForCheck()
     })
   }
@@ -63,6 +63,10 @@ export class FlyoutNavigationComponent {
     this.active = false
     this.activeCategory = undefined
     this.ref.markForCheck()
+  }
+
+  get canViewPromo(): boolean | undefined {
+    return this.auth.currentCustomer?.promo
   }
 }
 
