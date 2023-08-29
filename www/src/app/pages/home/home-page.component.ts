@@ -53,8 +53,8 @@ export class HomePageComponent implements OnDestroy {
       this.loading = true
       this.ref.markForCheck()
 
-      if (this.auth.id_token) {
-        const resp = await this.api.dashboard(this.auth.id_token?.usercode)
+      if (this.auth.currentCustomer) {
+        const resp = await this.api.dashboard(this.auth.currentCustomer?.usercode)
         this.dashboard = resp.data.blocks
       }
     } catch (err) {

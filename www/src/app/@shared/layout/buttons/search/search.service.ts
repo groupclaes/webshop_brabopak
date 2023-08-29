@@ -11,14 +11,14 @@ import { environment } from 'src/environments/environment'
 export class SearchService {
   private _items = 16
 
-  private _page: number | undefined = 0
-  private _query: string | undefined = ''
-  private _only_favorites?: boolean = false
-  private _only_promo?: boolean = false
-  private _only_new?: boolean = false
-  private _only_best_selling?: boolean = false
-  private _only_spotlight?: boolean = false
-  private _only_recent?: boolean = false
+  private _page: number | undefined
+  private _query: string | undefined
+  private _only_favorites?: boolean
+  private _only_promo?: boolean
+  private _only_new?: boolean
+  private _only_best_selling?: boolean
+  private _only_spotlight?: boolean
+  private _only_recent?: boolean
   private _category_id: number | undefined
   private _page_count: number | undefined
   private _itemNum: string | undefined
@@ -120,9 +120,8 @@ export class SearchService {
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(r => {
       const ev = r as { url: string }
-      if (!ev.url.startsWith('/products')) {
+      if (!ev.url.startsWith('/nl/product')) // remove category selection when moving of the products page
         this.category_id = undefined
-      }
     })
   }
 

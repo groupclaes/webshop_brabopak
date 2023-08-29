@@ -52,24 +52,6 @@ export const routes: Routes = [{
     layout
   }
 }, {
-  path: 'products/:category',
-  loadChildren: () => import('./pages/products/products-page.module').then(m => m.ProductsPageModule),
-  data: {
-    layout
-  }
-}, {
-  path: 'products/:category/:category2',
-  loadChildren: () => import('./pages/products/products-page.module').then(m => m.ProductsPageModule),
-  data: {
-    layout
-  }
-}, {
-  path: 'products/:category/:category2/:category3',
-  loadChildren: () => import('./pages/products/products-page.module').then(m => m.ProductsPageModule),
-  data: {
-    layout
-  }
-}, {
   path: 'product/:id/:name',
   loadChildren: () => import('./pages/product/product-page.module').then(m => m.ProductPageModule),
   data: {

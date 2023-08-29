@@ -20,6 +20,15 @@ import { CoreComponentsModule } from 'src/app/core/components/components.module'
     RouterModule.forChild([{
       path: '',
       component: ProductsPageComponent
+    }, {
+      path: ':category',
+      component: ProductsPageComponent
+    }, {
+      path: ':category/:category2',
+      component: ProductsPageComponent
+    }, {
+      path: ':category/:category2/:category3',
+      component: ProductsPageComponent
     }])
   ]
 })
