@@ -16,7 +16,7 @@ export class UpdateService {
     }
 
     this.updatesAvailable = this.updates.versionUpdates.pipe(
-      filter((evt: VersionReadyEvent): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
+      filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
       map((evt: VersionReadyEvent) => ({
         type: 'UPDATE_AVAILABLE',
         current: evt.currentVersion,

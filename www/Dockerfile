@@ -24,6 +24,7 @@ COPY angular.json /app/angular.json
 COPY tsconfig.json /app/tsconfig.json
 COPY tsconfig.app.json /app/tsconfig.app.json
 COPY tailwind.config.js /app/tailwind.config.js
+COPY ngsw-config.json /app/ngsw-config.json
 
 # run tests
 # RUN ng test --watch=false

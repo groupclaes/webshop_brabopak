@@ -47,8 +47,8 @@ module.exports = {
           '700': '#3A515F',
         },
 
-        'info': '#4169E1', // royal blue
-        'danger': '#FF6347', // tomato
+        'info': '#4169E1',    // royal blue
+        'danger': '#FF6347',  // tomato
         'success': '#228B22', // forest green
         'warning': '#FFD700', // gold
       },
@@ -73,7 +73,6 @@ module.exports = {
     aspectRatio: false,
   },
   plugins: [
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/line-clamp')
+    require('@tailwindcss/aspect-ratio')
   ]
 }
