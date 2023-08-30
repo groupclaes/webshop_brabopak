@@ -62,6 +62,11 @@ export class ProductPageComponent implements OnDestroy {
       if (this._id)
         this.load(this._id)
     }))
+
+    this._subs.push(this.auth.change.subscribe(() => {
+      if (this._id)
+        this.loadResources()
+    }))
   }
 
   ngOnDestroy(): void {

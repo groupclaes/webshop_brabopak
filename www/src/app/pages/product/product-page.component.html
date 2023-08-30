@@ -13,7 +13,7 @@
     </div>
     <div id="images space-y-8" *ngIf="images.length > 0">
       <div class="rounded-xl ring ring-gray-50 dark:ring-gray-700"
-        [ngClass]="{'border border-orange-400 border-dashed': isFavorite}">
+        [ngClass]="{'border-orange-400 border-2': isFavorite}">
         <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier
           [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
         rounded-xl">
@@ -113,7 +113,7 @@
           </bra-accordion>
 
           <bra-accordion class="border-t" header="Aankoopgegevens"
-            *ngIf="product.favorite && product.favorite[0].last_bought_date">
+            *ngIf="auth.isAuthenticated() && product.favorite && product.favorite[0].last_bought_date">
             <div body class="flex flex-col mt-4 ml-2 space-y-2">
               <div class="flex flex-row space-x-1">
                 <div class="w-36 font-bold">
