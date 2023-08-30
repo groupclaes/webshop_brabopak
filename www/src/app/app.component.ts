@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { filter, map, mergeMap } from 'rxjs'
 import { MetaService } from './@shared/services/meta.service'
+import { UpdateService } from './core/update.service'
 
 registerLocaleData(localeNlBE)
 registerLocaleData(localeFrBE)
@@ -28,8 +29,10 @@ export class AppComponent {
     @Inject(DOCUMENT) document: Document,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private metaService: MetaService
+    private metaService: MetaService,
+    updateService: UpdateService
   ) {
+    updateService.hello()
     document.documentElement.lang = translate.currentLang
     _elementRef.nativeElement.removeAttribute('ng-version')
 

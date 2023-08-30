@@ -34,7 +34,7 @@ export class HomePageComponent implements OnDestroy {
     this._subs.push(
       this.auth.customerChange.subscribe({
         next: () => {
-          this.ref.markForCheck()
+          this.load()
         }
       })
     )
@@ -50,6 +50,7 @@ export class HomePageComponent implements OnDestroy {
 
   async load() {
     try {
+      this.dashboard = []
       this.loading = true
       this.ref.markForCheck()
 

@@ -63,10 +63,19 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         this.ref.markForCheck()
       }
     }))
+    // this._subs.push(
+    //   this.auth.change.subscribe({
+    //     next: () => {
+    //       this.load(this.searchService.current)
+    //       this.ref.markForCheck()
+    //     }
+    //   }))
 
-    this._subs.push(this.auth.customerChange.subscribe(() => {
-      this.load(this.searchService.current)
-      this.ref.markForCheck()
+    this._subs.push(this.auth.customerChange.subscribe({
+      next: () => {
+        this.load(this.searchService.current)
+        this.ref.markForCheck()
+      }
     }))
   }
 

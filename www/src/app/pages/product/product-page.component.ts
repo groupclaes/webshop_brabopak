@@ -245,6 +245,10 @@ export class ProductPageComponent implements OnDestroy {
     return false
   }
 
+  get isFavorite(): boolean {
+    return this.auth.isAuthenticated() && this._product?.favorite && (this._product.favorite[0].is_favorite === true || this._product.favorite[0].is_favorite === null) || false
+  }
+
   get product(): IProduct | undefined {
     return this._product
   }

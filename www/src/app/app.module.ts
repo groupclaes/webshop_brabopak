@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, isDevMode } from '@angular/core'
 import { Location } from '@angular/common'
 import { BrowserModule } from '@angular/platform-browser'
 
@@ -12,7 +12,8 @@ import { AuthInterceptor } from './auth/auth.interceptor'
 import { AtSharedModule } from './@shared/@shared.module'
 import { HttpLoaderFactory } from './@shared/loaders/translate-browser.loader'
 import { LocalizeParser, LocalizeRouterModule, LocalizeRouterSettings, ManualParserLoader } from '@gilsdav/ngx-translate-router'
-import { environment } from 'src/environments/environment'
+import { environment } from 'src/environments/environment';
+import { ServiceWorkerModule } from '@angular/service-worker'
 
 export function localizeLoaderFactory(translate: TranslateService, location: Location, settings: LocalizeRouterSettings) {
   return new ManualParserLoader(translate, location, settings, environment.supportedLanguages.map(e => e.split('-')[0]), 'ROUTES.', '!')
@@ -44,7 +45,13 @@ export function localizeLoaderFactory(translate: TranslateService, location: Loc
         deps: [TranslateService, Location, LocalizeRouterSettings]
       }
     }),
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

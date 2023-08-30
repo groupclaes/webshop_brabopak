@@ -45,7 +45,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   }
 
   get isFavorite(): boolean {
-    return this.auth.isAuthenticated() && this.item?.favorite && (this.item.favorite[0].isFavorite === true || this.item.favorite[0].isFavorite === null) || false
+    return this.auth.isAuthenticated() && this.item?.favorite && (this.item.favorite[0].is_favorite === true || this.item.favorite[0].is_favorite === null) || false
   }
 
   get currentPrice(): string | null {
@@ -62,7 +62,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   get favinfo(): string | null {
     if (this.isFavorite && this.item?.favorite) {
-      return `${this.translate.instant('lastbought')}: ${this.datePipe.transform(this.item.favorite[0].lastDateBought, 'dd/MM/yyyy')} ${this.item.favorite[0].lastQuantityBought}x`
+      return `Laatste aankoop: ${this.datePipe.transform(this.item.favorite[0].last_bought_date, 'dd/MM/yyyy')} ${this.item.favorite[0].last_bought_quantity}x`
     }
     return null
   }
