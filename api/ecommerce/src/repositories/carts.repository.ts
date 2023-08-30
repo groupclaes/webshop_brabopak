@@ -1,9 +1,16 @@
 import sql from 'mssql'
 import db from '../db'
+import fastify, { FastifyInstance } from 'fastify'
 
 const DB_NAME = 'brabopak'
 
 export default class Cart {
+  private _fastify: FastifyInstance
+
+  constructor(fastify: FastifyInstance) {
+    this._fastify = fastify
+  }
+
   schema: string = '[ecommerce].'
 
   async get(usercode: number, user_id?: string, culture: string = 'nl') {
@@ -11,12 +18,16 @@ export default class Cart {
     r.input('user_id', sql.Int, user_id)
     r.input('usercode', sql.Int, usercode)
     r.input('culture', sql.VarChar, culture)
-    const result = await r.execute(this.schema + '[usp_getCart]')
+    const result = await r.execute(this.schema + '[usp_getCart]').catch(err => {
+      this._fastify.log.error({ err }, 'error while executing sql procedure')
+    })
 
-    if (result.recordset.length > 0) {
-      return result.recordset[0]
-    }
-    return undefined
+    if (!result)
+      return []
+
+    this._fastify.log.debug({ result }, `Exeecuting procedure ${this.schema}[usp_getCart] result`)
+
+    return result.recordset.length > 0 ? result.recordset[0] : []
   }
 
   async updateProduct(usercode: number, user_id: string, product_id: number, amount: number) {

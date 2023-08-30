@@ -14,14 +14,14 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart()
+      const repo = new Cart(fastify)
       const usercode = request.query.usercode
       const culture = request.query.culture ?? 'nl'
 
       request.log.debug({}, 'fetching carts')
       const data = await repo.get(usercode, request.jwt.sub, culture)
 
-      request.log.debug({ carts_length: data.length }, 'fetched carts')
+      request.log.debug({ carts_length: data?.length }, 'fetched carts')
       return reply.success(data)
     } catch (err) {
       request.log.error({ err }, 'Failed to fetch carts from database')
@@ -44,7 +44,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart()
+      const repo = new Cart(fastify)
       const usercode = request.query.usercode
       const culture = request.query.culture ?? 'nl'
 
@@ -71,7 +71,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart()
+      const repo = new Cart(fastify)
 
       request.log.debug({}, 'requesting post cart to openedge')
       if (request.jwt.sub) {
