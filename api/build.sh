@@ -1,0 +1,1 @@
+for dir in ~/development/webshop_brabopak/api/*; do (cd "$dir" && echo "Building: $dir" && npm run publish); done

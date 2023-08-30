@@ -29,13 +29,21 @@ export default class Search {
     r.input('user_id', sql.Int, user_id)
     r.input('usercode', sql.Int, usercode)
     r.input('culture', sql.VarChar, culture ?? filter.culture)
+
+    // optional parameters
     r.input('query', sql.VarChar, filter.query)
-    r.input('only_favorites', sql.Bit, filter.only_favorites)
-    r.input('only_promo', sql.Bit, filter.only_promo)
-    r.input('only_new', sql.Bit, filter.only_new)
-    r.input('page', sql.Int, filter.page)
-    r.input('per_page', sql.Int, filter.per_page)
-    r.input('category', sql.Int, filter.category_id)
+    if (filter.only_favorites)
+      r.input('only_favorites', sql.Bit, filter.only_favorites)
+    if (filter.only_promo)
+      r.input('only_promo', sql.Bit, filter.only_promo)
+    if (filter.only_new)
+      r.input('only_new', sql.Bit, filter.only_new)
+    if (filter.page)
+      r.input('page', sql.Int, filter.page)
+    if (filter.per_page)
+      r.input('per_page', sql.Int, filter.per_page)
+    if (filter.category_id)
+      r.input('category', sql.Int, filter.category_id)
     const result = await r.execute(this.schema + 'usp_post')
 
     return {

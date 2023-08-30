@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.url.includes(API_URL)) {
+    if (request.url.includes(API_URL) && !request.url.includes('sso/token') && !request.url.includes('sso/authorize') && !request.url.includes('refresh-token')) {
       return next.handle(this.addAuthToken(request)).pipe(
         catchError((requestError: HttpErrorResponse) => {
           if (requestError && requestError.status === 401) {

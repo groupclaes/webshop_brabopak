@@ -4,6 +4,9 @@ import oe from '@groupclaes/oe-connector'
 import Search, { ISearchFilters } from '../repositories/search.repository'
 
 export default async function (fastify: FastifyInstance) {
+  /**
+   * @route GET /api/v1/search
+   */
   fastify.get('', async (request: FastifyRequest<{
     Querystring: {
       query: string
@@ -62,6 +65,7 @@ export default async function (fastify: FastifyInstance) {
         breadcrumbs: response.breadcrumbs,
       }, 200, performance.now() - start)
     } catch (err) {
+      request.log.error({ err, filters: request.body }, 'failed to search')
       return reply.error('failed to search in products')
     }
   })
