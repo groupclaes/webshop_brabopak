@@ -6,18 +6,17 @@ export default async function (fastify: FastifyInstance) {
   /**
    * @route GET /api/{APP_VERSION}/manage/users/:id?
    */
-  fastify.get('', { preHandler: (req, rep) => authHandle(req, rep, 'read', 'GroupClaes.EMP/brabopak/users') }, handler)
-  fastify.get('/:id', { preHandler: (req, rep) => authHandle(req, rep, 'read', 'GroupClaes.EMP/brabopak/users') }, handler)
-
-  async function authHandle(request: FastifyRequest, reply: FastifyReply, perm: string, path?: string) {
-
-  }
+  fastify.get('', handler)
+  fastify.get('/:id', handler)
 
   async function handler(request: FastifyRequest<{ Params: { id?: number } }>, reply: FastifyReply) {
     const start = performance.now()
 
     if (!request.jwt?.sub)
       return reply.fail({ jwt: 'missing authorization' }, 401)
+
+    if (!request.hasPermission('read'))
+      return reply.fail({ role: 'missing permission' }, 401)
 
     try {
       const repo = new User(fastify)

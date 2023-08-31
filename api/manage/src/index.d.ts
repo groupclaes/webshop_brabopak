@@ -2,8 +2,9 @@ import { JWTPayload } from 'jose'
 
 declare module 'fastify' {
   export interface FastifyRequest {
-    jwt?: JWTPayload
-    hasRole?: (role: string) => boolean
+    jwt: JWTPayload
+    hasRole: (role: string) => boolean
+    hasPermission: (permission: string, scope?: string) => boolean
   }
 
   export interface FastifyReply {

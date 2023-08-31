@@ -12,7 +12,7 @@
     "url": "https://jamievangeysel.be"
   },
   "dependencies": {
-    "@groupclaes/fastify-elastic": "^4.0.7",
+    "@groupclaes/fastify-elastic": "^4.1.0",
     "@groupclaes/oe-connector": "^1.2.5",
     "fastify": "^4.22.0",
     "jose": "^4.14.4",
