@@ -15,7 +15,7 @@ declare module 'fastify' {
   }
 }
 
-import User from '../repositories/user.repository'
+import User, { IBrabopakUser } from '../repositories/user.repository'
 
 export default async function (fastify: FastifyInstance) {
   /**
@@ -30,7 +30,7 @@ export default async function (fastify: FastifyInstance) {
     if (!request.jwt?.sub)
       return reply.fail({ jwt: 'missing authorization' }, 401)
 
-    if (!request.hasPermission('read'))
+    if (!request.hasPermission('read_all'))
       return reply.fail({ role: 'missing permission' }, 403)
 
     try {
@@ -42,4 +42,23 @@ export default async function (fastify: FastifyInstance) {
       return reply.error('failed to get users')
     }
   }
+
+  fastify.put('/:id', async function (request: FastifyRequest<{ Params: { id: number }, Body: IBrabopakUser }>, reply: FastifyReply) {
+    const start = performance.now()
+
+    if (!request.jwt?.sub)
+      return reply.fail({ jwt: 'missing authorization' }, 401)
+
+    if (!request.hasPermission('write_all'))
+      return reply.fail({ role: 'missing permission' }, 403)
+
+    try {
+      const repo = new User(fastify)
+      const success = await repo.put(request.jwt.sub, request.params.id, request.body)
+      return reply.success({ success }, 200, performance.now() - start)
+    } catch (err) {
+      request.log.error({ err, id: request.params.id }, 'failed to update user')
+      return reply.error('failed to update user')
+    }
+  })
 }
