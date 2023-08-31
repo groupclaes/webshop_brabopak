@@ -133,6 +133,11 @@ export default async function (fastify: FastifyInstance) {
           return await failedAuth(request, reply, repo, 404, 'Username or password is incorrect!', username, user.id.toString(), false, 0, 'mfa_info missing', ip_address, rating, user_agent)
         }
       }
+
+
+      if (!mfa_required && authorization_code)
+        await repo.sso.updateLastLogin(user.id)
+
       return {
         authorization_code: mfa_required === undefined ? authorization_code : undefined,
         mfa_required,

@@ -128,6 +128,13 @@ export class SSO {
     return undefined
   }
 
+  async updateLastLogin(user_id: string): Promise<boolean> {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('user_id', sql.Int, user_id)
+    const res = await r.query('UPDATE account.users SET last_authenticated_on = GETUTCDATE() WHERE id = @user_id')
+    return res.rowsAffected?.length > 0 && res.rowsAffected[0] > 0
+  }
+
   /**
    * Get RefreshToken
    */
