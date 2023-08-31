@@ -6,7 +6,10 @@ export default async function (fastify: FastifyInstance) {
   /**
    * @route GET /api/{APP_VERSION}/manage/users
    */
-  fastify.get('/:id', async (request: FastifyRequest<{ Params: { id?: number } }>, reply: FastifyReply) => {
+  fastify.get('', handler)
+  fastify.get('/:id', handler)
+
+  async function handler(request: FastifyRequest<{ Params: { id?: number } }>, reply: FastifyReply) {
     const start = performance.now()
 
     if (!request.jwt?.sub)
@@ -20,5 +23,5 @@ export default async function (fastify: FastifyInstance) {
       request.log.error({ err, id: request.params.id }, 'failed to get users')
       return reply.error('failed to get users')
     }
-  })
+  }
 }
