@@ -10,8 +10,9 @@ import { IProductBase } from 'src/app/core/api/products-api.service'
 export class CartService {
   private _initialized: boolean = false
 
+  private _id?: number
   private _products: ICartProduct[] = []
-  private _modified: Date | undefined = undefined
+  private _modified?: Date
 
   changes: EventEmitter<void> = new EventEmitter<void>()
 
@@ -51,9 +52,11 @@ export class CartService {
 
       this._initialized = true
       if (response?.data) {
+        this._id = response.data[0].id
         this._products = response.data[0].products ?? []
         this._modified = response.data[0].modified
       } else {
+        this._id = undefined
         this._products = []
         this._modified = undefined
       }
@@ -80,11 +83,11 @@ export class CartService {
   }
 
   async send(form: any): Promise<boolean> {
-    const response = await this.api.postCart(form)
+    if (!this._id) return false
 
-    if (response.code === 200) {
+    const response = await this.api.postCart(this._id, form)
+    if (response.code === 200)
       this.init()
-    }
 
     return response.code === 200
   }

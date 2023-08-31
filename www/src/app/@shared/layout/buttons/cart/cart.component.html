@@ -37,13 +37,13 @@
     </div>
   </div>
   <div class="border-t pt-3 mb-4" *ngIf="auth.canViewPrices && service.products && service.products.length > 0">
-    <div class="flex" id="menu-basket-shipping-cost">
+    <!-- <div class="flex" id="menu-basket-shipping-cost">
       <small translate>pages.cart.shippingCosts</small>
       <span class="flex-auto text-right font-bold inline-block"
         [ngClass]="{ success: calcTotalPrice.totalDelivery === 0 }">
         {{ calcTotalPrice.totalDelivery > 0 ? (calcTotalPrice.totalDelivery | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : ('pages.cart.steps.3.freeShipping' | translate) }}
       </span>
-    </div>
+    </div> -->
     <div class="flex" id="menu-basket-tax-cost" *ngIf="calcTotalPrice.totalTax > 0">
       <small translate>
         pages.cart.taxCosts

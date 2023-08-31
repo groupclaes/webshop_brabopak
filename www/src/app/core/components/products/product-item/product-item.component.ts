@@ -1,6 +1,7 @@
 import { CurrencyPipe, DatePipe } from '@angular/common'
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
+import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { IProduct } from 'src/app/core/api/products-api.service'
 import { environment } from 'src/environments/environment'
@@ -22,7 +23,8 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     public auth: AuthService,
     private currencyPipe: CurrencyPipe,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private cart: CartService
   ) {
 
   }
@@ -33,6 +35,10 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+  }
+
+  get isAdded(): boolean {
+    return this.auth.isAuthenticated() && this.cart.products.some(e => e.id === this.item?.id)
   }
 
   get isNew(): boolean {

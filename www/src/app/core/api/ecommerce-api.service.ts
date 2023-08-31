@@ -17,7 +17,8 @@ export class EcommerceApiService {
     return {
       menu: () => `${environment.api}ecommerce/menu`,
       dashboard: () => `${environment.api}ecommerce/dashboard`,
-      cart: () => `${environment.api}ecommerce/carts`,
+      carts: () => `${environment.api}ecommerce/carts`,
+      cart: (id: number) => `${environment.api}ecommerce/carts/${id}`,
       cartProduct: () => `${environment.api}ecommerce/carts/products`,
       orders: () => `${environment.api}ecommerce/orders`,
       order: (id: number) => `${environment.api}ecommerce/orders/${id}`
@@ -39,7 +40,7 @@ export class EcommerceApiService {
     const params = trimParameters({
       usercode
     })
-    return firstValueFrom(this.http.get<IGetCartsResponse>(this.urls.cart(), { params }))
+    return firstValueFrom(this.http.get<IGetCartsResponse>(this.urls.carts(), { params }))
   }
 
   orders(usercode: number): Promise<IGetOrderHistoryResponse> {
@@ -63,8 +64,8 @@ export class EcommerceApiService {
     return firstValueFrom(this.http.put<IGetCartsResponse>(this.urls.cartProduct(), product, { params }))
   }
 
-  postCart(form: any) {
-    return firstValueFrom(this.http.post<IBaseApiResponse>(this.urls.cart(), form))
+  postCart(id: number, form: any) {
+    return firstValueFrom(this.http.post<IBaseApiResponse>(this.urls.cart(id), form))
   }
 }
 

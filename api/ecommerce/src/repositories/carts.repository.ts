@@ -41,6 +41,15 @@ export default class Cart {
     return result.rowsAffected[0] > 0
   }
 
+  async deactivateCart(id: number, user_id?: string) {
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('id', sql.Int, id)
+    r.input('user_id', sql.Int, user_id)
+    const result = await r.execute(this.schema + '[usp_deactivateCart]')
+
+    return result.rowsAffected[0] > 0
+  }
+
   async getProductInfo(product_id: number) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('product_id', sql.Int, product_id)

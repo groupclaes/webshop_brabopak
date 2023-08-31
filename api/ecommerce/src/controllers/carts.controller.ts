@@ -64,8 +64,11 @@ export default async function (fastify: FastifyInstance) {
   })
 
   // send cart
-  fastify.post('', async (request: FastifyRequest<{
-    Body: any
+  fastify.post('/:id', async (request: FastifyRequest<{
+    Body: any,
+    Params: {
+      id: number
+    }
   }>, reply: FastifyReply) => {
     try {
       if (!request.jwt)
@@ -104,8 +107,10 @@ export default async function (fastify: FastifyInstance) {
 
         request.log.debug({}, 'apslj110b successful')
         if (oeResponse) {
-          if (oeResponse.status === 200 && oeResponse.result)
-            return reply.success({ success: true })
+          if (oeResponse.status === 200 && oeResponse.result) {
+            const success = await repo.deactivateCart(request.params.id)
+            return reply.success({ success })
+          }
           else
             return reply.fail({ reason: 'invallid oe response' })
         }

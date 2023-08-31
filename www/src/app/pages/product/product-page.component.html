@@ -44,10 +44,10 @@
           </div>
         </ng-container>
 
-        <div class="flex items-center mt-2" *ngIf="product.type === 'B' && product.delivery_time > 1">
+        <!-- <div class="flex items-center mt-2" *ngIf="product.type === 'B' && product.delivery_time > 1">
           <i class="fal fa-fw text-lg fa-clock"></i>&nbsp;
           Levertermijn: {{ product.delivery_time }}
-        </div>
+        </div> -->
 
         <div class="product-available-on" *ngIf="product.available_on">
           <p class="emphasize">
