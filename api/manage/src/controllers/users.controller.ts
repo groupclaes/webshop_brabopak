@@ -1,4 +1,19 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { JWTPayload } from 'jose'
+
+declare module 'fastify' {
+  export interface FastifyRequest {
+    jwt: JWTPayload
+    hasRole: (role: string) => boolean
+    hasPermission: (permission: string, scope?: string) => boolean
+  }
+
+  export interface FastifyReply {
+    success: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    fail: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    error: (message?: string, code?: number, executionTime?: number) => FastifyReply
+  }
+}
 
 import User from '../repositories/user.repository'
 
@@ -16,7 +31,7 @@ export default async function (fastify: FastifyInstance) {
       return reply.fail({ jwt: 'missing authorization' }, 401)
 
     if (!request.hasPermission('read'))
-      return reply.fail({ role: 'missing permission' }, 401)
+      return reply.fail({ role: 'missing permission' }, 403)
 
     try {
       const repo = new User(fastify)
