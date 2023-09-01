@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@fastify/static": "^6.10.2",
-    "@groupclaes/fastify-elastic": "^4.0.7",
+    "@groupclaes/fastify-elastic": "^4.1.1",
     "@groupclaes/oe-connector": "^1.2.5",
     "bcrypt": "^5.1.1",
-    "fastify": "^4.22.0",
+    "fastify": "^4.22.2",
     "jose": "^4.14.4",
     "mssql": "^6.4.1",
     "nodemailer": "^6.9.4"
