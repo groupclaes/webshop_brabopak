@@ -208,6 +208,7 @@
               "parts": "Indien niet volledig, lever de hoeveelheid in voorraad.",
               "complete": "Het order mag enkel uitgeleverd worden als het volledig is."
             },
+            "openinghours": "Openingsuren winkel:",
             "acceptTerms": " Ik aanvaard de <a target=\"_blank\" class=\"text-primary hover:underline\" rel=\"noopener noreferer\" href=\"https://pcm.groupclaes.be/v3/content/dis/website/content-document/9990\">verkoopvoorwaarden</a>.",
             "acceptTermsOrderitem": "Ik ben op de hoogte dat bestelartikelen niet geruild of retour genomen worden."
           },
@@ -261,6 +262,19 @@
     "edit": "Wijzigen",
     "save": "Opslaan",
     "view": "Bekijken"
+  },
+  "days": {
+    "base": "dagen",
+    "monday": "Maandag",
+    "tuesday": "Dinsdag",
+    "wednesday": "Woensdag",
+    "thursday": "Donderdag",
+    "friday": "Vrijdag",
+    "mo": "Ma",
+    "tu": "Di",
+    "we": "Wo",
+    "th": "Do",
+    "fr": "Vr"
   },
   "languages": {
     "nl-BE": "Nederlands",
