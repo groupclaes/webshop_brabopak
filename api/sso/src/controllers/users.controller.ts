@@ -4,11 +4,12 @@ import { env } from 'process'
 import oe from '@groupclaes/oe-connector'
 
 import User from '../repositories/user.repository'
+const AAD = require('../providers/aad')
 // SGWQVXPQWZEM
 
 export default async function (fastify: FastifyInstance) {
   /**
-     * Create new user if it exists in azure
+     * Create new user if brabopak.com, check if exists in azure
      * @route /users/signon
      */
   fastify.post('/signon', async (request: FastifyRequest<{
@@ -32,6 +33,22 @@ export default async function (fastify: FastifyInstance) {
       oe.configure({
         c: false
       })
+
+      if (username.includes('brabopak.com')) {
+        /** @type {any[]} */
+        const users = AAD.getAllUsers()
+        const user = users.find((u) => u.userPrincipalName.toLowerCase() === username && u.department)
+        if (!user) {
+          request.log.warn({ username, code, reason: 'user is not a valid brabopak employee' }, 'Failed to register!')
+          return reply
+            .status(403)
+            .send({
+              status: 'fail',
+              code: 403,
+              message: 'user is not a valid brabopak employee'
+            })
+        }
+      }
 
       const user = await repo.sso.get(username)
       if (user) {
