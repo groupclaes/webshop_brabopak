@@ -1,6 +1,6 @@
 var request = require('sync-request')
 
-var config = require('../config')
+var config = require('./config')
 
 var graphAccessUrl = `https://login.microsoftonline.com/${config.aad.tenantId}/oauth2/v2.0/token`
 var graphTokenBody = "client_id=" + config.aad.clientId + "&scope=" + config.aad.scope + "&client_secret=" + config.aad.clientSecretId + "&grant_type=client_credentials"
