@@ -15,7 +15,7 @@ async function main() {
   // add jwt configuration object to config
   fastify = await Fastify({ ...config.wrapper, jwt: {} })
   const version_prefix = '/api' + (env.APP_VERSION ? '/' + env.APP_VERSION : '')
-  await fastify.register(cartsController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/carts` })
+  await fastify.register(cartsController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/carts`, logLevel: 'debug' })
   await fastify.register(dashboardController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/dashboard` })
   await fastify.register(menuController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/menu` })
   await fastify.register(ordersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/orders` })

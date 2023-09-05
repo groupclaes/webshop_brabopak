@@ -45,7 +45,14 @@ export default class Cart {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('id', sql.Int, id)
     r.input('user_id', sql.Int, user_id)
-    const result = await r.execute(this.schema + '[usp_deactivateCart]')
+    const result = await r.execute(this.schema + '[usp_deactivateCart]').catch(err => {
+      this._fastify.log.error({ err }, 'error while executing sql procedure')
+    })
+
+    this._fastify.log.debug({ result }, `Exeecuting procedure ${this.schema}[usp_deactivateCart] result`)
+
+    if (!result)
+      return false
 
     return result.rowsAffected[0] > 0
   }
