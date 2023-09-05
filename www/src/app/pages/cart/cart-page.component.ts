@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { myPriceEntry, myPriceTotalEntry } from 'src/app/@shared/layout/buttons/cart/cart.component'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
@@ -39,7 +40,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
     public service: CartService,
     private fb: FormBuilder,
     public auth: AuthService,
-    private modalCtrl: ModalsService
+    private modalCtrl: ModalsService,
+    private router: Router
   ) {
   }
 
@@ -116,7 +118,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     return price
   }
 
-  sendOrder() {
+  async sendOrder() {
     if ((this.finalConfirmFormGroup && this.finalConfirmFormGroup.invalid) || this.isLoading) {
       this.finalConfirmFormGroup?.markAllAsTouched()
       const modal = new Modal('alert', 'Formulier ongeldig', 'Controleer als alle velden zijn ingevuld en probeer opnieuw!')
@@ -130,6 +132,9 @@ export class CartPageComponent implements OnInit, OnDestroy {
       this.ref.markForCheck()
 
       this.service.send(this.final)
+      const modal = new Modal('success', 'Order verstuurd', 'Het order is verzonden je ontvangt een orderbevestiging wanneer jouw order is verwerkt!')
+      await this.modalCtrl.show(modal)
+      this.router.navigateByUrl('/')
     } catch (err) {
       console.error(err)
     } finally {
