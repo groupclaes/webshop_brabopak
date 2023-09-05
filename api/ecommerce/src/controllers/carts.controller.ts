@@ -108,7 +108,7 @@ export default async function (fastify: FastifyInstance) {
         request.log.debug({}, 'apslj110b successful')
         if (oeResponse) {
           if (oeResponse.status === 200 && oeResponse.result) {
-            const success = await repo.deactivateCart(request.params.id)
+            const success = await repo.deactivateCart(+request.params.id, request.jwt.sub)
             return reply.success({ success })
           }
           else
