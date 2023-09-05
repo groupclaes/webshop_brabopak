@@ -87,7 +87,7 @@ export class CartService {
 
     const response = await this.api.postCart(this._id, form)
     if (response.code === 200)
-      this.init()
+      await this.init()
 
     return response.code === 200
   }

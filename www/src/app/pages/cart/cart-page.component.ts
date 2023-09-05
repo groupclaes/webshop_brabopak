@@ -131,7 +131,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
       this.isLoading = true
       this.ref.markForCheck()
 
-      this.service.send(this.final)
+      await this.service.send(this.final)
       const modal = new Modal('success', 'Order verstuurd', 'Het order is verzonden je ontvangt een orderbevestiging wanneer jouw order is verwerkt!')
       await this.modalCtrl.show(modal)
       this.router.navigateByUrl('/')
