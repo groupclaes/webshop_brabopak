@@ -70,9 +70,10 @@
 
         <div class="flex flex-col space-y-1 mt-4">
           <a class="text-md font-medium text-primary dark:text-accent hover:underline"
-            [routerLink]="['/auth/forgot-password']" [queryParams]="{ code: currentUsername }"
+            [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ code: currentUsername }"
             translate="pages.signon.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-up']"
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline"
+            [routerLink]="['/auth/sign-up'] | localize"
             translate="pages.signon.form.action2"></a>
         </div>
 

@@ -52,9 +52,10 @@
 
         <div class="flex flex-col space-y-1 mt-4">
           <a class="text-md font-medium text-primary dark:text-accent hover:underline"
-            [routerLink]="['/auth/forgot-password']" [queryParams]="{ login_hint: currentUsername }"
+            [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ login_hint: currentUsername }"
             translate="pages.signup.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-on']"
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline"
+            [routerLink]="['/auth/sign-on'] | localize"
             translate="pages.signup.form.action2"></a>
         </div>
 

@@ -49,8 +49,10 @@
           <a class="text-md font-medium text-primary dark:text-accent hover:underline"
             [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ login_hint: currentUsername }"
             translate="pages.signin.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-up']"
-            translate="pages.signin.form.action2"></a>
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline"
+            [routerLink]="['/auth/sign-up'] | localize" translate="pages.signin.form.action2"></a>
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline"
+            [routerLink]="['/products'] | localize" translate="actions.guest"></a>
         </div>
 
         <div class="mt-6 text-sm text-gray-500">
