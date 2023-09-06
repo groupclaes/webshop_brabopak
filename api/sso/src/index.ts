@@ -23,9 +23,9 @@ async function main() {
       prefix: version_prefix + '/sso/.well-known/' // optional: default '/'
     }
   )
-  await fastify.register(authorizeController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/authorize` })
-  await fastify.register(tokenController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/token` })
-  await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users` })
+  await fastify.register(authorizeController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/authorize`, logLevel: 'debug' })
+  await fastify.register(tokenController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/token`, logLevel: 'debug' })
+  await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users`, logLevel: 'info' })
   await fastify.listen({ port: +(env['PORT'] ?? 80), host: '::' })
 }
 

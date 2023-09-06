@@ -82,10 +82,12 @@ export default class User {
   /**
    *
    */
-  async create(username: string, password: string, usercode: number): Promise<boolean> {
+  async create(username: string, password: string, given_name: string, family_name: string, usercode: number): Promise<boolean> {
     const request = new sql.Request(await db.get(DB_NAME))
     request.input('username', sql.VarChar, username)
     request.input('password', sql.VarChar, password)
+    request.input('given_name', sql.VarChar, given_name)
+    request.input('family_name', sql.VarChar, family_name)
     request.input('usercode', sql.Int, usercode)
 
     const result = await request.execute(`${this.schema}.[usp_createUser]`)

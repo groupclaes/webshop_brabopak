@@ -4,8 +4,23 @@ import { env } from 'process'
 import oe from '@groupclaes/oe-connector'
 
 import User from '../repositories/user.repository'
+import { JWTPayload } from 'jose'
 const AAD = require('../providers/aad')
 // SGWQVXPQWZEM
+
+declare module 'fastify' {
+  export interface FastifyRequest {
+    jwt: JWTPayload
+    hasRole: (role: string) => boolean
+    hasPermission: (permission: string, scope?: string) => boolean
+  }
+
+  export interface FastifyReply {
+    success: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    fail: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    error: (message?: string, code?: number, executionTime?: number) => FastifyReply
+  }
+}
 
 export default async function (fastify: FastifyInstance) {
   /**
@@ -76,49 +91,25 @@ export default async function (fastify: FastifyInstance) {
         const result = (oeResponse.result.settings as IAppUser[])
         if (result && result.length > 0) {
           const appuser = result[0]
-          if (await repo.create(username, bcrypt.hashSync(password, +(env['BCRYPT_COST'] ?? 13)), appuser.usercode)) {
+          if (await repo.create(username, bcrypt.hashSync(password, +(env['BCRYPT_COST'] ?? 13)), request.body.given_name, request.body.family_name, appuser.usercode)) {
             // insert/update user.settings
             await repo.checkSettings(appuser)
 
-            request.log.debug({ username, code }, 'User successfully registered!')
-            return {
-              status: 'success',
-              code: 200,
-              data: {
-                success: true
-              }
-            }
+            request.log.info({ username, code }, 'User successfully registered!')
+            return reply.success({ success: true })
           }
-          request.log.debug({ username, code, reason: 'error while creating new user entry' }, 'Failed to register user!')
-          return reply
-            .status(500)
-            .send({
-              status: 'error',
-              code: 500,
-              message: 'error while creating new user entry'
-            })
+          request.log.error({ username, code, reason: 'error while creating new user entry' }, 'Failed to register user!')
+          return reply.fail('error while creating new user entry', 403)
         }
-        request.log.debug({ username, code, reason: 'error with usersettings!' }, 'Failed to register user!')
-        return reply
-          .status(500)
-          .send({
-            status: 'error',
-            code: 500,
-            message: 'error with usersettings!'
-          })
+        request.log.error({ username, code, reason: 'error with usersettings!' }, 'Failed to register user!')
+        return reply.fail('error with usersettings!', 404)
       } else {
-        request.log.debug({ username, code, reason: 'error while retrieving registration info!', oe: oeResponse.result }, 'Failed to register user!')
-        return reply
-          .status(500)
-          .send({
-            status: 'error',
-            code: 500,
-            reason: 'error while retrieving registration info!'
-          })
+        request.log.error({ username, code, reason: 'error while retrieving registration info!', oe: oeResponse.result }, 'Failed to register user!')
+        return reply.fail('error while retrieving registration info!', 404)
       }
     } catch (err) {
-      request.log.debug({ reason: 'unknown error', err }, 'Failed to register user!')
-      return reply.error(reply, 'failed to register user')
+      request.log.error({ reason: 'unknown error', err }, 'Failed to register user!')
+      return reply.error('failed to register user')
     }
   })
 
