@@ -28,7 +28,7 @@ export class SignonPageComponent {
       password: ['', [Validators.required, Validators.minLength(8)]], // shop2069
       given_name: ['', [Validators.required]],
       family_name: ['', [Validators.required]],
-      code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[A-Z]{12}$')]] // SGWQVXPQWZEM  --  FTPGIAPQDOSO
+      code: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^([A-Z]{12})|([a-fA-F0-9]{6})$')]] // SGWQVXPQWZEM  --  FTPGIAPQDOSO
     })
 
     firstValueFrom(route.queryParams).then((params) => {
