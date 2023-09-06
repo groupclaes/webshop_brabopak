@@ -51,7 +51,7 @@
           "password-required": "Wachtwoord is een verplicht veld",
           "password-minLength": "Wachtwoord moet minimaal 8 tekens bevatten",
           "code-required": "Registratiecode is een verplicht veld",
-          "code-minLength": "Registratiecode invoer is onjuist"
+          "code-pattern": "Registratiecode invoer is onjuist"
         }
       }
     },
