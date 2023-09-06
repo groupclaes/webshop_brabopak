@@ -68,7 +68,7 @@ export default async function (fastify: FastifyInstance) {
         'BRA',
         undefined
       ], {
-        tw: -1,
+        tw: 3000,
         simpleParameters: true
       })
 
@@ -107,18 +107,18 @@ export default async function (fastify: FastifyInstance) {
             message: 'error with usersettings!'
           })
       } else {
-        request.log.debug({ username, code, reason: 'error while retrieving registration info!' }, 'Failed to register user!')
+        request.log.debug({ username, code, reason: 'error while retrieving registration info!', oe: oeResponse.result }, 'Failed to register user!')
         return reply
           .status(500)
           .send({
             status: 'error',
             code: 500,
-            message: 'error while retrieving registration info!'
+            reason: 'error while retrieving registration info!'
           })
       }
     } catch (err) {
       request.log.debug({ reason: 'unknown error', err }, 'Failed to register user!')
-      return error(reply, 'failed to register user')
+      return reply.error(reply, 'failed to register user')
     }
   })
 
