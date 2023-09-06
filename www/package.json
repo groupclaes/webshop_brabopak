@@ -1,12 +1,12 @@
 {
   "name": "webshop_www",
-  "version": "1.0.0",
+  "version": "1.0.0-hotfix.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --disable-host-check --configuration production",
-    "build": "ng build",
+    "start": "ng serve --host 0.0.0.0 --disable-host-check",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "dev:ssr": "ng run brabopak_webshop_www:serve-ssr",
     "serve:ssr": "node dist/brabopak_webshop_www/server/main.js",
