@@ -1,14 +1,14 @@
 import sql from 'mssql'
 import db from '../db'
-import fastify, { FastifyInstance } from 'fastify'
+import { FastifyBaseLogger } from 'fastify'
 
 const DB_NAME = 'brabopak'
 
 export default class Cart {
-  private _fastify: FastifyInstance
+  private _logger: FastifyBaseLogger
 
-  constructor(fastify: FastifyInstance) {
-    this._fastify = fastify
+  constructor(fastify: FastifyBaseLogger) {
+    this._logger = fastify
   }
 
   schema: string = '[ecommerce].'
@@ -19,13 +19,13 @@ export default class Cart {
     r.input('usercode', sql.Int, usercode)
     r.input('culture', sql.VarChar, culture)
     const result = await r.execute(this.schema + '[usp_getCart]').catch(err => {
-      this._fastify.log.error({ err }, 'error while executing sql procedure')
+      this._logger.error({ err }, 'error while executing sql procedure')
     })
 
     if (!result)
       return []
 
-    this._fastify.log.debug({ result }, `Exeecuting procedure ${this.schema}[usp_getCart] result`)
+    this._logger.debug({ result }, `Exeecuting procedure ${this.schema}[usp_getCart] result`)
 
     return result.recordset.length > 0 ? result.recordset[0] : []
   }
@@ -46,10 +46,10 @@ export default class Cart {
     r.input('id', sql.Int, id)
     r.input('user_id', sql.Int, user_id)
     const result = await r.execute(this.schema + '[usp_deactivateCart]').catch(err => {
-      this._fastify.log.error({ err }, 'error while executing sql procedure')
+      this._logger.error({ err }, 'error while executing sql procedure')
     })
 
-    this._fastify.log.debug({ result }, `Exeecuting procedure ${this.schema}[usp_deactivateCart] result`)
+    this._logger.debug({ result }, `Exeecuting procedure ${this.schema}[usp_deactivateCart] result`)
 
     if (!result)
       return false

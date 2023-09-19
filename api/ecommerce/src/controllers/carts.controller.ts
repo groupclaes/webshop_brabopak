@@ -1,7 +1,23 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import oe from '@groupclaes/oe-connector'
 
+import { JWTPayload } from 'jose'
+
 import Cart from '../repositories/carts.repository'
+
+declare module 'fastify' {
+  export interface FastifyRequest {
+    jwt: JWTPayload
+    hasRole: (role: string) => boolean
+    hasPermission: (permission: string, scope?: string) => boolean
+  }
+
+  export interface FastifyReply {
+    success: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    fail: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    error: (message?: string, code?: number, executionTime?: number) => FastifyReply
+  }
+}
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('', async (request: FastifyRequest<{
@@ -14,7 +30,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart(fastify)
+      const repo = new Cart(request.log)
       const usercode = request.query.usercode
       const culture = request.query.culture ?? 'nl'
 
@@ -44,7 +60,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart(fastify)
+      const repo = new Cart(request.log)
       const usercode = request.query.usercode
       const culture = request.query.culture ?? 'nl'
 
@@ -74,7 +90,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart(fastify)
+      const repo = new Cart(request.log)
 
       request.log.debug({}, 'requesting post cart to openedge')
       if (request.jwt.sub) {

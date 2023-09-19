@@ -2,6 +2,21 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import oe from '@groupclaes/oe-connector'
 
 import Cart from '../repositories/carts.repository'
+import { JWTPayload } from 'jose'
+
+declare module 'fastify' {
+  export interface FastifyRequest {
+    jwt: JWTPayload
+    hasRole: (role: string) => boolean
+    hasPermission: (permission: string, scope?: string) => boolean
+  }
+
+  export interface FastifyReply {
+    success: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    fail: (data?: any, code?: number, executionTime?: number) => FastifyReply
+    error: (message?: string, code?: number, executionTime?: number) => FastifyReply
+  }
+}
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('/:id', async (request: FastifyRequest<{
@@ -15,7 +30,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
 
-      const repo = new Cart()
+      const repo = new Cart(request.log)
 
       if (request.jwt.sub) {
         const user = await repo.getUserInfo(request.jwt.sub)
@@ -58,7 +73,7 @@ export default async function (fastify: FastifyInstance) {
     try {
       if (!request.jwt)
         return reply.error('missing jwt!', 401)
-      const repo = new Cart()
+      const repo = new Cart(request.log)
 
       if (request.jwt.sub) {
         const user = await repo.getUserInfo(request.jwt.sub)
