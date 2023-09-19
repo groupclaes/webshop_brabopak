@@ -3,7 +3,7 @@
 #############
 
 # base image
-FROM docker-registry.groupclaes.be/node-npm:latest AS build
+FROM groupclaes/npm:latest AS build
 
 # set working directory
 WORKDIR /app
@@ -42,7 +42,7 @@ COPY nginx.conf /app/nginx.conf
 ############
 
 # base image
-FROM docker-registry.groupclaes.be/nginx:latest
+FROM groupclaes/nginx:latest
 # USER nginx
 
 #remove all content form html
