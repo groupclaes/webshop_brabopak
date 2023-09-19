@@ -1,1 +1,1 @@
-for dir in ~/development/webshop_brabopak/api/*; do (cd "$dir" && echo "Updating dependencies in folder: $dir" && npm upgrade); done
+for dir in ./*; do (cd "$dir" && echo "Updating dependencies in folder: $dir" && npm upgrade); done
