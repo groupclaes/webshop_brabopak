@@ -119,22 +119,24 @@ export class CartPageComponent implements OnInit, OnDestroy {
   }
 
   async sendOrder() {
-    if ((this.finalConfirmFormGroup && this.finalConfirmFormGroup.invalid) || this.isLoading) {
-      this.finalConfirmFormGroup?.markAllAsTouched()
-      const modal = new Modal('alert', 'Formulier ongeldig', 'Controleer als alle velden zijn ingevuld en probeer opnieuw!')
-      this.modalCtrl.show(modal)
-      return
-    }
-    if (!this.finalConfirmFormGroup) return
-
     try {
+      if ((this.finalConfirmFormGroup && this.finalConfirmFormGroup.invalid) || this.isLoading) {
+        this.finalConfirmFormGroup?.markAllAsTouched()
+        const modal = new Modal('alert', 'Formulier ongeldig', 'Controleer als alle velden zijn ingevuld en probeer opnieuw!')
+        await this.modalCtrl.show(modal)
+        return
+      }
+      if (!this.finalConfirmFormGroup) return
+
       this.isLoading = true
       this.ref.markForCheck()
 
-      await this.service.send(this.final)
-      const modal = new Modal('success', 'Order verstuurd', 'Het order is verzonden je ontvangt een orderbevestiging wanneer jouw order is verwerkt!')
-      await this.modalCtrl.show(modal)
-      this.router.navigateByUrl('/')
+      const result = await this.service.send(this.final)
+      if (result) {
+        const modal = new Modal('success', 'Order verstuurd', 'Het order is verzonden je ontvangt een orderbevestiging wanneer jouw order is verwerkt!')
+        await this.modalCtrl.show(modal)
+        this.router.navigateByUrl('/')
+      }
     } catch (err) {
       console.error(err)
     } finally {

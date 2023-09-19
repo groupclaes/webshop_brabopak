@@ -318,7 +318,8 @@
               (click)="finalizeOrder();proceedCheckout(3)" translate="pages.cart.steps.2.asideButton"
               *ngSwitchCase="2"></button>
             <button class="block font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
-              (click)="sendOrder()" translate="pages.cart.steps.3.asideButton" *ngSwitchCase="3"></button>
+              (click)="sendOrder()" onclick="alert('yeet')" translate="pages.cart.steps.3.asideButton"
+              *ngSwitchCase="3"></button>
           </ng-container>
         </div>
       </div>

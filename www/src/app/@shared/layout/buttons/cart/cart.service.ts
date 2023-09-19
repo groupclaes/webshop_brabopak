@@ -77,6 +77,7 @@ export class CartService {
     }
 
     const response = await this.api.putCartProduct({ product_id: product.id, quantity }, this.auth.currentCustomer.usercode)
+    this._id = response.data[0].id
     this._products = response.data[0].products ?? []
     this._modified = response.data[0].modified
     this.changes.emit()
