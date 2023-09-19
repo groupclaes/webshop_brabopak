@@ -1,5 +1,5 @@
 # ---- Build ----
-FROM docker-registry.groupclaes.be/node-yarn AS build
+FROM groupclaes/yarn AS build
 
 # set current user to node
 USER node
@@ -8,7 +8,7 @@ USER node
 WORKDIR /usr/src/app
 
 # copy package file
-COPY package.json ./src ./
+COPY package.json ./
 
 # install node packages
 RUN yarn
@@ -17,7 +17,7 @@ RUN yarn
 COPY dist/index.min.js ./
 
 # from base image node
-FROM docker-registry.groupclaes.be/node-base AS release
+FROM groupclaes/node AS release
 
 # set current user to node
 USER node
