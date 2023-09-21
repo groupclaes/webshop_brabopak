@@ -107,18 +107,25 @@ export class AuthService {
           token: `${this.refresh_token}`
         }
       }).pipe(shareReplay())
-      r.subscribe(resp => {
-        const refresh_token = resp.refresh_token
-        delete resp.refresh_token
+      r.subscribe({
+        next: (resp) => {
+          const refresh_token = resp.refresh_token
+          delete resp.refresh_token
 
-        if (!refresh_token) return
+          if (!refresh_token) return
 
-        if (window.localStorage.getItem(REFRESH_STORAGE_KEY))
-          window.localStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
-        else
-          window.sessionStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
-        window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(resp))
-        this.change.next(resp)
+          if (window.localStorage.getItem(REFRESH_STORAGE_KEY))
+            window.localStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
+          else
+            window.sessionStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
+          window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(resp))
+          this.change.next(resp)
+        },
+        error: (err) => {
+          console.error(err)
+          if (err.status === 403)
+            this.logout()
+        }
       })
       return r.pipe<string | undefined>(map(resp => resp.refresh_token))
     }
