@@ -1,1 +1,1 @@
-for dir in ./*; do (cd "$dir" && echo "Building: $dir" && npm run publish); done
+for dir in ./*; do (cd "$dir" && echo "Building: $dir" && ./build.sh); done
