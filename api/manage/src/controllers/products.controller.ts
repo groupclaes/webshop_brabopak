@@ -31,7 +31,7 @@ export default async function (fastify: FastifyInstance) {
       return reply.fail({ role: 'missing permission' }, 403)
 
     try {
-      const repo = new Product(fastify)
+      const repo = new Product(request.log)
       const result = await repo.get(request.jwt.sub)
       return reply.success(result, 200, performance.now() - start)
     } catch (err) {
@@ -53,12 +53,12 @@ export default async function (fastify: FastifyInstance) {
       return reply.fail({ role: 'missing permission' }, 403)
 
     try {
-      const repo = new Product(fastify)
+      const repo = new Product(request.log)
       const success = await repo.post(request.jwt.sub, request.body)
-      return reply.success({ success }, 200, performance.now() - start)
+      return reply.success(success, 200, performance.now() - start)
     } catch (err) {
-      request.log.error({ err }, 'failed to post products')
-      return reply.error('failed to post products')
+      request.log.error({ err }, 'failed to post product')
+      return reply.error('failed to post product')
     }
   })
 
@@ -75,12 +75,12 @@ export default async function (fastify: FastifyInstance) {
       return reply.fail({ role: 'missing permission' }, 403)
 
     try {
-      const repo = new Product(fastify)
+      const repo = new Product(request.log)
       const success = await repo.put(request.jwt.sub, request.params.product_id, request.params.customer_type, request.body)
-      return reply.success({ success }, 200, performance.now() - start)
+      return reply.success(success, 200, performance.now() - start)
     } catch (err) {
-      request.log.error({ err }, 'failed to get products')
-      return reply.error('failed to get products')
+      request.log.error({ err }, 'failed to put product')
+      return reply.error('failed to put product')
     }
   })
 
@@ -97,12 +97,13 @@ export default async function (fastify: FastifyInstance) {
       return reply.fail({ role: 'missing permission' }, 403)
 
     try {
-      const repo = new Product(fastify)
+      const repo = new Product(request.log)
       const success = await repo.delete(request.jwt.sub, request.params.product_id, request.params.customer_type)
       return reply.success({ success }, 200, performance.now() - start)
     } catch (err) {
-      request.log.error({ err }, 'failed to get products')
-      return reply.error('failed to get products')
+      request.log.error({ err }, 'failed to delete product')
+      console.error(err)
+      return reply.error('failed to delete product')
     }
   })
 }
