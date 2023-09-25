@@ -4,6 +4,7 @@ import process, { env } from 'process'
 
 import config from './config'
 import usersController from './controllers/users.controller'
+import productsController from './controllers/products.controller'
 
 let fastify: FastifyInstance | undefined
 
@@ -13,6 +14,7 @@ async function main() {
   fastify = await Fastify({ ...config.wrapper, jwt: {} })
   const version_prefix = '/api' + (env.APP_VERSION ? '/' + env.APP_VERSION : '')
   await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users`, logLevel: 'debug' })
+  await fastify.register(productsController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/products`, logLevel: 'debug' })
   await fastify.listen({ port: +(env['PORT'] ?? 80), host: '::' })
 }
 
