@@ -24,35 +24,35 @@ export default class Product {
     } : undefined
   }
 
-  async post(user_id: string, payload: IBrabopakProductSpotlightpayload): Promise<boolean> {
+  async post(user_id: string, payload: IBrabopakProductSpotlightpayload) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('payload_product_itemnum', sql.VarChar, payload.product_itemnum)
-    r.input('payload_customer_type', sql.VarChar, payload.customer_type)
-    r.input('payload_unit_id', sql.VarChar, payload.unit_id)
+    r.input('payload_customer_type', sql.Int, payload.customer_type)
+    r.input('payload_unit_id', sql.Int, payload.unit_id)
     this._fastify.log.debug({ sqlParam: { user_id, payload }, sqlDb: DB_NAME, sqlSchema: this.schema, sqlProc: '[usp_postProductsSpotlight]' }, 'running procedure')
     const result = await r.execute(this.schema + '[usp_postProductsSpotlight]')
     this._fastify.log.debug({ result }, 'procedure result')
 
-    return result.rowsAffected.length > 0 ? result.rowsAffected[0] > 0 : false
+    return result.rowsAffected.length > 0 ? { success: result.rowsAffected[0] > 0, product: result.recordsets[0][0] > 0 } : false
   }
 
-  async put(user_id: string, product_id: number, customer_type: number | null, payload: IBrabopakProductSpotlightpayload): Promise<boolean> {
+  async put(user_id: string, product_id: number, customer_type: number | null, payload: IBrabopakProductSpotlightpayload) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('product_id', sql.Int, product_id)
     r.input('customer_type', sql.Int, customer_type)
     r.input('payload_product_itemnum', sql.VarChar, payload.product_itemnum)
-    r.input('payload_customer_type', sql.VarChar, payload.customer_type)
-    r.input('payload_unit_id', sql.VarChar, payload.unit_id)
+    r.input('payload_customer_type', sql.Int, payload.customer_type)
+    r.input('payload_unit_id', sql.Int, payload.unit_id)
     this._fastify.log.debug({ sqlParam: { user_id, product_id, customer_type, payload }, sqlDb: DB_NAME, sqlSchema: this.schema, sqlProc: '[usp_putProductsSpotlight]' }, 'running procedure')
     const result = await r.execute(this.schema + '[usp_putProductsSpotlight]')
     this._fastify.log.debug({ result }, 'procedure result')
 
-    return result.rowsAffected.length > 0 ? result.rowsAffected[0] > 0 : false
+    return result.rowsAffected.length > 0 ? { success: result.rowsAffected[0] > 0, product: result.recordsets[0][0] > 0 } : false
   }
 
-  async delete(user_id: string, product_id: number, customer_type: number | null): Promise<boolean> {
+  async delete(user_id: string, product_id: number, customer_type: number | null) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('product_id', sql.Int, product_id)
