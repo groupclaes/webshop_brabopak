@@ -20,7 +20,7 @@ export default class Product {
     return result.recordset.length > 0 ? {
       products: result.recordsets[0][0],
       customer_types: result.recordsets[1],
-      unit_types: result.recordsets[2]
+      units: result.recordsets[2]
     } : undefined
   }
 
