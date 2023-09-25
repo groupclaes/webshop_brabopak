@@ -65,7 +65,7 @@ export default async function (fastify: FastifyInstance) {
   /**
    * @route PUT /api/{APP_VERSION}/manage/products/spotlight/:product_id/:customer_type
    */
-  fastify.put('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: number | null }, Body: IBrabopakProductSpotlightpayload }>, reply: FastifyReply) {
+  fastify.put('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: string | null }, Body: IBrabopakProductSpotlightpayload }>, reply: FastifyReply) {
     const start = performance.now()
 
     if (!request.jwt?.sub)
@@ -87,7 +87,7 @@ export default async function (fastify: FastifyInstance) {
   /**
    * @route DELETE /api/{APP_VERSION}/manage/products/spotlight/:product_id/:customer_type
    */
-  fastify.delete('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: number | null } }>, reply: FastifyReply) {
+  fastify.delete('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: string | null } }>, reply: FastifyReply) {
     const start = performance.now()
 
     if (!request.jwt?.sub)

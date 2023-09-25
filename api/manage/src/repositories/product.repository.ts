@@ -28,7 +28,7 @@ export default class Product {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('payload_product_itemnum', sql.VarChar, payload.product_itemnum)
-    if (payload.customer_type)
+    if (payload.customer_type && payload.customer_type != null)
       r.input('payload_customer_type', sql.Int, payload.customer_type)
     r.input('payload_unit_id', sql.Int, payload.unit_id)
     this._logger.debug({ sqlParam: { user_id, payload }, sqlDb: DB_NAME, sqlSchema: this.schema, sqlProc: '[usp_postProductsSpotlight]' }, 'running procedure')
@@ -38,14 +38,14 @@ export default class Product {
     return result.rowsAffected.length > 0 ? { success: result.rowsAffected[0] > 0, product: result.recordsets[0][0] } : false
   }
 
-  async put(user_id: string, product_id: number, customer_type: number | null, payload: IBrabopakProductSpotlightpayload) {
+  async put(user_id: string, product_id: number, customer_type: string | null, payload: IBrabopakProductSpotlightpayload) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('product_id', sql.Int, product_id)
-    if (customer_type)
+    if (customer_type && customer_type != null)
       r.input('customer_type', sql.Int, customer_type)
     r.input('payload_product_itemnum', sql.VarChar, payload.product_itemnum)
-    if (payload.customer_type)
+    if (payload.customer_type && payload.customer_type != null)
       r.input('payload_customer_type', sql.Int, payload.customer_type)
     r.input('payload_unit_id', sql.Int, payload.unit_id)
     this._logger.debug({ sqlParam: { user_id, product_id, customer_type, payload }, sqlDb: DB_NAME, sqlSchema: this.schema, sqlProc: '[usp_putProductsSpotlight]' }, 'running procedure')
@@ -55,11 +55,11 @@ export default class Product {
     return result.rowsAffected.length > 0 ? { success: result.rowsAffected[0] > 0, product: result.recordsets[0][0] } : false
   }
 
-  async delete(user_id: string, product_id: number, customer_type: number | null) {
+  async delete(user_id: string, product_id: number, customer_type: string | null) {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('user_id', sql.Int, user_id)
     r.input('product_id', sql.Int, product_id)
-    if (customer_type)
+    if (customer_type && customer_type != null)
       r.input('customer_type', sql.Int, customer_type)
     this._logger.debug({ sqlParam: { user_id, product_id, customer_type }, sqlDb: DB_NAME, sqlSchema: this.schema, sqlProc: '[usp_deleteProductsSpotlight]' }, 'running procedure')
     const result = await r.execute(this.schema + '[usp_deleteProductsSpotlight]')
