@@ -36,6 +36,7 @@ export default async function (fastify: FastifyInstance) {
       return reply.success(result, 200, performance.now() - start)
     } catch (err) {
       request.log.error({ err }, 'failed to get products')
+      console.error(err)
       return reply.error('failed to get products')
     }
   })
@@ -58,6 +59,7 @@ export default async function (fastify: FastifyInstance) {
       return reply.success(success, 200, performance.now() - start)
     } catch (err) {
       request.log.error({ err }, 'failed to post product')
+      console.error(err)
       return reply.error('failed to post product')
     }
   })
@@ -65,7 +67,7 @@ export default async function (fastify: FastifyInstance) {
   /**
    * @route PUT /api/{APP_VERSION}/manage/products/spotlight/:product_id/:customer_type
    */
-  fastify.put('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: string | null }, Body: IBrabopakProductSpotlightpayload }>, reply: FastifyReply) {
+  fastify.put('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: string }, Body: IBrabopakProductSpotlightpayload }>, reply: FastifyReply) {
     const start = performance.now()
 
     if (!request.jwt?.sub)
@@ -76,10 +78,11 @@ export default async function (fastify: FastifyInstance) {
 
     try {
       const repo = new Product(request.log)
-      const success = await repo.put(request.jwt.sub, request.params.product_id, request.params.customer_type, request.body)
+      const success = await repo.put(request.jwt.sub, +request.params.product_id, request.params.customer_type === 'null' ? null : +request.params.customer_type, request.body)
       return reply.success(success, 200, performance.now() - start)
     } catch (err) {
       request.log.error({ err }, 'failed to put product')
+      console.error(err)
       return reply.error('failed to put product')
     }
   })
@@ -87,7 +90,7 @@ export default async function (fastify: FastifyInstance) {
   /**
    * @route DELETE /api/{APP_VERSION}/manage/products/spotlight/:product_id/:customer_type
    */
-  fastify.delete('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: string | null } }>, reply: FastifyReply) {
+  fastify.delete('/spotlight/:product_id/:customer_type', async function (request: FastifyRequest<{ Params: { product_id: number, customer_type: string } }>, reply: FastifyReply) {
     const start = performance.now()
 
     if (!request.jwt?.sub)
@@ -98,7 +101,7 @@ export default async function (fastify: FastifyInstance) {
 
     try {
       const repo = new Product(request.log)
-      const success = await repo.delete(request.jwt.sub, request.params.product_id, request.params.customer_type)
+      const success = await repo.delete(request.jwt.sub, +request.params.product_id, request.params.customer_type === 'null' ? null : +request.params.customer_type)
       return reply.success({ success }, 200, performance.now() - start)
     } catch (err) {
       request.log.error({ err }, 'failed to delete product')

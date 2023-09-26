@@ -13,8 +13,8 @@ async function main() {
   // add jwt configuration object to config
   fastify = await Fastify({ ...config.wrapper, jwt: {} })
   const version_prefix = '/api' + (env.APP_VERSION ? '/' + env.APP_VERSION : '')
-  await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users`, logLevel: 'debug' })
-  await fastify.register(productsController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/products`, logLevel: 'debug' })
+  await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users`, logLevel: 'info' })
+  await fastify.register(productsController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/products`, logLevel: 'info' })
   await fastify.listen({ port: +(env['PORT'] ?? 80), host: '::' })
 }
 
