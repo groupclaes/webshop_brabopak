@@ -64,6 +64,7 @@ export class SignonPageComponent {
 
         switch (errRes.status) {
           case 0:
+            this.modalCtrl.show(new Modal('alert', 'Fout!', errRes.statusText))
             alert(errRes.statusText)
             break
 
@@ -74,9 +75,8 @@ export class SignonPageComponent {
             break
 
           case 404:
-            if (errRes.error.error === 'Username or password is incorrect!') {
-              alert(this.translate.instant('errors.incorrect_credentials'))
-            }
+            if (errRes.error.error === 'Username or password is incorrect!')
+              this.modalCtrl.show(new Modal('alert', 'Fout!', this.translate.instant('errors.incorrect_credentials')))
             break
 
           default:
@@ -91,9 +91,8 @@ export class SignonPageComponent {
 
   get currentUsername(): string | undefined {
     const { username } = this.signonForm.value
-    if (username && username.length > 0) {
+    if (username && username.length > 0)
       return username
-    }
     return undefined
   }
 }

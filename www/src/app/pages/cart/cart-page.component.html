@@ -34,14 +34,11 @@
         <div class="flex-auto md:border-right">
           <ng-container [ngSwitch]="currentStep">
             <div *ngSwitchCase="1">
-              <div class="flex flex-row border-b last:border-b-0" [id]="'product-' + product.id"
-                *ngFor="let product of service.products">
-                <img style="width:120px;height:120px" [alt]="'product image for ' + product.name"
-                  [src]="product.url | thumbSmall">
+              <div class="flex flex-row border-b last:border-b-0" [id]="'product-' + product.id" *ngFor="let product of service.products">
+                <img style="width:120px;height:120px" [alt]="'product image for ' + product.name" [src]="product.url | thumbSmall">
                 <div class="flex flex-row w-full p-2 space-x-4">
                   <div class="flex-auto">
-                    <a [routerLink]="['/products']" class="text-lg font-bold text-primary-700"
-                      [queryParams]="{productId: product.id}">
+                    <a [routerLink]="['/products']" class="text-lg font-bold text-primary-700" [queryParams]="{productId: product.id}">
                       {{ product.name }}
                     </a>
                     <br>
@@ -83,9 +80,7 @@
                     pages.cart.steps.2.form.customerReference
                   </label>
                   <div class="relative mt-2 rounded-md shadow-sm">
-                    <input name="customerReference"
-                      class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      id="customerReference" type="text" formControlName="customerReference">
+                    <input name="customerReference" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="customerReference" type="text" formControlName="customerReference">
                   </div>
                 </div>
                 <!-- <mat-form-field class="deliveryDate">
@@ -128,8 +123,7 @@
                       pages.cart.steps.2.form.deliveryMethodPickup
                     </label>
                   </div>
-                  <div class="openhoursstore"
-                    *ngIf="deliveryConfirmFormGroup.controls['deliveryMethod'].value === 'selfservice'">
+                  <div class="openhoursstore" *ngIf="deliveryConfirmFormGroup.controls['deliveryMethod'].value === 'selfservice'">
                     <h4 class="title" translate>pages.cart.steps.2.form.openhoursstore</h4>
                     <p>
                       {{ 'days.mo' | translate }} 08:00 - 12:00 & 12:30 - 17:00 <br>
@@ -162,9 +156,7 @@
                     pages.cart.steps.2.form.comments
                   </label>
                   <div class="relative mt-2 rounded-md shadow-sm">
-                    <textarea name="comments"
-                      class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      id="comments" rows="4" formControlName="comments"></textarea>
+                    <textarea name="comments" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="comments" rows="4" formControlName="comments"></textarea>
                   </div>
                 </div>
               </form>
@@ -252,21 +244,17 @@
                   <div>
                     <div class="relative mt-2 rounded-md">
                       <input class="peer" formControlName="termsAccepted" id="termsAccepted" required type="checkbox">
-                      <label class="inline" for="termsAccepted"
-                        [innerHTML]="'pages.cart.steps.3.form.acceptTerms' | translate"></label>
-                      <div class="hidden text-sm font-medium text-danger mt-1"
-                        [ngClass]="{ 'peer-invalid:block': finalConfirmFormGroup.touched }">
+                      <label class="inline" for="termsAccepted" [innerHTML]="'pages.cart.steps.3.form.acceptTerms' | translate"></label>
+                      <div class="hidden text-sm font-medium text-danger mt-1" [ngClass]="{ 'peer-invalid:block': finalConfirmFormGroup.touched }">
                         You must agree to our terms of sale
                       </div>
                     </div>
                     <div class="relative mt-2 rounded-md" *ngIf="hasOrderItem">
-                      <input class="peer" formControlName="orderItemAccepted" id="orderItemAccepted" required
-                        type="checkbox">
+                      <input class="peer" formControlName="orderItemAccepted" id="orderItemAccepted" required type="checkbox">
                       <label class="inline" for="orderItemAccepted" translate>
                         pages.cart.steps.3.form.acceptTermsOrderitem
                       </label>
-                      <div class="hidden text-sm font-medium text-danger mt-1"
-                        [ngClass]="{ 'peer-invalid:block': finalConfirmFormGroup.touched }">
+                      <div class="hidden text-sm font-medium text-danger mt-1" [ngClass]="{ 'peer-invalid:block': finalConfirmFormGroup.touched }">
                         You must agree to our order item terms
                       </div>
                     </div>
@@ -304,22 +292,15 @@
                 {{ calcTotalPrice.total | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
               </span>
             </div>
-            <small class="note text-gray-500 italic"
-              [translate]="'pages.cart.' + (calcTotalPrice.totalDelivery > 0 ? 'priceDisclaimerTransport' : 'priceDisclaimer')">
+            <small class="note text-gray-500 italic" [translate]="'pages.cart.' + (calcTotalPrice.totalDelivery > 0 ? 'priceDisclaimerTransport' : 'priceDisclaimer')">
             </small>
             <br>
             <br>
           </ng-template>
           <ng-container [ngSwitch]="currentStep">
-            <button class="blockfont-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
-              (click)="proceedCheckout(2)" translate="pages.cart.steps.1.asideButton"
-              [disabled]="service.products.length < 1" *ngSwitchCase="1"></button>
-            <button class="block font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
-              (click)="finalizeOrder();proceedCheckout(3)" translate="pages.cart.steps.2.asideButton"
-              *ngSwitchCase="2"></button>
-            <button class="block font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
-              (click)="sendOrder()" onclick="alert('yeet')" translate="pages.cart.steps.3.asideButton"
-              *ngSwitchCase="3"></button>
+            <button class="blockfont-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary" (click)="proceedCheckout(2)" translate="pages.cart.steps.1.asideButton" [disabled]="service.products.length < 1" *ngSwitchCase="1"></button>
+            <button class="block font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary" (click)="finalizeOrder();proceedCheckout(3)" translate="pages.cart.steps.2.asideButton" *ngSwitchCase="2"></button>
+            <button class="block font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary" (click)="sendOrder()" translate="pages.cart.steps.3.asideButton" *ngSwitchCase="3"></button>
           </ng-container>
         </div>
       </div>

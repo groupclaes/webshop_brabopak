@@ -122,7 +122,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     try {
       if ((this.finalConfirmFormGroup && this.finalConfirmFormGroup.invalid) || this.isLoading) {
         this.finalConfirmFormGroup?.markAllAsTouched()
-        const modal = new Modal('alert', 'Formulier ongeldig', 'Controleer als alle velden zijn ingevuld en probeer opnieuw!')
+        const modal = new Modal('alert', 'Formulier ongeldig', 'Controleer of alle velden zijn ingevuld en probeer opnieuw!')
         await this.modalCtrl.show(modal)
         return
       }

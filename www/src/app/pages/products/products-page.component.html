@@ -6,17 +6,13 @@
   </div>
 
   <div class="flex flex-row w-full font-serif" *ngIf="!loading">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-between gap-4 gap-y-8 w-full"
-      *ngIf="items.length > 0">
-      <bra-product-item [item]="item" class="flex flex-col w-full mx-auto max-w-[14rem] lg:max-w-[15rem] cursor-pointer"
-        [routerLink]="['/product', item.id, itemName(item)] | localize" *ngFor="let item of items"></bra-product-item>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-between gap-4 gap-y-8 w-full" *ngIf="items.length > 0">
+      <bra-product-item [item]="item" class="flex flex-col w-full mx-auto max-w-[14rem] lg:max-w-[15rem] cursor-pointer" [routerLink]="['/product', item.id, itemName(item)] | localize" *ngFor="let item of items"></bra-product-item>
     </div>
-    <div class="px-4 sm:px-6 lg:px-8 text-md text-gray-800 font-bold dark:text-gray-200"
-      *ngIf="items.length === 0 && !error" translate>
+    <div class="px-4 sm:px-6 lg:px-8 text-md text-gray-800 font-bold dark:text-gray-200" *ngIf="items.length === 0 && !error" translate>
       errors.products_search
     </div>
-    <div class="px-4 sm:px-6 lg:px-8 text-md text-gray-800 font-bold dark:text-gray-200"
-      *ngIf="items.length === 0 && error" translate>
+    <div class="px-4 sm:px-6 lg:px-8 text-md text-gray-800 font-bold dark:text-gray-200" *ngIf="items.length === 0 && error" translate>
       errors.products_load
     </div>
   </div>

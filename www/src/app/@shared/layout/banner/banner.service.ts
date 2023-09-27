@@ -43,6 +43,6 @@ export class BannerService {
   }
 
   get content(): string {
-    return this._content ?? 'Gratis levering bij een bestelling boven &euro; 150'
+    return this._content ?? 'Jouw partner in verpakking'
   }
 }

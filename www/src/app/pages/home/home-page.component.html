@@ -5,20 +5,18 @@
         {{ 'pages.home.header.title' | translate:{name} }}
       </div>
       <div class="font-medium tracking-tight text-secondary-500" *ngIf="abandonedCart">
-        Je hebt tijdens je vorig bezoek {{ abandonedCart.count }} artikels in je winkelwagent achtergelaten, <a
-          [routerLink]="['/cart'] | localize" class="underline">klik hier</a> om je bestelling te
+        Je hebt tijdens je vorige bezoek {{ abandonedCart.count }} artikel(s) in je winkelwagen achtergelaten, <a [routerLink]="['/cart'] | localize" class="underline">klik hier</a> om je bestelling te
         voltooien.
       </div>
     </div>
   </div>
 
-<div class="p-4 mx-auto text-center align-center" *ngIf="loading">
-  <bra-loader></bra-loader>
-</div>
+  <div class="p-4 mx-auto text-center align-center" *ngIf="loading">
+    <bra-loader></bra-loader>
+  </div>
 
   <ng-container *ngFor="let block of dashboard | filterEmpty; let is_last = last">
-    <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block.title" [link]="block.link"
-      [items]="block.products">
+    <bra-products-block [ngClass]="{ 'border-b': !is_last }" [header]="block.title" [link]="block.link" [items]="block.products">
     </bra-products-block>
   </ng-container>
 </div>

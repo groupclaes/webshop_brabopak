@@ -217,9 +217,9 @@ export class ProductPageComponent implements OnDestroy {
     let modal: Modal
 
     if (this._product.customer_description && this._product.customer_description?.trim().length > 0) {
-      modal = new Modal('success', 'Klantspecifieke omschrijving wijzigen?', 'Ben je zeker dat je je omschrijving wilt wijzigen?', [{ title: 'Opslaan', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' }])
+      modal = new Modal('success', 'Mijn omschrijving wijzigen?', 'Ben je zeker dat je je omschrijving wilt wijzigen?', [{ title: 'Opslaan', action: () => true, color: 'success' }, { title: 'Annuleer', type: 'abort' }])
     } else {
-      modal = new Modal('alert', 'Klantspecifieke omschrijving verwijderen?', 'Ben je zeker dat je je omschrijving wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }])
+      modal = new Modal('alert', 'Mijn omschrijving verwijderen?', 'Ben je zeker dat je je omschrijving wilt verwijderen?', [{ title: 'Verwijderen', action: () => true, color: 'danger' }, { title: 'Annuleer', type: 'abort' }])
     }
 
     if (await this.modalCtrl.show(modal)) {

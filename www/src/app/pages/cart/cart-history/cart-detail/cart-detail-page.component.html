@@ -6,8 +6,7 @@
         {{ 'pages.cart.history-detail.backButton' | translate }}
       </a>
 
-      <div class="mt-2 text-4xl md:text-6xl font-bold tracking-tight leading-8" translate
-        [translateParams]="{id: order?.id}">
+      <div class="mt-2 text-4xl md:text-6xl font-bold tracking-tight leading-8" translate [translateParams]="{id: order?.id}">
         pages.cart.history-detail.title
       </div>
     </div>
@@ -33,23 +32,19 @@
       </div>
       <div class="order-body">
         <div class="flex items-center py-2 border-b last:border-b-0" *ngFor="let product of order.orderLines">
-          <img class="mr-10 thumbnail" src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg"
-            alt="Thumbnail {{ product.itemNum }}" height="80" width="80">
+          <img class="mr-10 thumbnail" src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg" alt="Thumbnail {{ product.itemNum }}" height="80" width="80">
           <div class="name mr-10 flex-fill">
             <small>
               <i class="emphasize">Artikelnummer: </i>
               {{ product.itemNum }}
             </small>
-            <h5 [routerLink]="['/product', product.id, itemName(product)] | localize"
-              class="text-md hover:text-primary hover:underline hover:dark:text-accent cursor-pointer mb-1">
+            <h5 [routerLink]="['/product', product.id, itemName(product)] | localize" class="text-md hover:text-primary hover:underline hover:dark:text-accent cursor-pointer mb-1">
               {{ product.count > 1 ? product.count + 'x' : '' }} {{ product.itemName }}
             </h5>
-            <a class="inline-block leading-8 text-white rounded px-5 h-8 border border-primary bg-info hover:bg-primary"
-              [href]="getDatasheetUrl(product)" *ngIf="product.hasDatasheet === true">
+            <a class="inline-block leading-8 text-white rounded px-5 h-8 border border-primary bg-info dark:bg-warning hover:dark:bg-accent hover:bg-primary" [href]="getDatasheetUrl(product)" *ngIf="product.hasDatasheet === true">
               Download datasheet
             </a>
-            <div class="product-backorder emphasize" *ngIf="product.inBackorder"
-              [attr.title]="'inBackorder' | translate">
+            <div class="product-backorder emphasize" *ngIf="product.inBackorder" [attr.title]="'inBackorder' | translate">
               <i color="danger" class="fas fa-fw fa-business-time"></i>
               {{ 'inBackorder' | translate }}
             </div>

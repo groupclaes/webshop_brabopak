@@ -38,8 +38,7 @@
           pages.basket.empty
         </div>
         <div class="flex items-center space-x-4" *ngFor="let product of current">
-          <img class="thumbnail" alt="Thumbnail {{ product.itemNum }}" height="36" width="36"
-            src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg">
+          <img class="thumbnail" alt="Thumbnail {{ product.itemNum }}" height="36" width="36" src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg">
           <div class="flex-auto font-bold text-md">
             {{ product.count > 0 ? product.count + 'x' : '' }}
             {{ product.itemName }}
@@ -52,8 +51,7 @@
           <small class="emphasize">No lines.</small>
         </p>
         <div class="flex items-center space-x-4" *ngFor="let product of target">
-          <img class="thumbnail" alt="Thumbnail {{ product.itemNum }}" height="36" width="36"
-            src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg">
+          <img class="thumbnail" alt="Thumbnail {{ product.itemNum }}" height="36" width="36" src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg">
           <div class="flex-auto font-bold text-md" [ngClass]="{ 'line-through': product.change < 0 }">
             {{ product.count > 0 ? product.count + 'x' : '' }}
             {{ product.itemName }}
@@ -66,8 +64,6 @@
       </div>
     </div>
 
-    <button class="block text-white rounded px-5 h-10 border border-primary bg-info hover:bg-primary"
-      [disabled]="actionForm.invalid || !current || !target" translate
-      (click)="apply()">pages.cart.copy.form.apply</button>
+    <button class="block text-white rounded px-5 h-10 border border-primary bg-info hover:bg-primary" [disabled]="actionForm.invalid || !current || !target" translate (click)="apply()">pages.cart.copy.form.apply</button>
   </div>
 </div>

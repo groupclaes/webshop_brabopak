@@ -12,16 +12,13 @@
       <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
     </div>
     <div id="images space-y-8" *ngIf="images.length > 0">
-      <div class="rounded-xl ring ring-gray-50 dark:ring-gray-700"
-        [ngClass]="{'border-orange-400 border-2': isFavorite}">
-        <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier
-          [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
+      <div class="rounded-xl ring ring-gray-50 dark:ring-gray-700" [ngClass]="{'border-orange-400 border-2': isFavorite}">
+        <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
         rounded-xl">
       </div>
       <div class="grid grid-cols-4 gap-8 mt-8 mx-[7px]" *ngIf="images.length > 1">
-        <div class="rounded-xl ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index"
-          (click)="activateImage(i)" [ngClass]="{ 
-          'ring-primary ring-offset-gray-2000': activeImage === image.guid,
+        <div class="rounded-xl ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index" (click)="activateImage(i)" [ngClass]="{ 
+          'ring-primary dark:ring-accent ring-offset-gray-2000': activeImage === image.guid,
           'ring-gray-50 dark:ring-gray-700': activeImage !== image.guid
         }">
           <img [src]="'https://pcm.groupclaes.be/v3/product-images/' + image.guid" alt="" class="block rounded-xl">
@@ -30,13 +27,16 @@
     </div>
 
     <div class="flex flex-col" id="details">
-      <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2">
+      <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2" *ngIf="product.id % 2 == 0">
+        {{ product.name }}
+      </h1>
+
+      <h1 class="text-xl md:text-3xl italic leading-6 mb-2" *ngIf="product.id % 2 == 1">
         {{ product.name }}
       </h1>
 
       <div class="mx-1">
-        <bra-product-prices *ngIf="product.prices && auth.canViewPrices" [prices]="product.prices"
-          [unit]="product.unit.toLocaleLowerCase()" [content-unit]="product.content_unit"></bra-product-prices>
+        <bra-product-prices *ngIf="product.prices && auth.canViewPrices" [prices]="product.prices" [unit]="product.unit.toLocaleLowerCase()" [content-unit]="product.content_unit"></bra-product-prices>
 
         <ng-container *ngIf="auth.canViewPrices">
           <div class="text-gray-500 text-md italic mt-2" *ngFor="let tax of product.taxes">
@@ -67,21 +67,18 @@
         </div>
 
         <!-- <div id="product-rating" class="mt-2 flex flex-row space-x-1" data-rating="4">
-          <i class="fas fa-star text-lg text-info"></i>
-          <i class="fas fa-star text-lg text-info"></i>
-          <i class="fas fa-star text-lg text-info"></i>
-          <i class="fas fa-star text-lg text-info"></i>
+          <i class="fas fa-star text-lg text-primary"></i>
+          <i class="fas fa-star text-lg text-primary"></i>
+          <i class="fas fa-star text-lg text-primary"></i>
+          <i class="fas fa-star text-lg text-primary"></i>
           <i class="far fa-star text-lg text-secondary-300"></i>
         </div> -->
 
         <div class="form-control w-full mt-2" *ngIf="auth.isAuthenticated()">
-          <label class="block font-medium mb-1">Klantspecifieke omschrijving</label>
+          <label class="block font-medium mb-1">Mijn omschrijving</label>
           <div class="flex flex-row">
-            <input type="text" class="flex items-center h-10 border shadow-sm bg-transparent rounded-md px-4 w-100"
-              [(ngModel)]="product.customer_description" (ngModelChange)="enableSave()">
-            <button type="menu" tabindex="-1"
-              class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent disabled:pointer-events-none hover:text-accent hover:bg-transparent"
-              (click)="updateDescription()" [disabled]="!description_touched">
+            <input type="text" class="flex items-center h-10 border shadow-sm bg-transparent rounded-md px-4 w-100" [(ngModel)]="product.customer_description" (ngModelChange)="enableSave()" placeholder="Geef een persoonlijke omschrijving in">
+            <button type="menu" tabindex="-1" class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent disabled:pointer-events-none hover:text-accent hover:bg-transparent" (click)="updateDescription()" [disabled]="!description_touched">
               <i title="description" [ngClass]="{ 'text-success font-bold hover:font-normal': description_touched,
             'text-secondary-500 hover:font-bold': !description_touched }" class="text-3xl far fa-save
             cursor-pointer"></i>
@@ -89,15 +86,12 @@
           </div>
         </div>
 
-        <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line"
-          [innerHTML]="product.description"></p>
+        <p class="font-serif text-lg text-secondary-500 tracking-1 leading-normal mt-6 whitespace-pre-line" [innerHTML]="product.description"></p>
 
         <div id="actions" class="flex flex-row mt-8 gap-4" *ngIf="auth.isAuthenticated()">
           <bra-cart-button class="block" [product]="product"></bra-cart-button>
-          <button type="menu" tabindex="-1"
-            class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent"
-            (click)="toggleFavorite()">
-            <i title="favorite" [ngClass]="{ 'text-info font-bold hover:font-normal': product.favorite && product.favorite[0].is_favorite,
+          <button type="menu" tabindex="-1" class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent hover:text-accent hover:bg-transparent" (click)="toggleFavorite()">
+            <i title="favorite" [ngClass]="{ 'text-primary font-bold hover:font-normal': product.favorite && product.favorite[0].is_favorite,
             'text-secondary-500 hover:font-bold':
             !product.favorite || !product.favorite[0].is_favorite }" class="text-3xl far fa-heart cursor-pointer"></i>
           </button>
@@ -112,8 +106,7 @@
             </ul>
           </bra-accordion>
 
-          <bra-accordion class="border-t" header="Aankoopgegevens"
-            *ngIf="auth.isAuthenticated() && product.favorite && product.favorite[0].last_bought_date">
+          <bra-accordion class="border-t" header="Aankoopgegevens" *ngIf="auth.isAuthenticated() && product.favorite && product.favorite[0].last_bought_date">
             <div body class="flex flex-col mt-4 ml-2 space-y-2">
               <div class="flex flex-row space-x-1">
                 <div class="w-36 font-bold">
@@ -158,8 +151,7 @@
                 </div>
                 {{ product.unit }}
               </div>
-              <div class="flex flex-row"
-                *ngIf="product.type === 'B' && product.minimum_order_quantity > 1 && product.stack_size === 1">
+              <div class="flex flex-row" *ngIf="product.type === 'B' && product.minimum_order_quantity > 1 && product.stack_size === 1">
                 <div class="w-40 font-bold">
                   {{ 'pages.product.minimum_order_quantity' | translate }}
                 </div>
@@ -209,12 +201,8 @@
           <bra-accordion class="border-t" header="Bijlagen" *ngIf="attachments.length > 0">
             <div body class="mt-4 ml-2 space-y-2">
               <div *ngFor="let attachment of attachments">
-                <a [href]="attachment.downloadUrl"
-                  class="flex flex-row items-center overflow-ellipsis hover:text-primary hover:underline hover:dark:text-accent cursor-pointer"
-                  target="_blank" rel="noreferrer noopener">
-                  <img class="mr-1" alt="file extension icon"
-                    src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg" height="24"
-                    width="24">
+                <a [href]="attachment.downloadUrl" class="flex flex-row items-center overflow-ellipsis hover:text-primary hover:underline hover:dark:text-accent cursor-pointer" target="_blank" rel="noreferrer noopener">
+                  <img class="mr-1" alt="file extension icon" src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg" height="24" width="24">
                   &nbsp;
                   <span class="italic text-secondary-500">{{ attachment.documentType | translate }}</span>
                   &nbsp;-&nbsp;<span class="truncate">{{ attachment.name }}</span>
@@ -237,10 +225,8 @@
 
       <div class="max-w-full overflow-x-scroll pb-2">
         <div class="table-cell relative" *ngFor="let item of product.relatedProducts">
-          <a [routerLink]="['/product', item.id, itemName(item)] | localize"
-            class="flex flex-col w-40 m-1 p-2 rounded group">
-            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
-              class="block w-40 h-40 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+          <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-40 m-1 p-2 rounded group">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-40 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
             <div class="italic font-medium mt-4 h-16 line-clamp-3">
               <span class="font-md lowercase">{{ item.name }}</span>
             </div>
@@ -261,10 +247,8 @@
 
       <div class="max-w-full overflow-x-scroll pb-2">
         <div class="table-cell relative" *ngFor="let item of product.similarProducts">
-          <a [routerLink]="['/product', item.id, itemName(item)] | localize"
-            class="flex flex-col w-40 m-1 p-2 rounded group">
-            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}"
-              class="block w-40 h-36 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+          <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-40 m-1 p-2 rounded group">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-36 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
             <div class="italic font-medium mt-4 h-16 line-clamp-3">
               <span class="font-md lowercase">{{ item.name }}</span>
             </div>

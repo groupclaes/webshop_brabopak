@@ -4,8 +4,7 @@
       <div class="text-4xl font-extrabold tracking-tight leading-tight" translate="pages.signup.title"></div>
       <div class="flex items-baseline mt-0.5 font-medium">
         <div>Reeds aangemeld?</div>
-        <a class="ml-1 text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-in'] | localize"
-          [queryParams]="{ login_hint: currentUsername }">Inloggen</a>
+        <a class="ml-1 text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-in'] | localize" [queryParams]="{ login_hint: currentUsername }">Inloggen</a>
       </div>
       <form class="mt-8" [formGroup]="signupForm1" *ngIf="signupForm1" (submit)="signup()" #myform="ngForm">
         <!-- <div class="form-control w-full">
@@ -47,22 +46,17 @@
         </div> -->
 
         <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in
-          duration-200 hover:text-white hover:bg-primary" id="signup" type="submit"
-          translate="pages.signup.form.button"></button>
+          duration-200 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" id="signup" type="submit" translate="pages.signup.form.button"></button>
 
         <div class="flex flex-col space-y-1 mt-4">
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline"
-            [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ login_hint: currentUsername }"
-            translate="pages.signup.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline"
-            [routerLink]="['/auth/sign-on'] | localize"
-            translate="pages.signup.form.action2"></a>
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ login_hint: currentUsername }" translate="pages.signup.form.action1"></a>
+          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-on'] | localize" translate="pages.signup.form.action2"></a>
         </div>
 
         <div class="mt-6 text-sm text-gray-500">
           This site is protected by reCAPTCHA and the Google
-          <a class="text-primary hover:underline" href="https://policies.google.com/privacy">Privacy Policy</a> and
-          <a class="text-primary hover:underline" href="https://policies.google.com/terms">Terms of Service</a> apply.
+          <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacy Policy</a> and
+          <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Terms of Service</a> apply.
         </div>
       </form>
     </div>
