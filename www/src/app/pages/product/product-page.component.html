@@ -75,7 +75,7 @@
         </div> -->
 
         <div class="form-control w-full mt-2" *ngIf="auth.isAuthenticated()">
-          <label class="block font-medium mb-1">Mijn omschrijving</label>
+          <!-- <label class="block font-medium mb-1">Mijn omschrijving</label> -->
           <div class="flex flex-row">
             <input type="text" class="flex items-center h-10 border shadow-sm bg-transparent rounded-md px-4 w-100" [(ngModel)]="product.customer_description" (ngModelChange)="enableSave()" placeholder="Geef een persoonlijke omschrijving in">
             <button type="menu" tabindex="-1" class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent disabled:pointer-events-none hover:text-accent hover:bg-transparent" (click)="updateDescription()" [disabled]="!description_touched">
