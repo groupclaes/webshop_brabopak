@@ -28,7 +28,6 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
   error: boolean = false
   init: boolean = false
 
-  per_page: number = 16
   count: number = 0
   pages: any
   has_first: boolean = false
@@ -233,6 +232,10 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     return capitalize.words(text, {
       skipWord: /^(en|de|het|et|a|pour|voor|om|van)$/
     })
+  }
+
+  get per_page(): number {
+    return this.searchService.items
   }
 
   get items(): any[] {

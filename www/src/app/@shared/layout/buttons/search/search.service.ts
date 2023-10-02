@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment'
   providedIn: 'root'
 })
 export class SearchService {
-  private _items = 16
+  private _items = 24
 
   private _page: number | undefined
   private _query: string | undefined
