@@ -8,7 +8,6 @@
 </div>
 <div class="flex flex-row w-full font-serif">
   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-    <bra-product-item [item]="item" class="flex flex-col mx-auto max-w-[15rem]" [routerLink]="['/product', item.id, itemName(item)] | localize" *ngFor="let item of items">
-    </bra-product-item>
+    <bra-product-item [item]="item" class="flex flex-col mx-auto max-w-[15rem]" [routerLink]="['/product', item.id, itemName(item)] | localize" *ngFor="let item of items"></bra-product-item>
   </div>
 </div>

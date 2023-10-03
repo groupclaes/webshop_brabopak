@@ -46,6 +46,13 @@ export const routes: Routes = [{
     layout
   }
 }, {
+  path: 'leaflet',
+  loadChildren: () => import('./pages/leaflet/leaflet-page.module').then(m => m.LeafletPageModule),
+  canActivate: [authGuard],
+  data: {
+    layout
+  }
+}, {
   path: 'products',
   loadChildren: () => import('./pages/products/products-page.module').then(m => m.ProductsPageModule),
   data: {
