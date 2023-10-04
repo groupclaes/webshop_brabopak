@@ -2,24 +2,22 @@
   <div class="relative">
     <bra-banner></bra-banner>
 
-    <nav class="mx-auto max-w-7xl bg-white dark:bg-transparent px-4 sm:px-6 lg:px-8">
+    <nav class="relative mx-auto max-w-7xl dark:bg-transparent px-4 sm:px-6 lg:px-8">
       <div class="border-b">
         <div class="flex h-16 items-center">
           <!-- Mobile menu toggle, controls the 'mobileMenuOpen' state. -->
+          <bra-mobile-navigation class="block md:hidden"></bra-mobile-navigation>
 
           <!-- Logo -->
-          <div class="ml-4 flex lg:ml-0">
+          <div class="ml-4 flex md:ml-0">
             <a routerLink="/">
               <span class="sr-only">Brabopak</span>
-              <img class="h-14 w-auto dark:hidden" src="https://pcm.groupclaes.be/v3/content/bra/website/logo"
-                alt="Brabopak logo blauw">
-              <img class="h-14 w-auto hidden dark:block" src="https://pcm.groupclaes.be/v3/content/bra/website/logo/101"
-                alt="Brabopak logo geel">
+              <img class="h-14 w-auto dark:hidden" src="https://pcm.groupclaes.be/v3/content/bra/website/logo" alt="Brabopak logo blauw">
+              <img class="h-14 w-auto hidden dark:block" src="https://pcm.groupclaes.be/v3/content/bra/website/logo/101" alt="Brabopak logo geel">
             </a>
           </div>
 
-          <bra-mobile-navigation class="block md:hidden"></bra-mobile-navigation>
-          <bra-flyout-navigation class="hidden md:ml-8 md:block md:self-stretch"></bra-flyout-navigation>
+          <bra-flyout-navigation class="hidden md:ml-4 md:block md:self-stretch"></bra-flyout-navigation>
 
           <div class="ml-auto flex items-center">
             <claes-search></claes-search>
@@ -31,11 +29,11 @@
     </nav>
   </div>
 
-  <div class="flex flex-col flex-auto w-full mx-auto max-w-7xl bg-white dark:bg-transparent">
+  <div class="flex flex-col flex-auto w-full mx-auto max-w-7xl dark:bg-transparent">
     <router-outlet></router-outlet>
   </div>
 
-  <div class="mx-auto w-full max-w-7xl bg-white px-4 sm:px-6 lg:px-8 dark:bg-transparent print:hidden">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 dark:bg-transparent print:hidden">
     <div class="border-t">
       <claes-footer class="flex h-8 px-4 items-center sm:h-14 md:px-6"></claes-footer>
     </div>

@@ -12,14 +12,14 @@
       <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
     </div>
     <div id="images space-y-8" *ngIf="images.length > 0">
-      <div class="rounded-xl ring ring-gray-50 dark:ring-gray-700" [ngClass]="{'border-orange-400 border-2': isFavorite}">
+      <div class="rounded-xl border ring ring-gray-50 dark:ring-gray-700" [ngClass]="{'border-orange-400 border-2': isFavorite}">
         <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
         rounded-xl">
       </div>
       <div class="grid grid-cols-4 gap-8 mt-8 mx-[7px]" *ngIf="images.length > 1">
-        <div class="rounded-xl ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index" (click)="activateImage(i)" [ngClass]="{ 
-          'ring-primary dark:ring-accent ring-offset-gray-2000': activeImage === image.guid,
-          'ring-gray-50 dark:ring-gray-700': activeImage !== image.guid
+        <div class="rounded-xl border ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index" (click)="activateImage(i)" [ngClass]="{ 
+          'ring-primary dark:ring-accent': activeImage === image.guid,
+          'ring-transparent ring-offset-gray-50 dark:ring-offset-gray-950': activeImage !== image.guid
         }">
           <img [src]="'https://pcm.groupclaes.be/v3/product-images/' + image.guid" alt="" class="block rounded-xl">
         </div>
@@ -77,7 +77,7 @@
         <div class="form-control w-full mt-2" *ngIf="auth.isAuthenticated()">
           <!-- <label class="block font-medium mb-1">Mijn omschrijving</label> -->
           <div class="flex flex-row">
-            <input type="text" class="flex items-center h-10 border shadow-sm bg-transparent rounded-md px-4 w-100" [(ngModel)]="product.customer_description" (ngModelChange)="enableSave()" placeholder="Geef een persoonlijke omschrijving in">
+            <input type="text" class="flex items-center h-10 border bg-white shadow-sm dark:bg-gray-900 rounded-md px-3 w-80" [(ngModel)]="product.customer_description" (ngModelChange)="enableSave()" placeholder="Geef een persoonlijke omschrijving in">
             <button type="menu" tabindex="-1" class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 disabled:bg-transparent disabled:pointer-events-none hover:text-accent hover:bg-transparent" (click)="updateDescription()" [disabled]="!description_touched">
               <i title="description" [ngClass]="{ 'text-success font-bold hover:font-normal': description_touched,
             'text-secondary-500 hover:font-bold': !description_touched }" class="text-3xl far fa-save
@@ -226,7 +226,7 @@
       <div class="max-w-full overflow-x-scroll pb-2">
         <div class="table-cell relative" *ngFor="let item of product.relatedProducts">
           <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-40 m-1 p-2 rounded group">
-            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-40 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-36 object-contain rounded-xl border ring ring-gray-50 dark:ring-gray-700">
             <div class="italic font-medium mt-4 h-16 line-clamp-3">
               <span class="font-md lowercase">{{ item.name }}</span>
             </div>
@@ -248,7 +248,7 @@
       <div class="max-w-full overflow-x-scroll pb-2">
         <div class="table-cell relative" *ngFor="let item of product.similarProducts">
           <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-40 m-1 p-2 rounded group">
-            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-36 object-contain rounded-xl ring ring-gray-50 dark:ring-gray-700">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-36 object-contain rounded-xl border ring ring-gray-50 dark:ring-gray-700">
             <div class="italic font-medium mt-4 h-16 line-clamp-3">
               <span class="font-md lowercase">{{ item.name }}</span>
             </div>

@@ -79,6 +79,8 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   }
 
   callBackFn(pdf: PDFDocumentProxy) {
+    
+
     this._pageCount = pdf.numPages
     this._loaded = true
     this.ref.markForCheck()

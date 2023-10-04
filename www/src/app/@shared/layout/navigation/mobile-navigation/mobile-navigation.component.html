@@ -1,1 +1,22 @@
-<p>mobile-navigation works!</p>
+<button type="menu" tabindex="0" id="language-selector" [matMenuTriggerFor]="mobile" class="inline-flex border-0 items-center justify-center text-gray-500 w-10 h-10 rounded disabled:text-gray-700 hover:text-primary dark:hover:text-accent">
+  <i title="language" class="text-2xl fal fa-bars"></i>
+  <mat-menu #mobile class="shadow-2xl bg-white border space-y-4 rounded dark:bg-gray-950">
+    <ng-template matMenuContent>
+      <button [routerLink]="['/products'] | localize" [routerLinkActiveOptions]="{exact: true}" class="rounded dark:text-white hover:bg-gray-100" mat-menu-item [routerLinkActive]="['text-primary', 'dark:text-accent']">
+        Producten
+      </button>
+      <!-- <button [routerLink]="['/products'] | localize" [routerLinkActiveOptions]="{exact: true}" class="rounded dark:text-white hover:bg-gray-100" mat-menu-item [routerLinkActive]="['text-primary', 'dark:text-accent']">
+        Categorieën
+      </button> -->
+      <button [routerLink]="['/products'] | localize" [queryParams]="{ only_promo: true }" [routerLinkActiveOptions]="{exact: true}" *ngIf="canViewPromo" class="rounded dark:text-white hover:bg-gray-100" mat-menu-item [routerLinkActive]="['text-primary', 'dark:text-accent']">
+        Promoties
+      </button>
+      <button [routerLink]="['/products'] | localize" [queryParams]="{ only_favorites: true }" [routerLinkActiveOptions]="{exact: true}" class="rounded dark:text-white hover:bg-gray-100" mat-menu-item [routerLinkActive]="['text-primary', 'dark:text-accent']">
+        Favorieten
+      </button>
+      <button [routerLink]="['/leaflet'] | localize" [routerLinkActiveOptions]="{exact: true}" *ngIf="canViewPromo" class="rounded dark:text-white hover:bg-gray-100" mat-menu-item [routerLinkActive]="['text-primary', 'dark:text-accent']">
+        Folder
+      </button>
+    </ng-template>
+  </mat-menu>
+</button>

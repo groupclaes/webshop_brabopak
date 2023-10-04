@@ -6,7 +6,7 @@ import { SearchService } from 'src/app/@shared/layout/buttons/search/search.serv
   templateUrl: './pagination.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'flex items-center justify-between border-t bg-white px-4 py-3 sm:px-6 dark:bg-transparent'
+    class: 'flex items-center justify-between border-t px-4 py-3 sm:px-6'
   }
 })
 export class PaginationComponent {
