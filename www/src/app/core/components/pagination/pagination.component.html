@@ -20,14 +20,9 @@
         <span class="sr-only">Vorige</span>
         <i class="fal px-1 text-2xl fa-angle-left"></i>
       </button>
-      <!--
-        Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
-        Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
-      -->
       <ng-container *ngFor="let page of pages | activePages:service.page; let i = index">
         <span *ngIf="(pages | activePages:service.page).length < pages.length && i === 3 && service.page !== 3" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-gray-800">...</span>
         <button (click)="service.setPage(page - 1)" [ngClass]="{ 'z-10 bg-primary text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary': isCurrentPage(page), 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-gray-800': !isCurrentPage(page), 'hidden md:inline-flex': ((i === 2 || i === 3) && (pages | activePages:service.page).length === 6  && service.page !== i) || ((i === 2 || i === 4) && (pages | activePages:service.page).length === 7) }" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold">{{ page }}</button>
-
         <!-- {{ i }} - {{ page >= 3 }} {{ page < pages.length - 3 }} -->
         <span *ngIf="(pages | activePages:service.page).length < pages.length && i === 3 && page >= 3 && page < pages.length - 3" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-gray-800">...</span>
       </ng-container>

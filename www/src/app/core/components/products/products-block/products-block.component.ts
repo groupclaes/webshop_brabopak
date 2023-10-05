@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment'
   templateUrl: './products-block.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'flex flex-col p-8 dark:rounded-xl dark:bg-gray-800'
+    class: 'flex flex-col p-4 dark:rounded-xl dark:bg-gray-800'
   }
 })
 export class ProductsBlockComponent {

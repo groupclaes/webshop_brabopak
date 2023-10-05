@@ -89,7 +89,7 @@
     },
     "home": {
       "header": {
-        "title": "Welkom terug {{name}}"
+        "title": "Welkom op onze webshop, {{name}}"
       }
     },
     "product": {

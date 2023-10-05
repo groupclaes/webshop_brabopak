@@ -246,7 +246,7 @@
                       <input class="peer" formControlName="termsAccepted" id="termsAccepted" required type="checkbox">
                       <label class="inline" for="termsAccepted" [innerHTML]="'pages.cart.steps.3.form.acceptTerms' | translate"></label>
                       <div class="hidden text-sm font-medium text-danger mt-1" [ngClass]="{ 'peer-invalid:block': finalConfirmFormGroup.touched }">
-                        You must agree to our terms of sale
+                        Je moet akkoord gaan met de verkoopvoorwaarden om je bestelling te plaatsen.
                       </div>
                     </div>
                     <div class="relative mt-2 rounded-md" *ngIf="hasOrderItem">
@@ -255,7 +255,7 @@
                         pages.cart.steps.3.form.acceptTermsOrderitem
                       </label>
                       <div class="hidden text-sm font-medium text-danger mt-1" [ngClass]="{ 'peer-invalid:block': finalConfirmFormGroup.touched }">
-                        You must agree to our order item terms
+                        Je moet akkoord gaan met de specifieke verkoopsvoorwaarden omtrend bestelartikels om je bestelling te kunnen plaatsen.
                       </div>
                     </div>
                   </div>

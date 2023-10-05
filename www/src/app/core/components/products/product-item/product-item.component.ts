@@ -67,7 +67,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   }
 
   get favinfo(): string | null {
-    if (this.isFavorite && this.item?.favorite) {
+    if (this.isFavorite && this.item?.favorite && this.item.favorite[0].last_bought_date) {
       return `Laatste aankoop: ${this.datePipe.transform(this.item.favorite[0].last_bought_date, 'dd/MM/yyyy')} ${this.item.favorite[0].last_bought_quantity}x`
     }
     return null

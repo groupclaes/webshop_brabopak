@@ -9,15 +9,14 @@
       <form class="mt-8" [formGroup]="signinForm" *ngIf="signinForm" (submit)="signin()" #myform="ngForm">
         <div class="form-control w-full">
           <label class="block font-medium mb-1" for="username" translate="pages.signin.form.username"></label>
-          <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
-          invalid:border-danger" formControlName="username" required id="username" autocomplete="email" type="email">
+          <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="username" required id="username" autocomplete="email" type="email">
           <div class="text-sm font-medium text-danger mt-1" *ngIf="signinForm.get('username')?.hasError('required') && myform.submitted" translate="pages.signin.form.errors.username-required"></div>
           <div class="text-sm font-medium text-danger mt-1" *ngIf="signinForm.get('username')?.hasError('email') && myform.submitted" translate="pages.signin.form.errors.username-email"></div>
         </div>
 
         <div class="form-control w-full mt-2">
           <label class="block font-medium mb-1" for="password" translate="pages.signin.form.password"></label>
-          <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full invalid:border-danger" formControlName="password" id="password" required minlength="8" autocomplete="current-password" type="password">
+          <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="password" id="password" required minlength="8" autocomplete="current-password" type="password">
           <div class="text-sm font-medium text-danger mt-1" *ngIf="signinForm.get('password')?.hasError('required') && myform.submitted" translate="pages.signin.form.errors.password-required"></div>
           <div class="text-sm font-medium text-danger mt-1" *ngIf="signinForm.get('password')?.hasError('minLength') && myform.submitted" translate="pages.signin.form.errors.password-minLength"></div>
         </div>
@@ -29,8 +28,7 @@
           </div>
         </div>
 
-        <button [disabled]="isLoading" class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in
-          duration-200 dark:text-accent hover:text-white hover:bg-primary disabled:bg-gray-200 dark:hover:bg-accent dark:hover:text-black " id="signin" type="submit" translate="pages.signin.form.button"></button>
+        <button [disabled]="isLoading" class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in bg-white duration-200 dark:text-accent hover:text-white hover:bg-primary disabled:bg-gray-200  dark:bg-gray-900 dark:hover:bg-accent dark:hover:text-black " id="signin" type="submit" translate="pages.signin.form.button"></button>
 
         <div class="flex flex-col space-y-1 mt-4">
           <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ login_hint: currentUsername }" translate="pages.signin.form.action1"></a>

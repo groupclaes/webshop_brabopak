@@ -1,8 +1,8 @@
-<div class="flex flex-row justify-between items-center mb-6">
-  <div class="text-xl md:text-3xl font-semibold tracking-tight leading-8">
+<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
+  <div class="text-2xl md:text-3xl font-semibold tracking-tight leading-8">
     {{ header | translate }}
   </div>
-  <div class="hover:text-primary hover:underline hover:dark:text-accent cursor-pointer" [routerLink]="url" [queryParams]="params" *ngIf="url">
+  <div class="text-sm hover:text-primary hover:underline hover:dark:text-accent cursor-pointer" [routerLink]="url" [queryParams]="params" *ngIf="url">
     Bekijk alles <i class="fal fa-fw fa-arrow-right"></i>
   </div>
 </div>

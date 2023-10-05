@@ -7,8 +7,8 @@
     Het product kon niet worden geladen
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8" *ngIf="!loading && product">
-    <div class="flex flex-row md:col-span-2">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8" *ngIf="!loading && product">
+    <div class="flex flex-row md:col-span-3">
       <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
     </div>
     <div id="images space-y-8" *ngIf="images.length > 0">
@@ -16,7 +16,7 @@
         <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
         rounded-xl">
       </div>
-      <div class="grid grid-cols-4 gap-8 mt-8 mx-[7px]" *ngIf="images.length > 1">
+      <div class="grid grid-cols-4 gap-4 mt-4 mx-[7px]" *ngIf="images.length > 1">
         <div class="rounded-xl border ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index" (click)="activateImage(i)" [ngClass]="{ 
           'ring-primary dark:ring-accent': activeImage === image.guid,
           'ring-transparent ring-offset-gray-50 dark:ring-offset-gray-950': activeImage !== image.guid
@@ -26,12 +26,13 @@
       </div>
     </div>
 
-    <div class="flex flex-col" id="details">
-      <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2" *ngIf="product.id % 2 == 0">
+    <div class="flex flex-col md:col-span-2" id="details">
+      <!-- <h1 class="text-3xl md:text-6xl font-semibold italic leading-10 mb-2" *ngIf="product.id % 2 == 0">
         {{ product.name }}
-      </h1>
+      </h1> -->
 
-      <h1 class="text-xl md:text-3xl italic leading-6 mb-2" *ngIf="product.id % 2 == 1">
+      <h1 class="text-xl md:text-3xl italic leading-6 mb-2">
+        <!--  *ngIf="product.id % 2 == 1" -->
         {{ product.name }}
       </h1>
 
@@ -218,15 +219,15 @@
       </div>
     </div>
 
-    <div class="flex flex-col col-span-2" *ngIf="product.relatedProducts">
+    <div class="flex flex-col col-span-3" *ngIf="product.relatedProducts">
       <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
         {{ 'pages.product.related_products' | translate }}
       </div>
 
       <div class="max-w-full overflow-x-scroll pb-2">
         <div class="table-cell relative" *ngFor="let item of product.relatedProducts">
-          <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-40 m-1 p-2 rounded group">
-            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-36 object-contain rounded-xl border ring ring-gray-50 dark:ring-gray-700">
+          <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-36 mr-4 rounded group">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-36 h-36 object-contain rounded-xl border ring ring-gray-50 dark:ring-gray-700">
             <div class="italic font-medium mt-4 h-16 line-clamp-3">
               <span class="font-md lowercase">{{ item.name }}</span>
             </div>
@@ -240,15 +241,15 @@
       </div>
     </div>
 
-    <div class="flex flex-col col-span-2" *ngIf="product.similarProducts">
+    <div class="flex flex-col col-span-3" *ngIf="product.similarProducts">
       <div class="text-lg md:text-xl font-medium italic leading-8 mb-2">
         {{ 'pages.product.similar_products' | translate }}
       </div>
 
       <div class="max-w-full overflow-x-scroll pb-2">
         <div class="table-cell relative" *ngFor="let item of product.similarProducts">
-          <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-40 m-1 p-2 rounded group">
-            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-40 h-36 object-contain rounded-xl border ring ring-gray-50 dark:ring-gray-700">
+          <a [routerLink]="['/product', item.id, itemName(item)] | localize" class="flex flex-col w-36 mr-4 rounded group">
+            <img [src]="'https:' + item.url" [alt]="item.name" [ngStyle]="{background: '#' + item.color}" class="block w-36 h-36 object-contain rounded-xl border ring ring-gray-50 dark:ring-gray-700">
             <div class="italic font-medium mt-4 h-16 line-clamp-3">
               <span class="font-md lowercase">{{ item.name }}</span>
             </div>

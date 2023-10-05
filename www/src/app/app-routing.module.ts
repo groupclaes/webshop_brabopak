@@ -12,11 +12,24 @@ export const routes: Routes = [{
     layout
   }
 }, {
-  path: 'auth',
-  loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-  data: {
-    layout
-  }
+  path: 'auth/sign-in',
+  loadChildren: () => import('./auth/signin/signin-page.module').then(m => m.SigninPageModule)
+},
+{
+  path: 'auth/sign-on',
+  loadChildren: () => import('./auth/signon/signon-page.module').then(m => m.SignonPageModule)
+},
+{
+  path: 'auth/sign-up',
+  loadChildren: () => import('./auth/signup/signup-page.module').then(m => m.SignupPageModule)
+},
+{
+  path: 'auth/reset-password',
+  loadChildren: () => import('./auth/reset-password/reset-password-page.module').then(m => m.ResetPasswordPageModule)
+},
+{
+  path: 'auth/forgot-password',
+  loadChildren: () => import('./auth/forgot-password/forgot-password-page.module').then(m => m.ForgotPasswordPageModule)
 }, {
   path: 'cart',
   loadChildren: () => import('./pages/cart/cart-page.module').then(m => m.CartPageModule),
