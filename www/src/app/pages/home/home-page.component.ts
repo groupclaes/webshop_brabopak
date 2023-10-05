@@ -42,6 +42,13 @@ export class HomePageComponent implements OnDestroy {
       this.load()
   }
 
+  fn() {
+    const letters = ['a  ', 'b  ', 'c']
+    console.log(JSON.stringify(letters))
+    for (let a of letters) { a = a.trim(); }
+    console.log(JSON.stringify(letters))
+  }
+
   ngOnDestroy(): void {
     console.debug('ProductsPageComponent.ngOnDestroy()')
     if (this._subs)

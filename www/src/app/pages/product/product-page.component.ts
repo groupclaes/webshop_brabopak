@@ -125,9 +125,14 @@ export class ProductPageComponent implements OnDestroy {
       this._images = resources[0].results
 
       this._attachments = resources[1].results.filter(e => e.documentType !== 'display-image')
-      if (!this._product.favorite || !this._product.favorite[0].lastDateBought) {
-        if (!this.auth.isAgent())
+      // if not agent
+      if (!this.auth.isAgent()) {
+        console.log('not agent')
+        // if not in favorite
+        if (!this._product.favorite || !this._product.favorite[0].last_bought_date) {
+          console.log('not favotite', this._product)
           this._attachments = this._attachments.filter(e => e.documentType !== 'datasheet' && e.documentType !== 'technische-fiche')
+        }
       }
       this._active_image = 0
     } catch (err) {
