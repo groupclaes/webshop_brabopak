@@ -28,13 +28,12 @@ export class FlyoutNavigationComponent {
     auth.change.subscribe({
       next: () => {
         this.ref.markForCheck()
-        console.log(this.auth.currentCustomer)
+        console.log('change', this.auth.currentCustomer)
       }
     })
     auth.customerChange.subscribe({
       next: () => {
         this.ref.markForCheck()
-        console.log(this.auth.currentCustomer)
       }
     })
   }

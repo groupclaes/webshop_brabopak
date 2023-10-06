@@ -74,7 +74,21 @@ export class AppComponent {
       this.modalCtrl.modals
         .filter(e => e.title === 'Jouw privacy, onze zorg')
         .forEach(modal => modal.close.emit())
-      this.modalCtrl.show(new Modal('info', 'Jouw privacy, onze zorg', 'Brabopak gebruikt cookies om je een betere en meer gepersonaliseerde gebruikservaring te bieden. Ga je hiermee akkoord?'))
+      this.modalCtrl.show(new Modal('info', 'Jouw privacy, onze zorg', 'Brabopak gebruikt cookies om je een betere en meer gepersonaliseerde gebruikservaring te bieden. Ga je hiermee akkoord?', [
+        {
+          title: 'Ja',
+          action: () => {
+            window.localStorage.setItem('com.brabopak.shop.cookies', 'yes');
+            (window as any).loadGA()
+          }
+        }, {
+          title: 'Nee',
+          color: 'danger',
+          action: () => {
+            window.sessionStorage.setItem('com.brabopak.shop.cookies', 'no')
+          }
+        }
+      ]))
     }
   }
 

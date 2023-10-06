@@ -12,7 +12,8 @@
       <bra-breadcrumbs class="px-8 -mt-6 lg:-mt-8 w-full" [breadcrumbs]=" breadcrumbs"></bra-breadcrumbs>
     </div>
     <div id="images space-y-8" *ngIf="images.length > 0">
-      <div class="rounded-xl border ring ring-gray-50 dark:ring-gray-700" [ngClass]="{'border-orange-400 border-2': isFavorite}">
+      <div class="rounded-xl border ring ring-gray-50 dark:ring-gray-700">
+        <!--  [ngClass]="{'border-orange-400 border-2': isFavorite}" -->
         <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
         rounded-xl">
       </div>

@@ -106,12 +106,12 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   get pdfSettings(): any {
     if (this.desktop) {
       return {
-        url: `https://pcm.groupclaes.be/v3/content/dis/website/leaflet/100/${this.culture}?size=large`,
+        url: `https://pcm.groupclaes.be/v3/content/bra/website/leaflet/100/${this.culture}?size=large`,
         showAll: false
       }
     } else {
       return {
-        url: `https://pcm.groupclaes.be/v3/content/dis/website/leaflet/100/${this.culture}?size=small`,
+        url: `https://pcm.groupclaes.be/v3/content/bra/website/leaflet/100/${this.culture}?size=small`,
         showAll: true
       }
     }

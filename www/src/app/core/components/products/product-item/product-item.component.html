@@ -1,21 +1,21 @@
 <ng-template [ngIf]="item">
-  <div class="relative mx-auto w-48 h-48 md:w-56 md:h-56 xl:w-60 xl:h-60 rounded-xl hover:opacity-75"
-    [ngStyle]="{background: '#' + item.color}">
+  <div class="relative mx-auto w-48 h-48 md:w-56 md:h-56 xl:w-60 xl:h-60 rounded-xl hover:opacity-75" [ngStyle]="{background: '#' + item.color}">
     <!-- overflow-hidden -->
-    <img class="w-full border rounded-xl drop-shadow" [src]="item.url.replace('small', 'thumb_l')"
-      [ngStyle]="{background: '#' + item.color}" alt="" [ngClass]="{'border-orange-400 border-2': isFavorite}">
+    <img class="w-full border rounded-xl drop-shadow" [src]="item.url.replace('small', 'thumb_l')" [ngStyle]="{background: '#' + item.color}" alt="">
+    <!-- [ngClass]="{'border-orange-400 border-2': isFavorite}" -->
 
-    <div class="absolute flex top-2 left-2 space-x-2">
+    <div class="absolute flex top-2 left-2 right-2 space-x-2">
       <div class="w-8 h-5 leading-5 text-center rounded-md bg-secondary-500 text-white" *ngIf="item.type === 'BV'">BV
       </div>
       <div class="w-5 h-5 leading-5 text-center rounded-md bg-success text-white" *ngIf="item.type === 'B'">B</div>
-      <div class="w-auto h-5 px-2 leading-5 text-center rounded-md bg-danger text-white" *ngIf="isPromo">Promotie</div>
+      <div class="w-auto h-5 px-2 leading-5 text-center rounded-md bg-danger text-white" *ngIf="isPromo">Promo</div>
+
+      <div class="flex flex-1"></div>
+      <i class="fas fa-fw fa-heart text-2xl text-primary" *ngIf="isFavorite"></i>
     </div>
 
     <div id="cart-controlls" class="absolute bottom-4 left-4 right-4 z-10">
-      <button
-        class="group-hover:hidden opacity-75 font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary"
-        title="Plaats in winkelwagen" *ngIf="isAdded">
+      <button class="group-hover:hidden opacity-75 font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary" title="Plaats in winkelwagen" *ngIf="isAdded">
         <!-- <i class="mr-2 fal fa-fw fa-shopping-cart text-lg"></i> in winkelwagen -->
         Toegevoegd aan winkelwagen
       </button>
