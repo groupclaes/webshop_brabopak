@@ -46,7 +46,7 @@ export class CartService {
     }
 
     try {
-      console.debug('CartService.init() -- try', this.auth.currentCustomer)
+      // console.debug('CartService.init() -- try', this.auth.currentCustomer)
       // get carts from api
       const response = await this.api.cart(this.auth.currentCustomer.usercode)
 
@@ -63,10 +63,10 @@ export class CartService {
 
       this.changes.emit()
     } catch (err) {
-      console.debug('CartService.init() -- catch')
+      // console.debug('CartService.init() -- catch')
       console.error(err)
     } finally {
-      console.debug('CartService.init() -- finally')
+      // console.debug('CartService.init() -- finally')
     }
   }
 

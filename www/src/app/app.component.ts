@@ -9,6 +9,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { filter, map, mergeMap } from 'rxjs'
 import { MetaService } from './@shared/services/meta.service'
 import { UpdateService } from './core/update.service'
+import { Modal, ModalsService } from './@shared/modals/modals.service'
 
 registerLocaleData(localeNlBE)
 registerLocaleData(localeFrBE)
@@ -30,7 +31,8 @@ export class AppComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private metaService: MetaService,
-    updateService: UpdateService
+    updateService: UpdateService,
+    private modalCtrl: ModalsService
   ) {
     updateService.hello()
     document.documentElement.lang = translate.currentLang
@@ -54,6 +56,9 @@ export class AppComponent {
         mergeMap(route => route.data)
       )
       .subscribe((event: any) => {
+        if (!event.hidePolicy) {
+          this.checkCookiePolicy()
+        }
         // { title: string, description?: string }
         const { title, description, keywords, image } = event
         if (title && description && keywords && image) {
@@ -61,5 +66,19 @@ export class AppComponent {
           this.metaService.apply(tranlsations[title], tranlsations[description], tranlsations[keywords], tranlsations[image])
         }
       })
+  }
+
+  checkCookiePolicy() {
+    if (this.policyRequired) {
+      // close all modals before creating a new one
+      this.modalCtrl.modals
+        .filter(e => e.title === 'Jouw privacy, onze zorg')
+        .forEach(modal => modal.close.emit())
+      this.modalCtrl.show(new Modal('info', 'Jouw privacy, onze zorg', 'Brabopak gebruikt cookies om je een betere en meer gepersonaliseerde gebruikservaring te bieden. Ga je hiermee akkoord?'))
+    }
+  }
+
+  get policyRequired() {
+    return !(window.localStorage.getItem('com.brabopak.shop.cookies') === 'yes' || window.sessionStorage.getItem('com.brabopak.shop.cookies') === 'no') && navigator.cookieEnabled
   }
 }

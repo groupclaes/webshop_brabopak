@@ -19,8 +19,7 @@
       <span class="h-6 w-0 border-l" aria-hidden="true"></span>
       <button [routerLink]="['/products'] | localize" [queryParams]="{ only_favorites: true }" class="relative border-b-2 border-transparent -mb-px flex items-center pt-px text-sm font-medium transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300" [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent', 'dark:text-accent']">Favorieten</button>
       <span class="h-6 w-0 border-l" aria-hidden="true" *ngIf="canViewPromo"></span>
-      <button [routerLink]="['/leaflet'] | localize" *ngIf="canViewPromo" class="relative border-b-2 border-transparent -mb-px flex items-center pt-px text-sm font-medium transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300" [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent',
-      'dark:text-accent']">Folder</button>
+      <button [routerLink]="['/leaflet'] | localize" *ngIf="canViewPromo" class="relative border-b-2 border-transparent -mb-px flex items-center pt-px text-sm font-medium transition-colors duration-200 ease-out hover:text-secondary-700 dark:hover:text-secondary-300" [routerLinkActive]="['border-b-primary', 'text-primary', 'dark:border-accent', 'dark:text-accent']">Folder</button>
     </ng-template>
   </div>
 </div>
