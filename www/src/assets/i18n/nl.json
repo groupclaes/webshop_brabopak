@@ -16,6 +16,8 @@
   },
   "pages": {
     "signin": {
+      "title": "Inloggen",
+      "description": "Log in met je Brabopak account",
       "form": {
         "title": "Inloggen",
         "username": "E-mail",
@@ -33,6 +35,8 @@
       }
     },
     "signon": {
+      "title": "Aanmelden",
+      "description": "Aanmelden op de Brabopak webshop",
       "form": {
         "title": "Aanmelden",
         "username": "E-mail",
@@ -57,11 +61,17 @@
     },
     "signup": {
       "title": "Registreren",
-      "form1": {},
-      "action1": "Wachtwoord vergeten?",
-      "action2": "Inloggen"
+      "description": "Registreren op de Brabopak webshop",
+      "form": {
+        "title": "Registreren",
+        "action1": "Wachtwoord vergeten?",
+        "action2": "Inloggen"
+      },
+      "form1": {}
     },
     "forgot-password": {
+      "title": "Wachtwoordherstel",
+      "description": "Je wachtwoord vergeten?",
       "form": {
         "title": "Wachtwoordherstel",
         "username": "E-mail",
@@ -75,6 +85,8 @@
       }
     },
     "reset-password": {
+      "title": "Wachtwoordherstel",
+      "description": "Wachtwoord opnieuw instellen",
       "form": {
         "title": "Wachtwoordherstel",
         "password": "Wachtwoord",
@@ -88,6 +100,8 @@
       }
     },
     "home": {
+      "title": "Welkom op de webshop",
+      "description": "Bestel 24/7 online bij Brabopak",
       "header": {
         "title": "Welkom op onze webshop, {{name}}"
       }
@@ -153,7 +167,13 @@
         "gb": "Gerst en gerstproducten"
       }
     },
+    "products": {
+      "title": "Producten",
+      "description": "Ontdek ons ruime gamma verpakkingsoplossingen "
+    },
     "cart": {
+      "title": "Winkelwagen",
+      "description": "Rond je bestelling af in enkele kliks ",
       "header": {
         "title": "Winkelmandje"
       },
@@ -244,11 +264,20 @@
         }
       }
     },
+    "cart-history": {
+      "title": "Orderhistoriek",
+      "description": "Bekijk al je aankopen uit het verleden"
+    },
     "profile": {
       "title": "Profiel",
+      "description": "Vul je gegevens aan",
       "header": {
         "title": ""
       }
+    },
+    "leaflet": {
+      "title": "Folder",
+      "description": "Blader door de nieuwste promoties"
     }
   },
   "actions": {

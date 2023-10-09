@@ -120,7 +120,7 @@ export class AuthService {
             window.sessionStorage.setItem(REFRESH_STORAGE_KEY, refresh_token)
           window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(resp))
 
-          // this.change.next(resp)
+          this.change.next(resp)
         },
         error: (err) => {
           console.error(err)

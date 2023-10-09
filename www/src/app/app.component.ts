@@ -60,10 +60,11 @@ export class AppComponent {
           this.checkCookiePolicy()
         }
         // { title: string, description?: string }
-        const { title, description, keywords, image } = event
-        if (title && description && keywords && image) {
-          const tranlsations = translate.instant([title, description, keywords, image])
-          this.metaService.apply(tranlsations[title], tranlsations[description], tranlsations[keywords], tranlsations[image])
+        const { title, description } = event // , keywords, image
+        if (title && description) {
+          //  && keywords && image
+          const tranlsations = translate.instant([title, description]) // , keywords, image
+          this.metaService.apply(tranlsations[title], tranlsations[description]) // , tranlsations[keywords], tranlsations[image]
         }
       })
   }
