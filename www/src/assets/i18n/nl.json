@@ -209,7 +209,7 @@
               "complete": "Het order mag enkel uitgeleverd worden als het volledig is."
             },
             "openhoursstore": "Openingsuren winkel:",
-            "acceptTerms": " Ik aanvaard de <a target=\"_blank\" class=\"text-primary dark:text-accent hover:underline\" rel=\"noopener noreferer\" href=\"https://pcm.groupclaes.be/v3/content/dis/website/content-document/9990\">verkoopvoorwaarden</a>.",
+            "acceptTerms": " Ik aanvaard de <a class=\"text-primary dark:text-accent hover:underline\" rel=\"noopener noreferer\" routerLink=\"/terms-and-conditions\">verkoopvoorwaarden</a>.",
             "acceptTermsOrderitem": "Ik ben op de hoogte dat bestelartikelen niet geruild of retour genomen worden."
           },
           "backButton": " Terug naar leveringsgegevens",

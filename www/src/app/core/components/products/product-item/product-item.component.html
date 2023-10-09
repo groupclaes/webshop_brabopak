@@ -14,7 +14,7 @@
       <i class="fas fa-fw fa-heart text-2xl text-primary" *ngIf="isFavorite"></i>
     </div>
 
-    <div id="cart-controlls" class="absolute bottom-4 left-4 right-4 z-10">
+    <div id="cart-controlls" class="absolute bottom-4 left-4 right-4">
       <button class="group-hover:hidden opacity-75 font-serif w-full max-w-sm h-10 text-md rounded bg-info text-white hover:bg-primary" title="Plaats in winkelwagen" *ngIf="isAdded">
         <!-- <i class="mr-2 fal fa-fw fa-shopping-cart text-lg"></i> in winkelwagen -->
         Toegevoegd aan winkelwagen
@@ -38,9 +38,7 @@
   </div>
 
   <div class="flex-flex-row justify-between" *ngIf="isFavorite">
-    <div class="text-sm text-gray-500">
-      {{ favinfo }}
-    </div>
+    <div class="text-sm text-gray-500">{{ favinfo }}</div>
   </div>
 
   <div class="flex-flex-row justify-between" *ngIf="availableDescription">

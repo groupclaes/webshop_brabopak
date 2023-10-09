@@ -78,6 +78,28 @@ export const routes: Routes = [{
     layout
   }
 }, {
+  path: 'legal/privacy-policy',
+  loadChildren: () => import('./pages/legal/privacy-policy/privacy-policy-page.module').then(m => m.PrivacyPolicyPageModule),
+  data: {
+    layout,
+    hidePolicy: true
+  }
+}, {
+  path: 'legal/terms-and-conditions',
+  loadChildren: () => import('./pages/legal/terms-and-conditions/terms-and-conditions-page.module').then(m => m.TermsAndConditionsPageModule),
+  data: {
+    layout
+  }
+}, {
+  path: 'terms-and-conditions',
+  redirectTo: '/legal/terms-and-conditions'
+}, {
+  path: 'sales-terms',
+  redirectTo: '/legal/terms-and-conditions'
+}, {
+  path: 'privacy-policy',
+  redirectTo: '/legal/privacy-policy'
+}, {
   path: '**',
   redirectTo: '/'
 }]
