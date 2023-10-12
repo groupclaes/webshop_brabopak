@@ -57,15 +57,9 @@ export class FlyoutNavigationComponent {
     return this._categories
   }
 
-  itemName(item: any): string {
-    return item.name.replace(/ /g, '-')
-  }
+  itemName = (item: any) => item.name.replace(/ /g, '-')
 
-  capitalize(text: string) {
-    return capitalize.words(text, {
-      skipWord: /^(en|de|het|et|a|pour|voor|om|van)$/
-    })
-  }
+  capitalize = (text: string) => capitalize.words(text, { skipWord: /^(en|de|het|et|a|pour|voor|om|van)$/ })
 
   close(): void {
     this.active = false
