@@ -25,8 +25,11 @@ export class EcommerceApiService {
     }
   }
 
-  menu(): Promise<IBaseApiResponse> {
-    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.menu()))
+  menu(usercode: number | undefined): Promise<IBaseApiResponse> {
+    const params = trimParameters({
+      usercode
+    })
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.menu(), { params }))
   }
 
   dashboard(usercode: number): Promise<IBaseApiResponse> {

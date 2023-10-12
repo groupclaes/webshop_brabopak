@@ -21,7 +21,7 @@ export class FlyoutNavigationComponent {
     private ref: ChangeDetectorRef,
     public auth: AuthService
   ) {
-    api.menu().then(r => {
+    api.menu(this.auth.currentCustomer?.usercode).then(r => {
       this._categories = r.data
       this.ref.markForCheck()
     })
