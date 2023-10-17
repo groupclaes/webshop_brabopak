@@ -39,7 +39,7 @@
         <div class="form-control w-full mt-2">
           <label class="block font-medium mb-1" for="code" translate="pages.signon.form.code"></label>
           <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full
-          invalid:border-danger" formControlName="code" required id="code" pattern="^([A-Z]{12})|([a-fA-F0-9]{6})$">
+          invalid:border-danger" formControlName="code" required id="code" pattern="^([A-Z]{12})|((([a-fA-F0-9]){2})+)$">
           <div class="text-sm font-medium text-danger mt-1" *ngIf="signonForm.get('code')?.hasError('required') && myform.submitted" translate="pages.signon.form.errors.code-required"></div>
           <div class="text-sm font-medium text-danger mt-1" *ngIf="signonForm.get('code')?.hasError('pattern') && myform.submitted" translate="pages.signon.form.errors.code-pattern"></div>
         </div>
