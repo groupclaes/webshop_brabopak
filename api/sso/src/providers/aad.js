@@ -12,11 +12,12 @@ var graphToken = ""
 exports.getAllUsers = () => {
   getToken(graphAccessUrl, contentType, graphTokenBody, graphTokenError)
 
-  var nextLink = "@odata.nextLink"
-  var reqUrl = 'https://graph.microsoft.com/v1.0/users?$select=id,givenName,surname,displayName,userPrincipalName,department,jobTitle,onPremisesSamAccountName&$top=999'
+  const nextLink = "@odata.nextLink"
+  let reqUrl = 'https://graph.microsoft.com/v1.0/users?$select=id,givenName,surname,displayName,userPrincipalName,department,jobTitle,onPremisesSamAccountName&$top=999'
 
   try {
-    var userList = []
+    let userList = []
+    let failIndex = 0, retryCount = 1
 
     while (reqUrl) {
       var usersResponse = httpGet(reqUrl, graphToken)
