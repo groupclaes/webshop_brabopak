@@ -31,8 +31,8 @@ COPY ngsw-config.json /app/ngsw-config.json
 # RUN ng e2e --port 4202
 
 # generate build
-RUN ng build --configuration staging --output-path=dist
-# RUN ng build --configuration production --output-path=dist
+# RUN ng build --configuration staging --output-path=dist
+RUN ng build --configuration production --output-path=dist
 # RUN ng build --output-path=dist
 
 COPY nginx.conf /app/nginx.conf

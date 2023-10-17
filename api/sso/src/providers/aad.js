@@ -75,7 +75,7 @@ function getToken(url, type, content, errorMessage, callback) {
       return callback()
     }
   } else {
-    Console.log(errorMessage)
+    console.log(errorMessage)
   }
 }
 
