@@ -65,7 +65,7 @@ export class SignonPageComponent {
         switch (errRes.status) {
           case 0:
             this.modalCtrl.show(new Modal('alert', 'Fout!', errRes.statusText))
-            alert(errRes.statusText)
+            // alert(errRes.statusText)
             break
 
           case 403:
@@ -80,6 +80,7 @@ export class SignonPageComponent {
             break
 
           default:
+            this.modalCtrl.show(new Modal('alert', 'Interne serverfout!', 'Er is een probleem opgetreden bij het behandelen van je verzoek, probeer later opnieuw of gelieve contact op te nemen met ons support team.'))
             alert(errRes.error.reason)
             break
         }
