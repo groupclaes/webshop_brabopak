@@ -182,7 +182,7 @@ export default async function (fastify: FastifyInstance) {
    * @param {FastifyRequest} request
    * @param {FastifyReply} reply
    */
-  fastify.post('update-password', async (request: FastifyRequest<{
+  fastify.post('/update-password', async (request: FastifyRequest<{
     Body: {
       password: string
     }
@@ -209,7 +209,7 @@ export default async function (fastify: FastifyInstance) {
    * @param {FastifyRequest} request
    * @param {FastifyReply} reply
    */
-  fastify.post('reset-password', async (request: FastifyRequest<{
+  fastify.post('/reset-password', async (request: FastifyRequest<{
     Body: {
       username: string
       password?: string
