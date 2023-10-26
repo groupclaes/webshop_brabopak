@@ -10,6 +10,8 @@ import usersController from './controllers/users.controller'
 
 let fastify: FastifyInstance | undefined
 
+const LOGLEVEL = 'debug'
+
 /** Main loop */
 async function main() {
   // add jwt configuration object to config
@@ -23,9 +25,9 @@ async function main() {
       prefix: version_prefix + '/sso/.well-known/' // optional: default '/'
     }
   )
-  await fastify.register(authorizeController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/authorize`, logLevel: 'debug' })
-  await fastify.register(tokenController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/token`, logLevel: 'debug' })
-  await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users`, logLevel: 'info' })
+  await fastify.register(authorizeController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/authorize`, logLevel: LOGLEVEL })
+  await fastify.register(tokenController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/token`, logLevel: LOGLEVEL })
+  await fastify.register(usersController, { prefix: `${version_prefix}/${config.wrapper.serviceName}/users`, logLevel: LOGLEVEL })
   await fastify.listen({ port: +(env['PORT'] ?? 80), host: '::' })
 }
 

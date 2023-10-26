@@ -70,8 +70,8 @@ export class AuthService {
     }))
   }
 
-  public signon(credentials: { username: string, password: string, code: string }): Promise<any> {
-    return firstValueFrom(this.http.post<any>(`${api_url}users/signon`, credentials))
+  public signon(credentials: { username: string, password: string, code: string }): Promise<ISuccessResponse> {
+    return firstValueFrom(this.http.post<ISuccessResponse>(`${api_url}users/signon`, credentials))
   }
 
   public resetPassword(form: { username: string, password?: string, reset_token?: string }) {
@@ -159,7 +159,7 @@ export class AuthService {
   }
 
   public isAgent(): boolean {
-    return (this.id_token?.user_type ?? 0) === 2
+    return (this.id_token?.user_type ?? 0) === 2 || (this.id_token?.user_type ?? 0) === 3
   }
 
   private saveTokens(tokens: IGetTokenResponse): void {
@@ -347,4 +347,10 @@ export interface ICustomer {
 
   usercode: number
   promo: boolean
+}
+
+export interface ISuccessResponse extends IBaseApiResponse {
+  data: {
+    success: boolean
+  }
 }

@@ -173,7 +173,14 @@ export default async function (fastify: FastifyInstance) {
           })
       }
     } catch (err) {
-      throw err
+      request.log.error({ error: err, authorizationCode: request.query.token }, 'Couldn\'t retrieve token, something unexpected happened')
+      return reply
+        .code(500)
+        .send({
+          status: 'error',
+          code: 500,
+          message: `Something unexpected happened while refreshing token!`
+        })
     }
   })
 

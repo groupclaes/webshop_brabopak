@@ -53,7 +53,7 @@ export class SignonPageComponent {
     try {
       const signonResponse: any = await this.auth.signon(this.signonForm.value)
 
-      if (signonResponse.success === true) {
+      if (signonResponse.data.success === true) {
         const modal = new Modal('success', 'Registratie gelukt', 'Je hebt je succesvol aangemeld voor een account op de Brabopak webshop, je kan nu inloggen met deze gegevens')
         this.modalCtrl.show(modal)
       }
@@ -81,7 +81,7 @@ export class SignonPageComponent {
 
           default:
             this.modalCtrl.show(new Modal('alert', 'Interne serverfout!', 'Er is een probleem opgetreden bij het behandelen van je verzoek, probeer later opnieuw of gelieve contact op te nemen met ons support team.'))
-            alert(errRes.error.reason)
+            // alert(errRes.error.reason)
             break
         }
       }

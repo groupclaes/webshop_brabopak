@@ -22,14 +22,15 @@ export class FlyoutNavigationComponent {
     public auth: AuthService
   ) {
     api.menu(this.auth.currentCustomer?.usercode).then(r => {
-      this._categories = r.data
+      if (r)
+        this._categories = r.data
       this.ref.markForCheck()
     })
     auth.change.subscribe({
-      next: this.ref.markForCheck
+      next: () => this.ref.markForCheck()
     })
     auth.customerChange.subscribe({
-      next: this.ref.markForCheck
+      next: () => this.ref.markForCheck()
     })
   }
 
