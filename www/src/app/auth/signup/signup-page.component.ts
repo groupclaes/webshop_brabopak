@@ -323,7 +323,6 @@ export class SignupPageComponent implements OnInit {
     // take form value and 1:1 copy to localstore if user browser crashes or is closed
     localStorage.setItem('com.brabopak.shop.new-customer.step5', JSON.stringify(this.signupForm5.value))
 
-
     const signupResponse: any = await this.auth.signup({
       step1: this.signupForm1.value,
       step2: this.signupForm2.value,
@@ -332,7 +331,7 @@ export class SignupPageComponent implements OnInit {
       step5: this.signupForm5.value
     })
 
-    if (signupResponse.data.success === true) {
+    if (signupResponse.status === 'success') {
       const modal = new Modal('success', 'Registratie gelukt', 'Je hebt je succesvol aangemeld voor een account op de Brabopak webshop, dit verzoek word manueel behandeld, je word zo snel mogelijk gecontacteerd door een van onze medewerkers.')
       this.signupForm1.reset()
       this.signupForm2.reset()

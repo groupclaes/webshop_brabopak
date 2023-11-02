@@ -113,6 +113,26 @@ export default async function (fastify: FastifyInstance) {
     }
   })
 
+  fastify.post('/signup', async function (request: FastifyRequest<{ Body: ISignUpBody }>, reply: FastifyReply) {
+    const start = performance.now()
+
+    try {
+      const repo = new User()
+      request.log.info({ user: request.body }, 'received new customer')
+
+      const result = await repo.signUp(request.body)
+      request.log.info({ result }, 'result from user creation')
+
+      if (result)
+        return reply.success({ messageId: result }, 200, performance.now() - start)
+
+      return reply.error('Failed to sign up user', 500, performance.now() - start)
+    } catch (err) {
+      request.log.error({ reason: 'unknown error', err }, 'Failed to sign up user!')
+      return reply.error('failed to sign up user')
+    }
+  })
+
   /**
    * Revoke current or supplied refreshToken
    */
@@ -317,4 +337,54 @@ export interface IAppUser {
   fostplus: boolean
   customer_type: number
   price_class: number
+}
+
+export interface ISignUpBody {
+  step1: {
+    companyName: string
+    companyVat: string
+    companyPhone: string
+  }
+  step2: {
+    address: string
+    number: string
+    zipCode: string
+    city: string
+    country: string
+    alternateAddress: boolean
+  }
+  step3: {
+    address: string
+    number: string
+    zipCode: string
+    city: string
+    country: string
+  }
+  step4: {
+    moAmFr: string
+    moAmTo: string
+    moPmFr: string
+    moPmTo: string
+    tuAmFr: string
+    tuAmTo: string
+    tuPmFr: string
+    tuPmTo: string
+    weAmFr: string
+    weAmTo: string
+    wePmFr: string
+    wePmTo: string
+    thAmFr: string
+    thAmTo: string
+    thPmFr: string
+    thPmTo: string
+    frAmFr: string
+    frAmTo: string
+    frPmFr: string
+    frPmTo: string
+  }
+  step5: {
+    givenName: string
+    familyName: string
+    username: string
+  }
 }
