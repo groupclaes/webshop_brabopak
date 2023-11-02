@@ -74,6 +74,10 @@ export class AuthService {
     return firstValueFrom(this.http.post<ISuccessResponse>(`${api_url}users/signon`, credentials))
   }
 
+  public signup(forms: any): Promise<ISuccessResponse> {
+    return firstValueFrom(this.http.post<ISuccessResponse>(`${api_url}users/signup`, forms))
+  }
+
   public resetPassword(form: { username: string, password?: string, reset_token?: string }) {
     const params = trimParameters({
       reset_token: form.reset_token

@@ -44,8 +44,6 @@ export class SignonPageComponent {
     if (!this.signonForm.valid)
       return
 
-    // check if reg is with brabopak mail
-
     await this.signonSso()
   }
 
@@ -54,7 +52,7 @@ export class SignonPageComponent {
       const signonResponse: any = await this.auth.signon(this.signonForm.value)
 
       if (signonResponse.data.success === true) {
-        const modal = new Modal('success', 'Registratie gelukt', 'Je hebt je succesvol aangemeld voor een account op de Brabopak webshop, je kan nu inloggen met deze gegevens')
+        const modal = new Modal('success', 'Aanmelden gelukt', 'Je hebt je succesvol aangemeld voor een account op de Brabopak webshop, je kan nu inloggen met deze gegevens.')
         this.modalCtrl.show(modal)
       }
     } catch (err: any) {
@@ -69,7 +67,7 @@ export class SignonPageComponent {
             break
 
           case 403:
-            const modal = new Modal('alert', 'Account al geregistreerd', 'Dit e-mailadres is al geregistreerd. Je kan met dit e-mailadres inloggen of een nieuw wachtwoord instellen')
+            const modal = new Modal('alert', 'Account al aangemeld', 'Dit e-mailadres is al aangemeld. Je kan met dit e-mailadres inloggen of een nieuw wachtwoord instellen.')
             this.modalCtrl.show(modal)
             this.ref.markForCheck()
             break

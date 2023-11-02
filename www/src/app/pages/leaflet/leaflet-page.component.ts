@@ -19,13 +19,13 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   desktop = false
 
   onResize() {
-    if (this.desktop && window.document.body.getBoundingClientRect().width < 1024) {
-      this.desktop = false
-      this.ref.markForCheck()
-    } else if (!this.desktop && window.document.body.getBoundingClientRect().width >= 1024) {
-      this.desktop = true
-      this.ref.markForCheck()
-    }
+    // if (this.desktop && window.document.body.getBoundingClientRect().width < 1024) {
+    //   this.desktop = false
+    //   this.ref.markForCheck()
+    // } else if (!this.desktop && window.document.body.getBoundingClientRect().width >= 1024) {
+    //   this.desktop = true
+    //   this.ref.markForCheck()
+    // }
   }
 
   constructor(
@@ -79,7 +79,7 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   }
 
   callBackFn(pdf: PDFDocumentProxy) {
-    
+
 
     this._pageCount = pdf.numPages
     this._loaded = true

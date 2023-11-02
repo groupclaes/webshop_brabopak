@@ -62,9 +62,14 @@
     "signup": {
       "title": "Registreren",
       "description": "Registreren op de Brabopak webshop",
+      "title1": "Facturatiegegevens",
+      "title2": "Facturatieadres",
+      "title3": "Leveradres",
+      "title4": "Leverschema",
+      "title5": "Inloggegevens",
       "form": {
         "title": "Registreren",
-        "action1": "Wachtwoord vergeten?",
+        "action1": "Privacybeleid",
         "action2": "Inloggen"
       },
       "form1": {}
@@ -280,6 +285,48 @@
       "description": "Blader door de nieuwste promoties"
     }
   },
+  "auth": {
+    "form": {
+      "username": "E-mailadres",
+      "password": "Wachtwoord",
+      "password-confirm": "Wachtwoord herhalen",
+      "code": "Registratiecode",
+      "remember": " Onthoud mij",
+      "company-name": "Bedrijfsnaam",
+      "company-vat": "BTW-nummer",
+      "company-phone": "Telefoonnummer",
+      "address": "Straat",
+      "street-number": "Huisnummer",
+      "postal-code": "Postcode",
+      "city": "Stad",
+      "country": "Land",
+      "alternateAddress": " Afwijkend leveradres",
+      "given-name": "Voornaam",
+      "family-name": "Familienaam",
+      "errors": {
+        "username-required": "E-mailadres is een verplicht veld",
+        "username-email": "E-mailadres bevat een syntaxfout",
+        "password-required": "Wachtwoord is een verplicht veld",
+        "password-minLength": "Het wachtwoord moet minimaal 8 tekens bevatten",
+        "password-confirm-required": "Wachtwoord herhalen is een verplicht veld",
+        "code-required": "Registratiecode is een verplicht veld",
+        "code-pattern": "De registratiecode bevat een syntaxfout",
+        "company-name-required": "Bedrijfsnaam is een verplicht veld",
+        "company-vat-required": "BTW-nummer is een verplicht veld",
+        "company-vat-pattern": "Het ingevoerde BTW nummer is ongeldig",
+        "company-phone-required": "Telefoonnummer is een verplicht veld",
+        "address-required": "Straat is een verplicht veld",
+        "street-number-required": "Huisnummer is een verplicht veld",
+        "postal-code-required": "Postcode is een verplicht veld",
+        "city-required": "Stad is een verplicht veld",
+        "country-required": "Land is een verplicht veld",
+        "opening-hours-pattern": "Waarde ongeldig, vb: '09:30'",
+        "opening-hours-invalid": "Openingsuren ongeldig, gelieve minimum 2 dagen in te vullen.",
+        "given-name-required": "Voornaam is een verplicht veld",
+        "family-name-required": "Familienaam is een verplicht veld"
+      }
+    }
+  },
   "actions": {
     "account": "Account",
     "sign-in": "Aanmelden",
@@ -287,6 +334,8 @@
     "sign-on": "Registreren",
     "sign-up": "Klant worden",
     "guest": "Doorgaan als gast",
+    "next": "Volgende",
+    "previous": "Vorige",
     "close": "Sluiten",
     "search": "Zoeken",
     "edit": "Wijzigen",
@@ -309,6 +358,12 @@
   "languages": {
     "nl-BE": "Nederlands",
     "fr-BE": "Français"
+  },
+  "countries": {
+    "be": "België",
+    "nl": "Nederland",
+    "fr": "Frankrijk",
+    "lu": "Luxemburg"
   },
   "price.request": "Prijs op aanvraag",
   "errors": {

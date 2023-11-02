@@ -26,7 +26,7 @@ registerLocaleData(localeFrBE)
 export class AppComponent {
   constructor(
     _elementRef: ElementRef,
-    translate: TranslateService,
+    private translate: TranslateService,
     @Inject(DOCUMENT) document: Document,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -38,10 +38,10 @@ export class AppComponent {
     document.documentElement.lang = translate.currentLang
     _elementRef.nativeElement.removeAttribute('ng-version')
 
-    this.ngOnInit(translate)
+    this.ngOnInit()
   }
 
-  ngOnInit(translate: TranslateService) {
+  ngOnInit() {
     const onNavigationEnd = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
     onNavigationEnd
       .pipe(
@@ -63,7 +63,7 @@ export class AppComponent {
         const { title, description } = event // , keywords, image
         if (title && description) {
           //  && keywords && image
-          const tranlsations = translate.instant([title, description]) // , keywords, image
+          const tranlsations = this.translate.instant([title, description]) // , keywords, image
           this.metaService.apply(tranlsations[title], tranlsations[description]) // , tranlsations[keywords], tranlsations[image]
         }
       })

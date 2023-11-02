@@ -106,8 +106,8 @@ export const routes: Routes = [{
   loadChildren: () => import('./pages/product/product-page.module').then(m => m.ProductPageModule),
   data: {
     layout,
-    title: 'pages.products.title',
-    description: 'pages.products.description'
+    // title: 'pages.products.title',
+    // description: 'pages.products.description'
   }
 }, {
   path: 'legal/privacy-policy',

@@ -4,6 +4,7 @@ import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 import { TranslateService } from '@ngx-translate/core'
 import { Subscription } from 'rxjs'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
+import { MetaService } from 'src/app/@shared/services/meta.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { PcmApiService } from 'src/app/core/api/pcm-api.service'
 import { IProduct, ProductsApiService } from 'src/app/core/api/products-api.service'
@@ -48,7 +49,8 @@ export class ProductPageComponent implements OnDestroy {
     public auth: AuthService,
     private router: Router,
     private localize: LocalizeRouterService,
-    private modalCtrl: ModalsService
+    private modalCtrl: ModalsService,
+    private metaService: MetaService
   ) {
     this._subs.push(this.route.params.subscribe(params => {
       if (params['id'] && params['name']) {
@@ -106,6 +108,9 @@ export class ProductPageComponent implements OnDestroy {
       //   "Leveringsomvang: 8 bundels à 1125 servetten, 1-laags, Universal- kwaliteit.Geschikt voor Tork N4- servettendispensers."
       // ]
 
+
+      this.metaService.apply(this._product.name, this._product.name) // , tranlsations[keywords], tranlsations[image]
+
       this.loadResources()
       this.error = false
     } catch (err) {
@@ -126,12 +131,10 @@ export class ProductPageComponent implements OnDestroy {
 
       this._attachments = resources[1].results.filter(e => e.documentType !== 'display-image')
       // if not agent
-      if (!this.auth.isAgent()) {
-        // if not in favorite
-        if (!this._product.favorite || !this._product.favorite[0].last_bought_date) {
+      if (!this.auth.isAgent())
+        if (!this._product.favorite || !this._product.favorite[0].last_bought_date)
           this._attachments = this._attachments.filter(e => e.documentType !== 'datasheet' && e.documentType !== 'technische-fiche')
-        }
-      }
+
       this._active_image = 0
     } catch (err) {
       console.log('Error loading product data', err)
@@ -159,11 +162,11 @@ export class ProductPageComponent implements OnDestroy {
     }
 
     if (update) {
-      if (this._product.favorite) {
+      if (this._product.favorite)
         this._product.favorite[0].is_favorite = !this._product.favorite[0].is_favorite
-      } else {
+      else
         this._product.favorite = [{ is_favorite: true }]
-      }
+
       await this.api.putFavorite({ id: this._product.id, usercode: this.auth.currentCustomer?.usercode, mode })
       this.ref.markForCheck()
     }

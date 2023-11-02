@@ -1,64 +1,295 @@
 <div class="flex flex-col flex-auto items-center sm:justify-center min-w-0">
   <div class="w-full sm:w-auto py-8 px-4 sm:p-12">
     <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
-      <div class="text-4xl font-extrabold tracking-tight leading-tight" translate="pages.signup.title"></div>
+      <div class="text-4xl font-mt-2bold tracking-tight leading-tight" translate="pages.signup.title"></div>
       <div class="flex items-baseline mt-0.5 font-medium">
-        <div>Reeds aangemeld?</div>
+        <div>Ben je al klant?</div>
         <a class="ml-1 text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-in'] | localize" [queryParams]="{ login_hint: currentUsername }">Inloggen</a>
       </div>
-      <form class="mt-8" [formGroup]="signupForm1" *ngIf="signupForm1" (submit)="signup()" #myform="ngForm">
-        <!-- <div class="form-control w-full">
-          <label class="block font-medium mb-1" for="username" translate="pages.signup.form.username"></label>
-          <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
-          invalid:border-danger" formControlName="username" required id="username" autocomplete="email" type="email">
-          <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signupForm1.get('username')?.hasError('required') && myform.submitted"
-            translate="pages.signup.form.errors.username-required"></div>
-          <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signupForm1.get('username')?.hasError('email') && myform.submitted"
-            translate="pages.signup.form.errors.username-email"></div>
-        </div>
 
-        <div class="form-control w-full mt-2">
-          <label class="block font-medium mb-1" for="password" translate="pages.signup.form.password"></label>
-          <input
-            class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full invalid:border-danger"
-            formControlName="password" id="password" required minlength="8" autocomplete="current-password"
-            type="password">
-          <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signupForm1.get('password')?.hasError('required') && myform.submitted"
-            translate="pages.signup.form.errors.password-required"></div>
-          <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signupForm1.get('password')?.hasError('minlength') && myform.submitted"
-            translate="pages.signup.form.errors.password-minLength"></div>
-        </div>
+      <ng-container [ngSwitch]="currentStep">
+        <form [formGroup]="signupForm1" class="mt-8" (submit)="submit(1)" #myform="ngForm" *ngSwitchCase="1">
+          <div class="mt-4 text-2xl font-medium tracking-tight leading-tight" translate="pages.signup.title1"></div>
 
-        <div class="form-control w-full mt-2">
-          <label class="block font-medium mb-1" for="code" translate="pages.signup.form.code"></label>
-          <input class="peer flex items-center h-12 border shadow-sm bg-transparent rounded-md px-4 w-full
-          invalid:border-danger" formControlName="code" required id="code" pattern="^[A-Z]{12}$">
-          <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signupForm1.get('code')?.hasError('required') && myform.submitted"
-            translate="pages.signup.form.errors.code-required"></div>
-          <div class="text-sm font-medium text-danger mt-1"
-            *ngIf="signupForm1.get('code')?.hasError('pattern') && myform.submitted"
-            translate="pages.signup.form.errors.code-pattern"></div>
-        </div> -->
+          <div class="form-control w-full">
+            <label class="block font-medium mb-1" for="company-name" translate="auth.form.company-name"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="companyName" autocomplete="organization" spellcheck="false" type="text" name="company-name" id="company-name" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm1.get('companyName')?.hasError('required') && myform.submitted" translate="auth.form.errors.company-name-required"></div>
+          </div>
 
-        <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in
-          duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" id="signup" type="submit" translate="pages.signup.form.button"></button>
+          <div class="form-control w-full mt-2">
+            <label class="block font-medium mb-1" for="company-vat" translate="auth.form.company-vat"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="companyVat" type="test" name="company-vat" id="company-vat" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm1.get('companyVat')?.hasError('required') && myform.submitted" translate="auth.form.errors.company-vat-required"></div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm1.get('companyVat')?.hasError('pattern') && myform.submitted" translate="auth.form.errors.company-vat-pattern"></div>
+          </div>
 
-        <div class="flex flex-col space-y-1 mt-4">
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/forgot-password'] | localize" [queryParams]="{ login_hint: currentUsername }" translate="pages.signup.form.action1"></a>
-          <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/auth/sign-on'] | localize" translate="pages.signup.form.action2"></a>
-        </div>
+          <div class="form-control w-full mt-2">
+            <label class="block font-medium mb-1" for="company-phone" translate="auth.form.company-phone"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="companyPhone" type="test" name="company-phone" id="company-phone" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm1.get('companyPhone')?.hasError('required') && myform.submitted" translate="auth.form.errors.company-phone-required"></div>
+            <!-- <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm1.get('companyPhone')?.hasError('pattern') && myform1.submitted"
+              translate="auth.form.errors.company-phone-pattern"></div> -->
+          </div>
 
-        <div class="mt-6 text-sm text-gray-500">
-          This site is protected by reCAPTCHA and the Google
-          <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacy Policy</a> and
-          <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Terms of Service</a> apply.
-        </div>
-      </form>
+          <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" id="signup" type="submit" translate="actions.next"></button>
+
+          <div class="flex flex-col space-y-1 mt-4">
+            <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/privacy-policy'] | localize" translate="pages.signup.form.action1"></a>
+          </div>
+
+          <div class="mt-6 text-sm text-gray-500">
+            Deze site wordt beschermd door reCAPTCHA, het Google
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacybeleid</a> en
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Servicevoorwaarden</a> zijn van toepassing.
+          </div>
+        </form>
+
+        <form [formGroup]="signupForm2" class="mt-8" (submit)="submit(2)" #myform="ngForm" *ngSwitchCase="2">
+          <div class="mt-4 text-2xl font-medium tracking-tight leading-tight" translate="pages.signup.title2"></div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="address" translate="auth.form.address"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="address" autocomplete="address-line1" spellcheck="false" type="text" name="address" id="address" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm2.get('address')?.hasError('required') && myform.submitted" translate="auth.form.errors.address-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="street-number" translate="auth.form.street-number"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="number" autocomplete="address-line2" spellcheck="false" type="text" name="street-number" id="street-number" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm2.get('number')?.hasError('required') && myform.submitted" translate="auth.form.errors.street-number-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="postal-code" translate="auth.form.postal-code"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="zipCode" autocomplete="postal-code" spellcheck="false" type="text" name="postal-code" id="postal-code" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm2.get('zipCode')?.hasError('required') && myform.submitted" translate="auth.form.errors.postal-code-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="city" translate="auth.form.city"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="city" autocomplete="city" spellcheck="false" type="text" name="city" id="city" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm2.get('city')?.hasError('required') && myform.submitted" translate="auth.form.errors.city-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="city" translate="auth.form.country"></label>
+            <select class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full appearance-none invalid:border-danger" formControlName="country" id="country" required>
+              <option value="" disabled></option>
+              <option [value]="country.code" [translate]="country.name" *ngFor="let country of countries"></option>
+            </select>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm2.get('country')?.hasError('required') && myform.submitted" translate="auth.form.errors.country-required"></div>
+          </div>
+
+          <div class="items-center justify-between w-full mt-2">
+            <div class="form-field mb-2">
+              <input formControlName="alternateAddress" type="checkbox" name="alternateAddress" id="alternateAddress">
+              <label for="alternateAddress" translate="auth.form.alternateAddress"></label>
+            </div>
+          </div>
+
+          <div class="flex items-center flex-col md:flex-row md:space-x-2">
+            <button type="button" class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.previous" (click)="back()"></button>
+            <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.next" type="submit"></button>
+          </div>
+
+          <div class="flex flex-col space-y-1 mt-4">
+            <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/privacy-policy'] | localize" translate="pages.signup.form.action1"></a>
+          </div>
+
+          <div class="mt-6 text-sm text-gray-500">
+            Deze site wordt beschermd door reCAPTCHA, het Google
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacybeleid</a> en
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Servicevoorwaarden</a> zijn van toepassing.
+          </div>
+        </form>
+
+        <form [formGroup]="signupForm3" class="mt-8" (submit)="submit(3)" #myform="ngForm" *ngSwitchCase="3">
+          <div class="mt-4 text-2xl font-medium tracking-tight leading-tight" translate="pages.signup.title3"></div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="address" translate="auth.form.address"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="address" autocomplete="address-line1" spellcheck="false" type="text" name="address" id="address" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm3.get('address')?.hasError('required') && myform.submitted" translate="auth.form.errors.address-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="street-number" translate="auth.form.street-number"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="number" autocomplete="address-line2" spellcheck="false" type="text" name="street-number" id="street-number" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm3.get('number')?.hasError('required') && myform.submitted" translate="auth.form.errors.street-number-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="postal-code" translate="auth.form.postal-code"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="zipCode" autocomplete="postal-code" spellcheck="false" type="text" name="postal-code" id="postal-code" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm3.get('zipCode')?.hasError('required') && myform.submitted" translate="auth.form.errors.postal-code-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="city" translate="auth.form.city"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="city" autocomplete="city" spellcheck="false" type="text" name="city" id="city" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm3.get('city')?.hasError('required') && myform.submitted" translate="auth.form.errors.city-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="city" translate="auth.form.country"></label>
+            <select class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full appearance-none invalid:border-danger" formControlName="country" id="country" required>
+              <option value="" disabled></option>
+              <option [value]="country.code" [translate]="country.name" *ngFor="let country of countries"></option>
+            </select>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm3.get('country')?.hasError('required') && myform.submitted" translate="auth.form.errors.country-required"></div>
+          </div>
+
+          <div class="flex items-center flex-col md:flex-row md:space-x-2">
+            <button type="button" class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.previous" (click)="back()"></button>
+            <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.next" type="submit"></button>
+          </div>
+
+          <div class="flex flex-col space-y-1 mt-4">
+            <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/privacy-policy'] | localize" translate="pages.signup.form.action1"></a>
+          </div>
+
+          <div class="mt-6 text-sm text-gray-500">
+            Deze site wordt beschermd door reCAPTCHA, het Google
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacybeleid</a> en
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Servicevoorwaarden</a> zijn van toepassing.
+          </div>
+        </form>
+
+        <form [formGroup]="signupForm4" class="mt-8" (submit)="submit(4)" #myform="ngForm" *ngSwitchCase="4">
+          <div class="mt-4 text-2xl font-medium tracking-tight leading-tight" translate="pages.signup.title4"></div>
+
+          <div class="grid-cols-2 w-full mt-2">
+            <label class="block font-medium mb-1" for="monday" translate="days.monday"></label>
+            <div class="flex items-center flex-col md:flex-row md:space-x-2">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="moAmFr" id="moAmFr" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('moAmFr'))">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="moAmTo" id="moAmTo" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('moAmTo'))">
+            </div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('moAmFr')?.hasError('pattern') || signupForm4.get('moAmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            <div class="mt-2" *ngIf="signupForm4.value.moAmFr && signupForm4.value.moAmTo">
+              <div class="flex items-center flex-col md:flex-row md:space-x-2">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="moPmFr" id="moPmFr" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('moPmFr'))">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="moPmTo" id="moPmTo" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('moPmTo'))">
+              </div>
+              <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('moPmFr')?.hasError('pattern') || signupForm4.get('moPmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            </div>
+          </div>
+          <div class="grid-cols-2 w-full mt-2">
+            <label class="block font-medium mb-1" for="tuesday" translate="days.tuesday"></label>
+            <div class="flex items-center flex-col md:flex-row md:space-x-2">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="tuAmFr" id="tuAmFr" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('tuAmFr'))">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="tuAmTo" id="tuAmTo" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('tuAmTo'))">
+            </div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('tuAmFr')?.hasError('pattern') || signupForm4.get('tuAmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            <div class="mt-2" *ngIf="signupForm4.value.tuAmFr && signupForm4.value.tuAmTo">
+              <div class="flex items-center flex-col md:flex-row md:space-x-2">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="tuPmFr" id="tuPmFr" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('tuPmFr'))">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="tuPmTo" id="tuPmTo" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('tuPmTo'))">
+              </div>
+              <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('tuPmFr')?.hasError('pattern') || signupForm4.get('tuPmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            </div>
+          </div>
+          <div class="grid-cols-2 w-full mt-2">
+            <label class="block font-medium mb-1" for="wednesday" translate="days.wednesday"></label>
+            <div class="flex items-center flex-col md:flex-row md:space-x-2">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="weAmFr" id="weAmFr" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('weAmFr'))">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="weAmTo" id="weAmTo" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('weAmTo'))">
+            </div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('weAmFr')?.hasError('pattern') || signupForm4.get('weAmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            <div class="mt-2" *ngIf="signupForm4.value.weAmFr && signupForm4.value.weAmTo">
+              <div class="flex items-center flex-col md:flex-row md:space-x-2">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="wePmFr" id="wePmFr" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('wePmFr'))">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="wePmTo" id="wePmTo" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('wePmTo'))">
+              </div>
+              <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('wePmFr')?.hasError('pattern') || signupForm4.get('wePmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            </div>
+          </div>
+          <div class="grid-cols-2 w-full mt-2">
+            <label class="block font-medium mb-1" for="thursday" translate="days.thursday"></label>
+            <div class="flex items-center flex-col md:flex-row md:space-x-2">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="thAmFr" id="thAmFr" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('thAmFr'))">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="thAmTo" id="thAmTo" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('thAmTo'))">
+            </div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('thAmFr')?.hasError('pattern') || signupForm4.get('thAmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            <div class="mt-2" *ngIf="signupForm4.value.thAmFr && signupForm4.value.thAmTo">
+              <div class="flex items-center flex-col md:flex-row md:space-x-2">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="thPmFr" id="thPmFr" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('thPmFr'))">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="thPmTo" id="thPmTo" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('thPmTo'))">
+              </div>
+              <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('thPmFr')?.hasError('pattern') || signupForm4.get('thPmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            </div>
+          </div>
+          <div class="grid-cols-2 w-full mt-2">
+            <label class="block font-medium mb-1" for="friday" translate="days.friday"></label>
+            <div class="flex items-center flex-col md:flex-row md:space-x-2">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="frAmFr" id="frAmFr" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('frAmFr'))">
+              <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="frAmTo" id="frAmTo" type="text" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="hh:mm" (blur)="correct(signupForm4.get('frAmTo'))">
+            </div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('frAmFr')?.hasError('pattern') || signupForm4.get('frAmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            <div class="mt-2" *ngIf="signupForm4.value.frAmFr && signupForm4.value.frAmTo">
+              <div class="flex items-center flex-col md:flex-row md:space-x-2">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="frPmFr" id="frPmFr" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('frPmFr'))">
+                <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="frPmTo" id="frPmTo" type="text" placeholder="hh:mm" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" (blur)="correct(signupForm4.get('frPmTo'))">
+              </div>
+              <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm4.get('frPmFr')?.hasError('pattern') || signupForm4.get('frPmTo')?.hasError('pattern')" translate="auth.form.errors.opening-hours-pattern"></div>
+            </div>
+          </div>
+
+          <div class="text-sm font-medium text-danger mt-1 w-full" *ngIf="!areOpeningHoursValid && myform.submitted" translate="auth.form.errors.opening-hours-invalid"></div>
+
+          <div class="flex items-center flex-col md:flex-row md:space-x-2">
+            <button type="button" class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.previous" (click)="back()"></button>
+            <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.next" type="submit"></button>
+          </div>
+
+          <div class="flex flex-col space-y-1 mt-4">
+            <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/privacy-policy'] | localize" translate="pages.signup.form.action1"></a>
+          </div>
+
+          <div class="mt-6 text-sm text-gray-500">
+            Deze site wordt beschermd door reCAPTCHA, het Google
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacybeleid</a> en
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Servicevoorwaarden</a> zijn van toepassing.
+          </div>
+        </form>
+
+        <form [formGroup]="signupForm5" class="mt-8" (submit)="submit(5)" #myform="ngForm" *ngSwitchCase="5">
+          <div class="mt-4 text-2xl font-medium tracking-tight leading-tight" translate="pages.signup.title5"></div>
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="given-name" translate="auth.form.given-name"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="givenName" autocomplete="given-name" spellcheck="false" type="text" name="given-name" id="given-name" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm5.get('givenName')?.hasError('required') && myform.submitted" translate="auth.form.errors.given-name-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="family-name" translate="auth.form.family-name"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="familyName" autocomplete="family-name" spellcheck="false" type="text" name="family-name" id="family-name" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm5.get('familyName')?.hasError('required') && myform.submitted" translate="auth.form.errors.family-name-required"></div>
+          </div>
+
+          <div class="form-field w-full mt-2">
+            <label class="block font-medium mb-1" for="email" translate="auth.form.username"></label>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="username" autocomplete="email" spellcheck="true" type="email" name="email" id="email" required>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm5.get('username')?.hasError('required') && myform.submitted" translate="auth.form.errors.username-required"></div>
+            <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm5.get('username')?.hasError('email') && myform.submitted" translate="auth.form.errors.username-email"></div>
+          </div>
+
+          <div class="flex items-center flex-col md:flex-row md:space-x-2">
+            <button type="button" class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.previous" (click)="back()"></button>
+            <button class="border text-lg text-primary rounded-md shadow-sm cursor-pointer w-full mt-4 px-6 py-3 ease-in duration-200 bg-white dark:bg-gray-900 dark:text-accent hover:text-white hover:bg-primary dark:hover:bg-accent dark:hover:text-black" translate="actions.sign-on" type="submit"></button>
+          </div>
+
+          <div class="flex flex-col space-y-1 mt-4">
+            <a class="text-md font-medium text-primary dark:text-accent hover:underline" [routerLink]="['/privacy-policy'] | localize" translate="pages.signup.form.action1"></a>
+          </div>
+
+          <div class="mt-6 text-sm text-gray-500">
+            Deze site wordt beschermd door reCAPTCHA, het Google
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/privacy">Privacybeleid</a> en
+            <a class="text-primary dark:text-accent hover:underline" href="https://policies.google.com/terms">Servicevoorwaarden</a> zijn van toepassing.
+          </div>
+        </form>
+      </ng-container>
     </div>
   </div>
 </div>
