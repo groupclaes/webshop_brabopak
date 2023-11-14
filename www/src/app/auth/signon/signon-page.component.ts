@@ -4,8 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 import { AuthService } from '../auth.service'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 @Component({
   selector: 'bra-signon-page',
@@ -21,7 +22,9 @@ export class SignonPageComponent {
     private ref: ChangeDetectorRef,
     private auth: AuthService,
     private translate: TranslateService,
-    private modalCtrl: ModalsService
+    private modalCtrl: ModalsService,
+    private router: Router,
+    private localize: LocalizeRouterService
   ) {
     this.signonForm = this.fb.group({
       username: ['', [Validators.required, Validators.email]], // info@brabopak.com  --  jamie.vangeysel@groupclaes.be
@@ -53,7 +56,8 @@ export class SignonPageComponent {
 
       if (signonResponse.data.success === true) {
         const modal = new Modal('success', 'Aanmelden gelukt', 'Je hebt je succesvol aangemeld voor een account op de Brabopak webshop, je kan nu inloggen met deze gegevens.')
-        this.modalCtrl.show(modal)
+        await this.modalCtrl.show(modal)
+        this.router.navigate((this.localize.translateRoute(['/auth/sign-in']) as any[]), { queryParams: { login_hint: this.currentUsername } })
       }
     } catch (err: any) {
       console.log(err)
