@@ -48,9 +48,7 @@ export default async function (fastify: FastifyInstance) {
       if (!request.query.scope) return badRequest(request, reply, 'parameter \'scope\' not specified!')
       if (!request.query.client_id) return badRequest(request, reply, 'parameter \'client_id\' not specified!')
 
-      request.log.debug({ username }, 'Before impersonation')
       const impersonation = getImpersonation(username)
-      request.log.debug({ username, impersonation }, 'After impersonation')
       if (impersonation) {
         username = impersonation.username
         _impersonatedUser = impersonation.impersonated_user
