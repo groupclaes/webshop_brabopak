@@ -48,6 +48,14 @@ export default async function (fastify: FastifyInstance) {
       if (!request.query.scope) return badRequest(request, reply, 'parameter \'scope\' not specified!')
       if (!request.query.client_id) return badRequest(request, reply, 'parameter \'client_id\' not specified!')
 
+      request.log.debug({ username }, 'Before impersonation')
+      const impersonation = getImpersonation(username)
+      request.log.debug({ username, impersonation }, 'After impersonation')
+      if (impersonation) {
+        username = impersonation.username
+        _impersonatedUser = impersonation.impersonated_user
+      }
+
       const recaptcha = request.headers['g-recaptcha-response']
       if (recaptcha) {
         try {
@@ -61,16 +69,9 @@ export default async function (fastify: FastifyInstance) {
       } else
         return await failedAuth(request, reply, repo, 403, 'No reCAPTCHA challenge!', username, null, false, 0, 'No reCAPTCHA challenge!', ip_address, rating, user_agent)
 
-      const impersonation = getImpersonation(username)
-      if (impersonation) {
-        username = impersonation.username
-        _impersonatedUser = impersonation.impersonated_user
-      }
-
       let failedAttempts = await repo.sso.getFailedAuthAttempts(null, ip_address)
       if (failedAttempts.ip.length >= 20)
         return await failedAuth(request, reply, repo, 429, 'too many failed attempts', username, null, false, 3, 'too many failed attempts', ip_address, rating, user_agent)
-
 
       const user = await repo.sso.get(username)
       if (!user)
@@ -112,7 +113,7 @@ export default async function (fastify: FastifyInstance) {
       let authorization_code
       let mfa_required
       if (request.body.mfa_code === undefined) {
-        authorization_code = await repo.sso.createAuthorizationCode(request.query.client_id, impersonated_user ?? user.id.toString(), request.query.scope)
+        authorization_code = await repo.sso.createAuthorizationCode(request.query.client_id, impersonated_user ? impersonated_user.id.toString() : user.id.toString(), request.query.scope)
         const mfa = new MFA(user, request.query.client_id, { authorization_code })
         if (mfa.challengeRequired() === true) {
           mfa_required = true
@@ -136,7 +137,7 @@ export default async function (fastify: FastifyInstance) {
 
 
       if (!mfa_required && authorization_code)
-        await repo.sso.updateLastLogin(user.id)
+        await repo.sso.updateLastLogin(user.id.toString())
 
       return {
         authorization_code: mfa_required === undefined ? authorization_code : undefined,

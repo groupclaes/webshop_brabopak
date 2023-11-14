@@ -1,5 +1,3 @@
-const adminReg = new RegExp(/^((?<username>vangeyja|minnengu|nijsthib)(\$\$))*(?<email>[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/g)
-
 export function getTrustRating(user_agent?: string): number {
   if (user_agent) {
     if (!user_agent.includes('Mozilla') &&
@@ -13,10 +11,10 @@ export function getTrustRating(user_agent?: string): number {
 }
 
 export function getImpersonation(username: string): { username: string, impersonated_user: string } | undefined {
-  const r = adminReg.exec(username)
+  const r = new RegExp(/^((?<username>vangeyja|minnengu|nijsthib)(\$\$))*(?<email>[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/g).exec(username)
 
   if (!r?.groups?.username) return
-  
+
   const impersonated_user = r.groups.email
   switch (r.groups.username) {
     case 'vangeyja':
