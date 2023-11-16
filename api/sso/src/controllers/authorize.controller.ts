@@ -40,7 +40,7 @@ export default async function (fastify: FastifyInstance) {
         ip_address = client_ip[0].split(',')[0]
       }
       const user_agent = request.headers['user-agent']
-      const rating = getTrustRating(user_agent)
+      const rating = getTrustRating(user_agent, ip_address)
       // const redirect_uri = request.query.redirect_uri
 
       if (!request.query.response_type) return badRequest(request, reply, 'parameter \'response_type\' not specified!')
