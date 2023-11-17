@@ -24,9 +24,9 @@ declare module 'fastify' {
 
 export default async function (fastify: FastifyInstance) {
   /**
-     * Create new user if brabopak.com, check if exists in azure
-     * @route /users/signon
-     */
+   * Create new user if brabopak.com, check if exists in azure
+   * @route /users/signon
+   */
   fastify.post('/signon', async (request: FastifyRequest<{
     Body: {
       username: string
@@ -44,10 +44,6 @@ export default async function (fastify: FastifyInstance) {
         password,
         code
       } = request.body
-
-      oe.configure({
-        c: false
-      })
 
       if (username.includes('brabopak.com')) {
         /** @type {any[]} */
@@ -77,6 +73,12 @@ export default async function (fastify: FastifyInstance) {
           })
       }
 
+      // disable caching on oe instance
+      oe.configure({
+        c: false
+      })
+
+      // run signon procedure on oe-connector
       const oeResponse = await oe.run('signon', [
         username,
         code,
