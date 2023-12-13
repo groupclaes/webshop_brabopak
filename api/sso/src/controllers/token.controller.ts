@@ -19,6 +19,8 @@ export default async function (fastify: FastifyInstance) {
       const grant_type = request.query.grant_type
       const code = request.query.code
 
+      request.log.debug({ grant_type, code }, 'parameters for receiving a new token.')
+
       if (grant_type !== 'authorization_code') {
         request.log.warn('Invalid \'grant_type\' specified!')
         return reply
@@ -43,6 +45,7 @@ export default async function (fastify: FastifyInstance) {
 
       // get AuthorizationCode Details
       const authorization_code = await repo.sso.getAuthorizationCode(code)
+      request.log.debug({ authorization_code }, 'requested authorization details for a new token.')
 
       if (!authorization_code) {
         request.log.warn('Invalid \'code\' specified!')
@@ -69,6 +72,8 @@ export default async function (fastify: FastifyInstance) {
       const access_token = await repo.getAccessToken(authorization_code)
       const id_token = await repo.getIdToken(authorization_code)
 
+      request.log.debug('created access_token and id_token')
+
       let payload: {
         access_token: string
         token_type: string
@@ -84,6 +89,7 @@ export default async function (fastify: FastifyInstance) {
 
       try {
         if (authorization_code.scope.indexOf('offline_access') !== -1) {
+          request.log.debug('refresh_token required as offline_access is requested')
           payload = {
             ...payload,
             refresh_token: await repo.getRefreshToken(
@@ -97,6 +103,7 @@ export default async function (fastify: FastifyInstance) {
         request.log.warn({ error: err, authorizationCode: request.query.code, grantType: request.query.grant_type, redirectUri: request.query.redirect_uri }, 'Couldn\'t create refresh token, something unexpected happened')
       }
 
+      request.log.debug('returning payload')
       return payload
     } catch (err) {
       request.log.error({ error: err, authorizationCode: request.query.code, grantType: request.query.grant_type, redirectUri: request.query.redirect_uri }, 'Couldn\'t retrieve token, something unexpected happened')
