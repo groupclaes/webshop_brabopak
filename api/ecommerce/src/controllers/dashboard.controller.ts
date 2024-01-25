@@ -32,9 +32,6 @@ export default async function (fastify: FastifyInstance) {
       const culture = request.query.culture ?? 'nl'
 
       const user = await repo.getUserInfo(request.jwt.sub)
-      let canViewPrices = false
-      if (user)
-        canViewPrices = user.user_type === 2 || user.user_type === 3
 
       const dashboard: any[] | undefined = await repo.get(request.query.usercode, request.jwt.sub, culture)
 
@@ -42,17 +39,10 @@ export default async function (fastify: FastifyInstance) {
         return reply.success(undefined, 204)
 
       const blocks = dashboard.map(x => x[0])
-      if (!canViewPrices) {
+      if (user === undefined || !user?.can_view_prices) {
         for (const list of blocks) {
           if (!list.products) continue
-          for (const product of list.products) {
-            product.prices?.forEach(price => {
-              price.base = 0
-              delete price.amount
-              delete price.discount
-              delete price.quantity
-            })
-          }
+          removePriceDetails(list.products)
         }
       }
 
@@ -63,4 +53,16 @@ export default async function (fastify: FastifyInstance) {
       return reply.error('failed to get dashboard')
     }
   })
+}
+
+function removePriceDetails(products: any[]) {
+  for (const product of products) {
+    if (!product.prices) continue
+    for (const price of product.prices) {
+      price.base = 0
+      delete price.amount
+      delete price.discount
+      delete price.quantity
+    }
+  }
 }
