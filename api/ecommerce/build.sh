@@ -16,6 +16,6 @@ PACKAGE_NAME=$(cat package.json \
 
 echo "building docker images ${docker_reg}/${PACKAGE_NAME}:${docker_tag} and ${docker_reg}/${PACKAGE_NAME}:${PACKAGE_VERSION}"
 
-docker build -t "${docker_reg}/${PACKAGE_NAME}:${docker_tag}" -t "${docker_reg}/${PACKAGE_NAME}:${PACKAGE_VERSION}" -f Dockerfile . &&
+docker build --platform linux/amd64 --progress=plain --no-cache -t "${docker_reg}/${PACKAGE_NAME}:${docker_tag}" -t "${docker_reg}/${PACKAGE_NAME}:${PACKAGE_VERSION}" -f Dockerfile . &&
 docker push "${docker_reg}/${PACKAGE_NAME}:${docker_tag}" &&
 docker push "${docker_reg}/${PACKAGE_NAME}:${PACKAGE_VERSION}"
