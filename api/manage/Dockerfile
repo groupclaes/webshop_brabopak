@@ -11,7 +11,7 @@ COPY package.json ./
 RUN npm i --ignore-scripts
 
 USER root
-RUN npm install esbuild --global --ignore-scripts
+RUN npm install --ignore-scripts esbuild --global
 
 # copy project
 COPY src/ ./
