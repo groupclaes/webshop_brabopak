@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID, Optional } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
-import { REQUEST } from '@nguniversal/express-engine/tokens'
+import { REQUEST } from '../../../express.tokens'
 import { Request } from 'express'
 import { environment } from 'src/environments/environment'
 
