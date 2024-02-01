@@ -242,7 +242,12 @@ export class AuthService {
   }
 
   get canViewPrices(): boolean {
-    return this.isAuthenticated() && this.id_token !== undefined && ((this.id_token.user_type === 2 || this.id_token.user_type === 3) && this.currentCustomer !== undefined)
+    if (!this.isAuthenticated() || this.id_token === undefined)
+      return false
+    if (this.id_token.can_view_prices === undefined)
+      return ((this.id_token.user_type === 2 || this.id_token.user_type === 3) && this.currentCustomer !== undefined)
+    else
+      return this.id_token.can_view_prices
   }
 
   get customers(): ICustomer[] {
@@ -326,6 +331,7 @@ export interface IdToken {
   usercode: number
   user_type: 1 | 2 | 3 | 4
   token: string
+  can_view_prices?: boolean
 
   customers: ICustomer[]
 
