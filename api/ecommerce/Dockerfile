@@ -1,5 +1,5 @@
 # ---- Build ----
-FROM --platform=linux/amd64 groupclaes/npm AS build
+FROM --platform=linux/amd64 groupclaes/npm:latest AS build
 
 # change the working directory to new exclusive app folder
 WORKDIR /usr/src/app
@@ -20,7 +20,7 @@ COPY src/ ./
 RUN esbuild ./index.ts --bundle --platform=node --minify --packages=external --external:'./config' --outfile=index.min.js
 
 # ---- Build ----
-FROM --platform=linux/amd64 groupclaes/npm AS deps
+FROM --platform=linux/amd64 groupclaes/npm:latest AS deps
 
 # change the working directory to new exclusive app folder
 WORKDIR /usr/src/app
@@ -35,7 +35,7 @@ COPY package.json ./
 RUN npm i
 
 # from base image node
-FROM --platform=linux/amd64 groupclaes/node AS release
+FROM --platform=linux/amd64 groupclaes/node:latest AS release
 
 # set current user to node
 USER node
