@@ -96,4 +96,23 @@ export default class Product {
     }
     return undefined
   }
+
+  /**
+   * SSO Get user details by ID
+   * @param user_id 
+   * @returns 
+   */
+  async getUserInfo(user_id?: string): Promise<undefined | any> {
+    if (!user_id) return undefined
+
+    const r = new sql.Request(await db.get(DB_NAME))
+    r.input('user_id', sql.Int, user_id)
+
+    const result = await r.execute(`sso.usp_getUserInfo`)
+
+    if (result.recordset.length > 0) {
+      return result.recordset[0][0]
+    }
+    return undefined
+  }
 }

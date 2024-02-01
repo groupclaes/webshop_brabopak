@@ -5,7 +5,7 @@ export const environment = {
   sso: {
     url: 'https://shop.brabopak.com/api/uat/sso/',
     client_id: 'hBK4c2uZK5',
-    scope: 'openid offline_access name given_name family_name email email_verified usercode customer_id address_id promo fostplus user_type customers can_view_prices'
+    scope: 'openid offline_access name given_name family_name email email_verified usercode customer_id address_id promo fostplus user_type customers'
   },
   google_recaptcha: '6LcfW7MlAAAAAMkukyyfMYsVg4xuAf0eS6KhjHPv',
   storageKey: 'com.brabopak.shop-test',

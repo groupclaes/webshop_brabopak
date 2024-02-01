@@ -38,9 +38,9 @@
       </h1>
 
       <div class="mx-1">
-        <bra-product-prices *ngIf="product.prices && auth.canViewPrices" [prices]="product.prices" [unit]="product.unit.toLocaleLowerCase()" [content-unit]="product.content_unit"></bra-product-prices>
+        <bra-product-prices *ngIf="product.prices" [prices]="product.prices" [unit]="product.unit.toLocaleLowerCase()" [content-unit]="product.content_unit"></bra-product-prices>
 
-        <ng-container *ngIf="auth.canViewPrices">
+        <ng-container *ngIf="product.prices">
           <div class="text-gray-500 text-md italic mt-2" *ngFor="let tax of product.taxes">
             {{ tax.description }}: {{ tax.amount | currency:'EUR':'symbol-narrow':'0.2-2':culture }}
           </div>

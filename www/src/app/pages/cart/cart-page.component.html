@@ -54,7 +54,7 @@
                       </small>
                     </div>
                   </div>
-                  <div *ngIf="auth.canViewPrices">
+                  <div *ngIf="product.prices">
                     <span class="baseprice text-gray-500 italic">
                       {{ product.prices && product.prices[0].base > 0 ?
                           (product.prices[0].base * product.quantity >

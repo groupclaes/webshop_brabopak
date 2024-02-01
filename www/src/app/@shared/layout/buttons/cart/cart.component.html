@@ -27,7 +27,7 @@
           {{ product.unit }}
         </small>
       </div>
-      <div class="flex-[0_100px] text-right font-bold ml-3 leading-6" *ngIf="auth.canViewPrices">
+      <div class="flex-[0_100px] text-right font-bold ml-3 leading-6" *ngIf="product.prices">
         {{ product.prices && product.prices[0].base > 0 ?
           ( calcPrice(product, product.quantity)?.totalProduct |
           currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' ) :
