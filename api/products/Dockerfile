@@ -8,10 +8,10 @@ WORKDIR /usr/src/app
 COPY package.json ./
 
 # install node packages
-RUN npm i
+RUN npm i --ignore-scripts
 
 USER root
-RUN npm install esbuild --global
+RUN npm install esbuild --global --ignore-scripts
 
 # copy project
 COPY src/ ./
@@ -32,7 +32,7 @@ USER node
 COPY package.json ./
 
 # install node packages
-RUN npm i
+RUN npm i --ignore-scripts
 
 # from base image node
 FROM --platform=linux/amd64 groupclaes/node:latest AS release
