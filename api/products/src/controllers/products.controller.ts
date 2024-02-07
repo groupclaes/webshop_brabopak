@@ -58,7 +58,7 @@ export default async function (fastify: FastifyInstance) {
       if (response.product.error)
         return reply.error(response.product.error)
 
-      const user = await repo.getUserInfo(request.jwt.sub)
+      const user: any | undefined = await repo.getUserInfo(request.jwt?.sub)
       if (user === undefined || !user?.can_view_prices) {
         for (const price of response.product.prices) {
           price.base = 0
