@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   api: 'https://shop.brabopak.com/api/v1/',
-  pcm: 'https://pcm.groupclaes.be/v3/',
+  pcm: 'https://pcm.groupclaes.be/v4/',
   sso: {
     url: 'https://shop.brabopak.com/api/v1/sso/',
     client_id: 'hBK4c2uZK5',

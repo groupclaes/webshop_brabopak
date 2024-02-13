@@ -14,7 +14,7 @@
     <div id="images" class="space-y-8" *ngIf="images.length > 0">
       <div class="rounded-xl border ring ring-gray-50 dark:ring-gray-700">
         <!--  [ngClass]="{'border-orange-400 border-2': isFavorite}" -->
-        <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier [src]="'https://pcm.groupclaes.be/v3/product-images/' + activeImage" alt="" class="block w-full h-full
+        <img class="relative" [ngStyle]="{background: '#' + product.color}" magnifier [src]="'https://pcm.groupclaes.be/v4/product-images/' + activeImage" alt="" class="block w-full h-full
         rounded-xl">
       </div>
       <div class="grid grid-cols-4 gap-4 mt-4 mx-[7px]" *ngIf="images.length > 1">
@@ -22,7 +22,7 @@
           'ring-primary dark:ring-accent': activeImage === image.guid,
           'ring-transparent ring-offset-gray-50 dark:ring-offset-gray-950': activeImage !== image.guid
         }">
-          <img [src]="'https://pcm.groupclaes.be/v3/product-images/' + image.guid" alt="" class="block rounded-xl">
+          <img [src]="pcmUrl + 'product-images/' + image.guid" alt="" class="block rounded-xl">
         </div>
       </div>
     </div>

@@ -282,4 +282,8 @@ export class ProductPageComponent implements OnDestroy {
   get culture(): string {
     return environment.supportedLanguages.find(e => e.startsWith(this.translate.currentLang)) || environment.defaultLanguage
   }
+
+  get pcmUrl(): string {
+    return environment.pcm
+  }
 }

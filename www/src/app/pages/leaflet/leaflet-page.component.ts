@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 import { PDFDocumentProxy } from 'ng2-pdf-viewer'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'bra-leaflet-page',
@@ -106,12 +107,12 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   get pdfSettings(): any {
     if (this.desktop) {
       return {
-        url: `https://pcm.groupclaes.be/v3/content/bra/website/leaflet/100/${this.culture}?size=large`,
+        url: environment.pcm + `content/bra/website/leaflet/100/${this.culture}?size=large`,
         showAll: false
       }
     } else {
       return {
-        url: `https://pcm.groupclaes.be/v3/content/bra/website/leaflet/100/${this.culture}?size=small`,
+        url: environment.pcm + `content/bra/website/leaflet/100/${this.culture}?size=small`,
         showAll: true
       }
     }
