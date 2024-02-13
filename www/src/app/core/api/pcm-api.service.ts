@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 import { environment } from 'src/environments/environment'
-import { trimParameters } from '.'
+import { IBaseApiResponse, trimParameters } from '.'
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +22,16 @@ export class PcmApiService {
     }
   }
 
-  getObjectList(itemNum: string): Promise<PcmApiObjectListResult> {
-    return firstValueFrom(this.http.get<PcmApiObjectListResult>(this.urls.objects(itemNum)))
+  getObjectList(itemNum: string): Promise<IBaseApiResponse> {
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.objects(itemNum)))
   }
 
-  getProductImagesList(itemNum: string, language: string): Promise<PcmApiResult> {
-    return firstValueFrom(this.http.get<PcmApiResult>(this.urls.images(itemNum, language)))
+  getProductImagesList(itemNum: string, language: string): Promise<IBaseApiResponse> {
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.images(itemNum, language)))
   }
 
-  getRecipes(): Promise<PcmApiResult> {
-    return firstValueFrom(this.http.get<PcmApiResult>(this.urls.documents('recept')))
+  getRecipes(): Promise<IBaseApiResponse> {
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.documents('recept')))
   }
 
   checkDatasheetHead(itemNum: string, culture: string): Promise<any> {
@@ -41,16 +41,6 @@ export class PcmApiService {
 
     return firstValueFrom(this.http.head(this.urls.datasheet(itemNum, culture), { params }))
   }
-}
-
-export interface PcmApiResult {
-  results: any[],
-  executionTime: number,
-  serverTime: Date
-}
-
-export interface PcmApiObjectListResult extends PcmApiResult {
-  results: PcmObjectListItem[]
 }
 
 export interface PcmObjectListItem {

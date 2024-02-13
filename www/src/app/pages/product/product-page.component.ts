@@ -127,14 +127,16 @@ export class ProductPageComponent implements OnDestroy {
     try {
       const requests = Promise.all([this.pcm.getProductImagesList(this._product.itemnum, this.culture.split('-')[0]), this.pcm.getObjectList(this._product.itemnum)])
       const resources = await requests
-      this._images = resources[0].results
+      this._images = resources[0].data
 
-      this._attachments = resources[1].results.filter(e => e.documentType !== 'display-image')
-      // if not agent
-      if (!this.auth.isAgent())
-        if (!this._product.favorite || !this._product.favorite[0].last_bought_date)
-          this._attachments = this._attachments.filter(e => e.documentType !== 'datasheet' && e.documentType !== 'technische-fiche')
-
+      if (resources[1].data) {
+        this._attachments = resources[1].data.filter((e: any) => e.documentType !== 'display-image')
+        if (!this._attachments) this._attachments = []
+        // if not agent
+        if (!this.auth.isAgent())
+          if (!this._product.favorite || !this._product.favorite[0].last_bought_date)
+            this._attachments = this._attachments.filter(e => e.documentType !== 'datasheet' && e.documentType !== 'technische-fiche')
+      }
       this._active_image = 0
     } catch (err) {
       console.log('Error loading product data', err)

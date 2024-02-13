@@ -204,7 +204,7 @@
             <div body class="mt-4 ml-2 space-y-2">
               <div *ngFor="let attachment of attachments">
                 <a [href]="attachment.downloadUrl" class="flex flex-row items-center overflow-ellipsis hover:text-primary hover:underline hover:dark:text-accent cursor-pointer" target="_blank" rel="noreferrer noopener">
-                  <img class="mr-1" alt="file extension icon" src="//cdn.groupclaes.be/icon/ext/{{ attachment.extension.toLocaleLowerCase() }}.svg" height="24" width="24">
+                  <img class="mr-1" alt="file extension icon" src="//pcm.groupclaes.be/v4/content/file/tools/ext/{{ attachment.extension.toLocaleLowerCase() }}" height="24" width="24">
                   &nbsp;
                   <span class="italic text-secondary-500">{{ attachment.documentType | translate }}</span>
                   &nbsp;-&nbsp;<span class="truncate">{{ attachment.name }}</span>
