@@ -169,11 +169,11 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
       this.final.customer = customer
       this.final.invoiceInfo = {
-        name: (customer.address_id === 0) ? customer.name : customer.address_name,
-        address: (customer.address_id === 0) ? `${customer.address} ${customer.street_number}` : `${customer.address_address} ${customer.address_street_number}`,
-        city: (customer.address_id === 0) ? customer.city : customer.address_city,
-        zipCode: (customer.address_id === 0) ? customer.zip_code : customer.address_zip_code,
-        country: (customer.address_id === 0) ? customer.country : customer.address_country,
+        name: customer.name,
+        address: `${customer.address} ${customer.street_number}`,
+        city: customer.city,
+        zipCode: customer.zip_code,
+        country: customer.country,
         reference: this.deliveryConfirmFormGroup.controls['customerReference'].value,
         comment: this.deliveryConfirmFormGroup.controls['comments'].value
       }
