@@ -20,9 +20,10 @@ export default class Product {
     return undefined
   }
 
-  async getBase(id: number, usercode: number, culture: string): Promise<any | undefined> {
+  async getBase(id: number, usercode: number, culture: string, user_id?: string): Promise<any | undefined> {
     const r = new sql.Request(await db.get(DB_NAME))
     r.input('id', sql.Int, id)
+    r.input('user_id', sql.VarChar, user_id)
     r.input('usercode', sql.Int, usercode)
     r.input('culture', sql.VarChar, culture)
     const result = await r.execute(this.schema + '[usp_getBase]')

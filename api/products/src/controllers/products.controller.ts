@@ -103,7 +103,7 @@ export default async function (fastify: FastifyInstance) {
       request.log.debug({ user_id: request.jwt?.sub, product_id: id, usercode, culture }, 'fetching product base')
 
       const response = {
-        product: await repo.getBase(id, usercode, culture)
+        product: await repo.getBase(id, usercode, culture, request.jwt?.sub)
       }
 
       if (response.product === null)
@@ -140,7 +140,7 @@ export default async function (fastify: FastifyInstance) {
       const usercode = +request.query.usercode
       const mode = request.query.mode
 
-      const product = await repo.getBase(id, usercode, 'nl')
+      const product = await repo.getBase(id, usercode, 'nl', request.jwt?.sub)
       const customer = await repo.getUserSettings(usercode)
 
       if (product && customer) {
@@ -175,7 +175,8 @@ export default async function (fastify: FastifyInstance) {
         return reply.fail(oeResponse.result, oeResponse.status)
       }
     } catch (err) {
-      request.log.error({ err }, 'failed to update product favorite')
+
+      request.log.error({ err: err.toString() }, 'failed to update product favorite')
       return reply.error('failed to update product favorite status')
     }
   })
