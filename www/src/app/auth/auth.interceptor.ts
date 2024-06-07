@@ -39,9 +39,8 @@ export class AuthInterceptor implements HttpInterceptor {
             }/* else {
               return NEVER
             } */
-          } else {
+          } else
             return throwError(() => requestError)
-          }
         })
       )
     }

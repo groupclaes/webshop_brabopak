@@ -20,13 +20,11 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   desktop = false
 
   onResize() {
-    // if (this.desktop && window.document.body.getBoundingClientRect().width < 1024) {
+    // if (this.desktop && window.document.body.getBoundingClientRect().width < 1024)
     //   this.desktop = false
-    //   this.ref.markForCheck()
-    // } else if (!this.desktop && window.document.body.getBoundingClientRect().width >= 1024) {
+    // else if (!this.desktop && window.document.body.getBoundingClientRect().width >= 1024)
     //   this.desktop = true
-    //   this.ref.markForCheck()
-    // }
+    // this.ref.markForCheck()
   }
 
   constructor(
@@ -45,27 +43,23 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
     document.onkeyup = ($event) => {
       switch ($event.key) {
         case 'ArrowLeft':
-          if (this._loaded && this.previousEnabled) {
+          if (this._loaded && this.previousEnabled)
             this.previousPage()
-          }
           break
 
         case 'ArrowRight':
-          if (this._loaded && this.nextEnabled) {
+          if (this._loaded && this.nextEnabled)
             this.nextPage()
-          }
           break
 
         case '+':
-          if (this._loaded && this.zoomInEnabled) {
+          if (this._loaded && this.zoomInEnabled)
             this.setZoom(this.zoom + .5)
-          }
           break
 
         case '-':
-          if (this._loaded && this.zoomOutEnabled) {
+          if (this._loaded && this.zoomOutEnabled)
             this.setZoom(this.zoom - .5)
-          }
           break
 
         default:
@@ -80,8 +74,6 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   }
 
   callBackFn(pdf: PDFDocumentProxy) {
-
-
     this._pageCount = pdf.numPages
     this._loaded = true
     this.ref.markForCheck()
@@ -105,17 +97,16 @@ export class LeafletPageComponent implements OnInit, OnDestroy {
   }
 
   get pdfSettings(): any {
-    if (this.desktop) {
+    if (this.desktop)
       return {
         url: environment.pcm + `content/bra/website/leaflet/100/${this.culture}?size=large`,
         showAll: false
       }
-    } else {
+    else
       return {
         url: environment.pcm + `content/bra/website/leaflet/100/${this.culture}?size=small`,
         showAll: true
       }
-    }
   }
 
   get zoom(): number {

@@ -19,11 +19,10 @@ const CUSTOMERS_STORAGE_KEY = environment.storageKey + '.customers'
   providedIn: 'root'
 })
 export class AuthService {
-  token: string | undefined
-
   private _id_token: string | undefined
   private _access_token: string | undefined
   private _customer_cache: ICustomer[] = []
+  private _synchronising_customers: boolean = false
 
   change: Subject<IGetTokenResponse | undefined> = new Subject<IGetTokenResponse | undefined>()
   customerChange: Subject<void> = new Subject<void>()
@@ -47,9 +46,8 @@ export class AuthService {
       }, 100)
     }
 
-    if (window.sessionStorage.getItem(CUSTOMERS_STORAGE_KEY)) {
+    if (window.sessionStorage.getItem(CUSTOMERS_STORAGE_KEY))
       this._customer_cache = JSON.parse(window.sessionStorage.getItem(CUSTOMERS_STORAGE_KEY) || '[]')
-    }
 
     // check each minute if session is still valid
     setInterval(() => {
@@ -177,11 +175,19 @@ export class AuthService {
   }
 
   private async syncCustomers() {
-    const result = await firstValueFrom(this.http.get<IBaseApiResponse>(`${api_url}users/customers`))
-    if (result?.data) {
-      this._customer_cache = result.data.customers
-      window.sessionStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(result.data.customers))
-      this.customerChange.next()
+    if (this._synchronising_customers) return
+    try {
+      this._synchronising_customers = true
+      const result = await firstValueFrom(this.http.get<IBaseApiResponse>(`${api_url}users/customers`))
+      if (result?.data) {
+        this._customer_cache = result.data.customers
+        window.sessionStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(result.data.customers))
+        this.customerChange.next()
+      }
+    } catch (err) {
+      console.error('syncCustomers() error;', err)
+    } finally {
+      this._synchronising_customers = false
     }
   }
 
