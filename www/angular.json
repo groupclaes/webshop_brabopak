@@ -38,7 +38,7 @@
       "prefix": "bra",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": {
               "base": "dist"
@@ -61,13 +61,8 @@
               "ng2-pdf-viewer"
             ],
             "scripts": [],
-            "serviceWorker": "ngsw-config.json",
-            "browser": "src/main.ts",
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "serviceWorker": true,
+            "main": "src/main.ts"
           },
           "configurations": {
             "staging": {
