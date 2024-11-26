@@ -20,7 +20,7 @@
                   invalid:border-danger dark:bg-transparent" [(ngModel)]="query">
               </div>
               <div class="mt-2 overflow-scroll h:48 md:h-64" *ngIf="!int">
-                <div class="flex px-2 py-1 border-b rounded cursor-pointer last:border-b-0 hover:text-primary hover:underline dark:hover:text-accent" [ngClass]="{ 'font-bold': customer === auth.currentCustomer }" *ngFor="let customer of customers" (click)="select(customer)">
+                <div class="flex px-2 py-1 border-b rounded cursor-pointer last:border-b-0 hover:text-primary hover:underline dark:hover:text-accent" [ngClass]="{ 'font-bold': customer === auth.currentCustomer }" *ngFor="let customer of customers" (click)="select(customer)" (keypress)="select(customer)">
                   <div class="flex-auto">
                     {{ customer.name }}{{ customer.address_id > 0 ? ' - ' + customer.address_name : '' }}
                   </div>

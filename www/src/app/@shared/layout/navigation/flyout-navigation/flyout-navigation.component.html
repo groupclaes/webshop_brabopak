@@ -35,7 +35,7 @@
         <div class="w-1/4 content-start grid grid-cols-1 py-16 gap-y-4">
           <div class=" text-sm" *ngFor="let category of categories">
             <p class="text-md font-bold text-gray-900 dark:text-gray-100">
-              <span class="hover:underline" (mouseover)="activateCategory(category)" (click)="activateCategory(category)" (keypress)="activateCategory(category)" [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</span>
+              <span class="hover:underline" (mouseover)="activateCategory(category)" (click)="activateCategory(category)" (keypress)="activateCategory(category)" (focus)="activateCategory(category)" [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</span>
             </p>
           </div>
         </div>

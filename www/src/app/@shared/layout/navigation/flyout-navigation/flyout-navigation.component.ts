@@ -17,7 +17,7 @@ export class FlyoutNavigationComponent {
   active: boolean = false
 
   constructor(
-    private api: EcommerceApiService,
+    private readonly api: EcommerceApiService,
     private ref: ChangeDetectorRef,
     public auth: AuthService
   ) {
