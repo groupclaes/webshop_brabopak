@@ -3,7 +3,7 @@
 #############
 
 # base image
-FROM groupclaes/npm as build
+FROM groupclaes/npm AS build
 
 # install chrome for protractor tests
 # RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -21,8 +21,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 
 ENV NODE_ENV test
-RUN npm install -g @angular/cli
-RUN npm install
+RUN npm install -g @angular/cli && npm install
 
 #ENV NODE_ENV production
 
