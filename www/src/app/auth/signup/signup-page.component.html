@@ -12,8 +12,10 @@
           <div class="mt-4 text-2xl font-medium tracking-tight leading-tight" translate="pages.signup.title1"></div>
 
           <div class="form-control w-full">
-            <label for="company-name" class="block font-medium mb-1" translate="auth.form.company-name"></label>
-            <input id="company-name" class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="companyName" autocomplete="organization" spellcheck="false" type="text" name="company-name" required>
+            <label for="company-name" class="block font-medium mb-1" translate>
+              auth.form.company-name
+              <input id="company-name" class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="companyName" autocomplete="organization" spellcheck="false" type="text" name="company-name" required>
+            </label>
             <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm1.get('companyName')?.hasError('required') && myform.submitted" translate="auth.form.errors.company-name-required"></div>
           </div>
 
