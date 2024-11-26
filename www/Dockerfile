@@ -4,18 +4,10 @@
 
 # base image
 FROM groupclaes/npm AS build
-
-# install chrome for protractor tests
-# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-# RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-# RUN apt-get update && apt-get install -yq google-chrome-stable
 USER root
 
 # set working directory
 WORKDIR /app
-
-# add `/app/node_modules/.bin` to $PATH
-# ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json /app/package.json
@@ -23,14 +15,19 @@ COPY package.json /app/package.json
 ENV NODE_ENV test
 RUN npm install -g @angular/cli --ignore-scripts && npm install --ignore-scripts
 
-#ENV NODE_ENV production
+# copy required files for build
+COPY ./src /app/src
+# COPY server.ts /app/server.ts
+COPY angular.json /app/angular.json
+COPY tsconfig.json /app/tsconfig.json
+COPY tsconfig.app.json /app/tsconfig.app.json
+COPY tailwind.config.js /app/tailwind.config.js
+COPY ngsw-config.json /app/ngsw-config.json
 
 # add app
 COPY . /app
 
-# RUN ng build --configuration staging --output-path=dist --verbose 
 RUN ng build --configuration production --output-path=dist 
-# RUN ng build --output-path=dist
 
 ############
 ### prod ###
