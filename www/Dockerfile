@@ -24,9 +24,6 @@ COPY tsconfig.app.json /app/tsconfig.app.json
 COPY tailwind.config.js /app/tailwind.config.js
 COPY ngsw-config.json /app/ngsw-config.json
 
-# add app
-COPY . /app
-
 RUN ng build --configuration production --output-path=dist 
 
 ############
