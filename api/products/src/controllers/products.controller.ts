@@ -42,7 +42,7 @@ export default async function (fastify: FastifyInstance) {
             itemNum: itemnum
           }],
           undefined
-        ])
+        ]).catch(e => undefined)
       ]
 
       const responses = await Promise.all(promises).catch(err => {
