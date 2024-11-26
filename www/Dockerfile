@@ -21,7 +21,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 
 ENV NODE_ENV test
-RUN npm install -g @angular/cli && npm install
+RUN npm install -g @angular/cli --ignore-scripts && npm install --ignore-scripts
 
 #ENV NODE_ENV production
 
