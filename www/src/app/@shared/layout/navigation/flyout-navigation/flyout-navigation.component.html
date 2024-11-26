@@ -24,7 +24,7 @@
   </div>
 </div>
 
-<div class="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 backdrop-blur transition-opacity" *ngIf="active" (click)="activate()"></div>
+<div class="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 backdrop-blur transition-opacity" *ngIf="active" (click)="activate()" (keypress)="activate()"></div>
 
 <div class="absolute inset-x-0 top-full text-sm text-gray-500 z-49" *ngIf="active">
   <div class="absolute inset-0 top-1/2" aria-hidden="true"></div>
@@ -35,7 +35,7 @@
         <div class="w-1/4 content-start grid grid-cols-1 py-16 gap-y-4">
           <div class=" text-sm" *ngFor="let category of categories">
             <p class="text-md font-bold text-gray-900 dark:text-gray-100">
-              <span class="hover:underline" (mouseover)="activateCategory(category)" (click)="activateCategory(category)" [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</span>
+              <span class="hover:underline" (mouseover)="activateCategory(category)" (click)="activateCategory(category)" (keypress)="activateCategory(category)" [ngClass]="{ 'text-primary underline dark:text-accent': isCategoryActive(category) }">{{ capitalize(category.name) }}</span>
             </p>
           </div>
         </div>
@@ -45,7 +45,7 @@
               <p class="text-md font-bold text-gray-800 dark:text-gray-200">
                 <a [routerLink]="['/products', itemName(activeCategory), itemName(sub)] | localize" class="hover:underline" [queryParams]="{id: sub.id}" (click)="close()">{{ capitalize(sub.name) }}</a>
               </p>
-              <ul role="list" class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
+              <ul class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
                 <li class="flex" *ngFor="let subCategory of sub.children">
                   <a [routerLink]="['/products', itemName(activeCategory), itemName(sub), itemName(subCategory)] | localize" class="hover:text-gray-800 dark:hover:text-gray-100 hover:underline" [queryParams]="{id:
                     subCategory.id}" (click)="close()">{{ capitalize(subCategory.name) }}</a>

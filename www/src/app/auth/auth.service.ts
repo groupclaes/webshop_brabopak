@@ -296,7 +296,7 @@ export class AuthService {
 
             if (!customer) {
               this.storage.removeItem(CUSTOMER_STORAGE_KEY)
-              return
+              return undefined
             }
 
             return customer
@@ -304,7 +304,7 @@ export class AuthService {
           break
       }
     }
-    return
+    return undefined
   }
 }
 

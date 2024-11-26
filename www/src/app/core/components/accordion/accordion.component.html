@@ -1,7 +1,7 @@
 <div class="flex flex-row items-center justify-between cursor-pointer hover:text-info" [ngClass]="{
     'text-secondary-700': !expanded,
     'text-info': expanded
-  }" (click)="expanded = !expanded">
+  }" (click)="expanded = !expanded" (keypress)="expanded = !expanded">
   <span class="font-medium">{{ header }}</span>
   <i class="fal fa-fw text-2xl" [ngClass]="{ 'fa-minus': !expanded, 'fa-plus': expanded }"></i>
 </div>

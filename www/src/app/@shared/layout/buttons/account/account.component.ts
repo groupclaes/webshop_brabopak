@@ -49,7 +49,9 @@ export class AccountComponent {
     this.expanded = !this.expanded
   }
 
-  toggleSelectCustomer(): void {
+  toggleSelectCustomer($event: Event): void {
+    $event.preventDefault()
+    $event.stopPropagation()
     this.expanded = false
     this.selectCustomer = !this.selectCustomer
   }

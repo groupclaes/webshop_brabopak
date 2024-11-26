@@ -18,7 +18,7 @@
 
   <div class="px-4 sm:px-6 lg:px-8 container space-y-4">
     <form [formGroup]="actionForm">
-      <h4 translate="pages.cart.copy.form.title"></h4>
+      <h4 translate>pages.cart.copy.form.title</h4>
       <div class="ml-2 flex flex-col space-y-1">
         <label>
           <input type="radio" value="replace" formControlName="action">
@@ -33,7 +33,7 @@
 
     <div id="cart-compare" class="flex flex-row gap-8" *ngIf="!actionForm.invalid && current && target">
       <div id="current-version" class="w-1/2">
-        <h3 translate="pages.cart.copy.current"></h3>
+        <h3 translate>pages.cart.copy.current</h3>
         <div class="product italic font-gray-700 text-sm" *ngIf="current.length === 0" translate>
           pages.basket.empty
         </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
       <div id="target-version" class="w-1/2">
-        <h3 translate="pages.cart.copy.new"></h3>
+        <h3 translate>pages.cart.copy.new</h3>
         <p *ngIf="target.length === 0">
           <small class="emphasize">No lines.</small>
         </p>

@@ -68,7 +68,7 @@
 
           <div class="form-field w-full mt-2">
             <label class="block font-medium mb-1" for="city" translate="auth.form.city"></label>
-            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="city" autocomplete="city" spellcheck="false" type="text" name="city" id="city" required>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="city" autocomplete="address-level2" spellcheck="false" type="text" name="city" id="city" required>
             <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm2.get('city')?.hasError('required') && myform.submitted" translate="auth.form.errors.city-required"></div>
           </div>
 
@@ -127,7 +127,7 @@
 
           <div class="form-field w-full mt-2">
             <label class="block font-medium mb-1" for="city" translate="auth.form.city"></label>
-            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="city" autocomplete="city" spellcheck="false" type="text" name="city" id="city" required>
+            <input class="peer flex items-center h-12 border shadow-sm bg-white dark:bg-gray-900 rounded-md px-4 w-full invalid:border-danger" formControlName="city" autocomplete="address-level2" spellcheck="false" type="text" name="city" id="city" required>
             <div class="text-sm font-medium text-danger mt-1" *ngIf="signupForm3.get('city')?.hasError('required') && myform.submitted" translate="auth.form.errors.city-required"></div>
           </div>
 

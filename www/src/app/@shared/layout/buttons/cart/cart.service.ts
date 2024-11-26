@@ -22,17 +22,19 @@ export class CartService {
     private translate: TranslateService
   ) {
     this.auth.change.subscribe({
-      next: () => {
-        this.init()
+      next: async () => {
+        await this.init()
       }
     })
     this.auth.customerChange.subscribe({
-      next: () => {
-        this.init()
+      next: async () => {
+        await this.init()
       }
     })
     if (this.auth.isAuthenticated()) {
-      this.init()
+      setTimeout(async () => {
+        await this.init()
+      }, 18)
     }
   }
 

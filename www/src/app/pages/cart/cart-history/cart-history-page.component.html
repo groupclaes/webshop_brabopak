@@ -34,7 +34,7 @@
       <div class="p-5 border h-[178px] overflow-hidden rounded bg-gray-50">
         <div class="relative transform-[translateX(-2px)_translateY(-2px) p-1]">
           <div [id]="'order-swipe-container' + order.id" class="swipeable-content-container" (scroll)="calcWide(order, $event)">
-            <div class="prev" *ngIf="order.prevArrow" (click)="scrollRight(order)">
+            <div class="prev" *ngIf="order.prevArrow" (click)="scrollRight(order)" (keypress)="scrollRight(order)">
               <i class="fal fa-fw fa-lg fa-angle-left"></i>
             </div>
             <div [id]="'order-swipe-content' + order.id" class="swipe-container">
@@ -47,7 +47,7 @@
                 </div>
               </a>
             </div>
-            <div class="next" *ngIf="order.nextArrow" (click)="scrollLeft(order)">
+            <div class="next" *ngIf="order.nextArrow" (click)="scrollLeft(order)" (keypress)="scrollLeft(order)">
               <i class="fal fa-fw fa-lg fa-angle-right"></i>
             </div>
           </div>

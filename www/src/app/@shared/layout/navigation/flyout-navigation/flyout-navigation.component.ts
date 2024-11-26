@@ -17,21 +17,26 @@ export class FlyoutNavigationComponent {
   active: boolean = false
 
   constructor(
-    api: EcommerceApiService,
+    private api: EcommerceApiService,
     private ref: ChangeDetectorRef,
     public auth: AuthService
   ) {
-    api.menu(this.auth.currentCustomer?.usercode).then(r => {
-      if (r)
-        this._categories = r.data
-      this.ref.markForCheck()
-    })
     auth.change.subscribe({
       next: () => this.ref.markForCheck()
     })
     auth.customerChange.subscribe({
       next: () => this.ref.markForCheck()
     })
+    setTimeout(async () => {
+      await this.init()
+    }, 18)
+  }
+
+  async init() {
+    const menu = await this.api.menu(this.auth.currentCustomer?.usercode)
+    if (menu)
+      this._categories = menu.data
+    this.ref.markForCheck()
   }
 
   activate() {

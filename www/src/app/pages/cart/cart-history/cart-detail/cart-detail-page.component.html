@@ -52,10 +52,10 @@
         </div>
       </div>
       <div class="order-footer">
-        <h3 translate="pages.cart.history-detail.addressPaymentInfo"></h3>
+        <h3 translate>pages.cart.history-detail.addressPaymentInfo</h3>
         <div class="flex items-center flex-row">
           <div class="flex flex-col">
-            <h4 translate="pages.cart.history-detail.facturationAddress"></h4>
+            <h4 translate>pages.cart.history-detail.facturationAddress</h4>
             <div class="address-info">
               {{ order.addresses[0].name }} <br>
               {{ order.addresses[0].address }} {{ order.addresses[0].streetNum }} <br>
@@ -64,7 +64,7 @@
             </div>
           </div>
           <div class="flex flex-col" *ngIf="order.addresses.length > 1">
-            <h4 translate="pages.cart.history-detail.deliveryFacturation"></h4>
+            <h4 translate>pages.cart.history-detail.deliveryFacturation</h4>
             <div class="address-info">
               {{ order.addresses[1].name }} <br>
               {{ order.addresses[1].address }} {{ order.addresses[1].streetNum }} <br>

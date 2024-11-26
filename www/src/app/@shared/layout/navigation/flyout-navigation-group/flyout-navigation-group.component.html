@@ -20,7 +20,7 @@
               <a [routerLink]="['/products', itemName(category), itemName(group)] | localize" class="hover:underline"
                 [queryParams]="{id: group.id}" (click)="activateChange.emit()">{{ capitalize(group.name) }}</a>
             </p>
-            <ul role="list" class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
+            <ul class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
               <li class="flex" *ngFor="let subCategory of group.children">
                 <a [routerLink]="['/products', itemName(category), itemName(group), itemName(subCategory)] | localize"
                   class="hover:text-gray-800 hover:underline" [queryParams]="{id: subCategory.id}"
