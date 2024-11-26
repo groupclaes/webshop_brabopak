@@ -13,7 +13,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 
 ENV NODE_ENV test
-RUN npm install -g @angular/cli --ignore-scripts && npm install --ignore-scripts
+RUN npm install --ignore-scripts -g @angular/cli && npm install --ignore-scripts
 
 # copy required files for build
 COPY ./src /app/src
