@@ -13,7 +13,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 COPY .npmrc /app/.npmrc
 
-ENV NODE_ENV test
+ENV NODE_ENV=test
 RUN npm install --ignore-scripts -g @angular/cli && npm install --ignore-scripts --legacy-peer-deps
 
 # copy required files for build
@@ -24,8 +24,10 @@ COPY tsconfig.json /app/tsconfig.json
 COPY tsconfig.app.json /app/tsconfig.app.json
 COPY tailwind.config.js /app/tailwind.config.js
 COPY ngsw-config.json /app/ngsw-config.json
+COPY capitalize.d.ts /app/capitalize.d.ts
 
-RUN ng build --configuration production --output-path=dist 
+RUN ng build --configuration production --output-path=dist
+COPY nginx.conf /app/nginx.conf
 
 ############
 ### prod ###
@@ -36,6 +38,8 @@ FROM groupclaes/nginx:latest
 
 #remove all content form html
 RUN rm -rf /usr/share/nginx/html/*
+
+USER nginx
 
 # copy artifact build from the 'build environment'
 COPY --from=build /app/dist /usr/share/nginx/html

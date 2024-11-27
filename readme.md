@@ -26,3 +26,11 @@
 #### View logs in elastic, go to elastic.groupclaes.be => Webshop Fastify Logs
 Search for `company: "bra" and version: "v1"` or `company: "bra" and version: "uat"` to view uat environment logs  
 You can also narrow the search down to a single service eg; `and service: "manage"` or `and service: "search"`
+
+
+remove from tsconfig.app.json
+
+  "files": [
+    "src/main.server.ts",
+    "server.ts"
+    }
