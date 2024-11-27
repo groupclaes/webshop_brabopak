@@ -6,7 +6,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --disable-host-check",
-    "build": "ng build --configuration production",
+    "build": "docker buildx build --platform=linux/amd64 -t 'groupclaes/webshop_brabopak:latest' -f Dockerfile --sbom=true --provenance=true --push .",
+    "build-test": "docker buildx build --platform=linux/amd64 -t 'groupclaes/webshop_brabopak:test' -f Dockerfile_test --sbom=true --provenance=true --push .",
     "watch": "ng build --watch --configuration development",
     "serve:ssr:brabopak_webshop_www": "node dist/server/server.mjs"
   },
