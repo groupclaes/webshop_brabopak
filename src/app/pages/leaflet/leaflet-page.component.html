@@ -5,13 +5,3 @@
   <pdf-viewer [src]="pdfSettings.url" [show-all]="pdfSettings.showAll" [fit-to-page]="true" [show-borders]="false" [external-link-target]="'blank'" [zoom-scale]="'page-fit'" [stick-to-page]="true" (after-load-complete)="callBackFn($event)" [zoom]="zoom" [original-size]="false" [page]="currentPage">
   </pdf-viewer>
 </div>
-
-<!-- <div class="flex text-center mx-auto space-x-1 nav pt-2" *ngIf="loaded && desktop">
-  <button [disabled]="!zoomOutEnabled" class="fa-button" id="zoomOut" (click)="setZoom(zoom-.5)" title="zoom out"></button>
-  <button [disabled]="!previousEnabled" class="fa-button" id="previous" (click)="previousPage()" title="previous page"></button>
-  <div class="px-2 py-1.5 rounded border">
-    {{ currentPage }} / {{ pageCount }}
-  </div>
-  <button [disabled]="!nextEnabled" class="fa-button" id="next" (click)="nextPage()" title="next page"></button>
-  <button [disabled]="!zoomInEnabled" class="fa-button" id="zoomIn" (click)="setZoom(zoom+.5)" title="zoom in"></button>
-</div> -->
