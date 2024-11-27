@@ -1,1 +1,0 @@
-for dir in ./*; do (cd "$dir" && echo "Building: $dir" && ./build.sh); done

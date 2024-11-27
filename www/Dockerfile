@@ -11,6 +11,7 @@ WORKDIR /app
 
 # install and cache app dependencies
 COPY package.json /app/package.json
+COPY .npmrc /app/.npmrc
 
 ENV NODE_ENV test
 RUN npm install --ignore-scripts -g @angular/cli && npm install --ignore-scripts --legacy-peer-deps
