@@ -1,0 +1,7 @@
+<div class="min-w-0 page">
+  <div class="absolute inset-0 h-full w-full flex items-center justify-center" *ngIf="!loaded">
+    <bra-loader></bra-loader>
+  </div>
+  <pdf-viewer [src]="pdfSettings.url" [show-all]="pdfSettings.showAll" [fit-to-page]="true" [show-borders]="false" [external-link-target]="'blank'" [zoom-scale]="'page-fit'" [stick-to-page]="true" (after-load-complete)="callBackFn($event)" [zoom]="zoom" [original-size]="false" [page]="currentPage">
+  </pdf-viewer>
+</div>

@@ -1,0 +1,79 @@
+<div class="flex flex-col w-full max-w-screen-xl mx-auto space-y-8 p-6 md:p-8">
+  <div class="flex items-center justify-between w-full">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <a class="hover:text-primary hover:underline hover:dark:text-accent" [routerLink]="['/cart/history'] | localize">
+        <i class="fal fa-lg fa-angle-left"></i>
+        {{ 'pages.cart.history-detail.backButton' | translate }}
+      </a>
+
+      <div class="mt-2 text-4xl md:text-6xl font-bold tracking-tight leading-8" translate [translateParams]="{id: order?.id}">
+        pages.cart.history-detail.title
+      </div>
+    </div>
+  </div>
+
+
+  <div class="p-4 mx-auto text-center align-center" *ngIf="isLoading">
+    <bra-loader></bra-loader>
+  </div>
+
+  <ng-container *ngIf="!isLoading && order">
+    <div class="px-4 sm:px-6 lg:px-8" id="order">
+      <div class="order-actions"></div>
+      <div class="order-title">
+        <div class="text-lg">
+          <i class="emphasize">Besteld op: </i>
+          {{ order.date | date:'d MMMM yyyy':undefined:culture+'-BE' }}
+        </div>
+        <div class="text-lg" *ngIf="order.reference.trim().length > 0">
+          <i class="emphasize">Referentie: </i>
+          {{ order.reference }}
+        </div>
+      </div>
+      <div class="order-body">
+        <div class="flex items-center py-2 border-b last:border-b-0" *ngFor="let product of order.orderLines">
+          <img class="mr-10 thumbnail" src="https://shop.claes-distribution.be/thumbnails/{{ product.itemNum }}.jpg" alt="Thumbnail {{ product.itemNum }}" height="80" width="80">
+          <div class="name mr-10 flex-fill">
+            <small>
+              <i class="emphasize">Artikelnummer: </i>
+              {{ product.itemNum }}
+            </small>
+            <h5 [routerLink]="['/product', product.id, itemName(product)] | localize" class="text-md hover:text-primary hover:underline hover:dark:text-accent cursor-pointer mb-1">
+              {{ product.count > 1 ? product.count + 'x' : '' }} {{ product.itemName }}
+            </h5>
+            <a class="inline-block leading-8 text-white rounded px-5 h-8 border border-primary bg-info dark:bg-warning hover:dark:bg-accent hover:bg-primary" [href]="getDatasheetUrl(product)" *ngIf="product.hasDatasheet === true">
+              Download datasheet
+            </a>
+            <div class="product-backorder emphasize" *ngIf="product.inBackorder" [attr.title]="'inBackorder' | translate">
+              <i color="danger" class="fas fa-fw fa-business-time"></i>
+              {{ 'inBackorder' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="order-footer">
+        <h3 translate>pages.cart.history-detail.addressPaymentInfo</h3>
+        <div class="flex items-center flex-row">
+          <div class="flex flex-col">
+            <h4 translate>pages.cart.history-detail.facturationAddress</h4>
+            <div class="address-info">
+              {{ order.addresses[0].name }} <br>
+              {{ order.addresses[0].address }} {{ order.addresses[0].streetNum }} <br>
+              {{ order.addresses[0].zipCode }} {{ order.addresses[0].city }} <br>
+              {{ order.addresses[0].country }}
+            </div>
+          </div>
+          <div class="flex flex-col" *ngIf="order.addresses.length > 1">
+            <h4 translate>pages.cart.history-detail.deliveryFacturation</h4>
+            <div class="address-info">
+              {{ order.addresses[1].name }} <br>
+              {{ order.addresses[1].address }} {{ order.addresses[1].streetNum }} <br>
+              {{ order.addresses[1].zipCode }} {{ order.addresses[1].city }} <br>
+              {{ order.addresses[1].country }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

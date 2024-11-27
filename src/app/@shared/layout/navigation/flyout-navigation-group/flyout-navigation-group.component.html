@@ -1,0 +1,35 @@
+<div class="relative flex">
+  <button type="button"
+    class="relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+    [ngClass]="{ 
+      'border-primary text-primary dark:border-accent dark:text-accent': active,
+      'border-transparent text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300':
+      !active
+    }" aria-expanded="false" (click)="activateChange.emit()">{{ name }}</button>
+</div>
+
+<div class="absolute inset-x-0 top-full text-sm text-gray-500 z-49" *ngIf="active">
+  <div class="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true"></div>
+
+  <div class="relative bg-white dark:bg-gray-950">
+    <div class="mx-auto max-w-7xl px-8">
+      <div class="grid grid-cols-1 gap-y-10 gap-x-8 py-16">
+        <div class="row-start-1 grid grid-cols-6 gap-y-10 gap-x-8 text-sm">
+          <div *ngFor="let group of category?.children">
+            <p class="text-md font-bold text-gray-900">
+              <a [routerLink]="['/products', itemName(category), itemName(group)] | localize" class="hover:underline"
+                [queryParams]="{id: group.id}" (click)="activateChange.emit()">{{ capitalize(group.name) }}</a>
+            </p>
+            <ul class="mt-6 space-y-4 sm:mt-4 sm:space-y-2">
+              <li class="flex" *ngFor="let subCategory of group.children">
+                <a [routerLink]="['/products', itemName(category), itemName(group), itemName(subCategory)] | localize"
+                  class="hover:text-gray-800 hover:underline" [queryParams]="{id: subCategory.id}"
+                  (click)="activateChange.emit()">{{ capitalize(subCategory.name) }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

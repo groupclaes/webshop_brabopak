@@ -1,0 +1,28 @@
+:host {
+  pdf-viewer {
+    height: 100vh;
+  }
+
+  div.page {
+    flex: 1 0 auto;
+
+    pdf-viewer {
+      height: 100%;
+      max-height: 100%;
+      position: relative;
+      display: block;
+    }
+  }
+
+  @media print {
+
+    div.page {
+      position: fixed;
+      margin: 16px;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+}
