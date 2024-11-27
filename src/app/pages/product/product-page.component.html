@@ -18,7 +18,7 @@
         rounded-xl">
       </div>
       <div class="grid grid-cols-4 gap-4 mt-4 mx-[7px]" *ngIf="images.length > 1">
-        <div class="rounded-xl border ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index" (click)="activateImage(i)" [ngClass]="{ 
+        <div class="rounded-xl border ring ring-offset-4 cursor-pointer" *ngFor="let image of images; let i = index" (click)="activateImage(i)" (keypress)="activateImage(i)" [ngClass]="{ 
           'ring-primary dark:ring-accent': activeImage === image.guid,
           'ring-transparent ring-offset-gray-50 dark:ring-offset-gray-950': activeImage !== image.guid
         }">
