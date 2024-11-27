@@ -14,54 +14,7 @@
     }
   }
 
-  div.nav {
-    button#zoomOut {
-      &::before {
-        content: "\f010";
-      }
-    }
-
-    button#zoomIn {
-      &::before {
-        content: "\f00e";
-      }
-    }
-
-    button#previous {
-      &::before {
-        content: "\f104";
-      }
-    }
-
-    button#next {
-      &::before {
-        content: "\f105";
-      }
-    }
-  }
-
-  button.fa-button {
-    height: 34px;
-    line-height: 16px;
-    font-size: 16px;
-    vertical-align: bottom;
-    font-family: "Font Awesome 5 Pro";
-    font-weight: 900;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    text-align: center;
-    min-width: 38px;
-    padding: 0 6px;
-  }
-
   @media print {
-
-    div.nav {
-      display: none;
-    }
 
     div.page {
       position: fixed;
