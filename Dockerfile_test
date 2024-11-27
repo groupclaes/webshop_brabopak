@@ -19,6 +19,7 @@ WORKDIR /app
 
 # install and cache app dependencies
 COPY package.json /app/package.json
+COPY .npmrc ./.npmrc
 
 ENV NODE_ENV test
 RUN npm install --ignore-scripts -g @angular/cli && npm install --ignore-scripts --legacy-peer-deps
@@ -26,7 +27,13 @@ RUN npm install --ignore-scripts -g @angular/cli && npm install --ignore-scripts
 #ENV NODE_ENV production
 
 # add app
-COPY . /app
+COPY ./src /app/src
+# COPY server.ts /app/server.ts
+COPY angular.json /app/angular.json
+COPY tsconfig.json /app/tsconfig.json
+COPY tsconfig.app.json /app/tsconfig.app.json
+COPY tailwind.config.js /app/tailwind.config.js
+COPY ngsw-config.json /app/ngsw-config.json
 
 RUN ng build --configuration staging --output-path=dist --verbose 
 # RUN ng build --configuration production --output-path=dist 

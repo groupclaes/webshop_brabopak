@@ -3,7 +3,7 @@
 #############
 
 # base image
-FROM groupclaes/npm AS build
+FROM groupclaes/npm:latest AS build
 USER root
 
 # set working directory
