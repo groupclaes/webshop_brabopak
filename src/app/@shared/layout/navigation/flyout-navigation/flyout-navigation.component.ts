@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 
-declare var require: any
-const capitalize = require('capitalize')
+import * as capitalize from 'capitalize'
 
 @Component({
   selector: 'bra-flyout-navigation',

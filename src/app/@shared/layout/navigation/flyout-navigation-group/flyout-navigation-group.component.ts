@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { ICategory } from '../flyout-navigation/flyout-navigation.component'
 
-declare var require: any
-const capitalize = require('capitalize')
+import * as capitalize from 'capitalize'
 
 @Component({
   selector: 'bra-flyout-navigation-group',

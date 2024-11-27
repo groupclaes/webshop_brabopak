@@ -11,8 +11,7 @@ import { IProduct, ProductsApiService } from 'src/app/core/api/products-api.serv
 import { IBreadcrumb } from 'src/app/core/components/breadcrumbs/breadcrumbs.component'
 import { environment } from 'src/environments/environment'
 
-declare var require: any
-const capitalize = require('capitalize')
+import * as capitalize from 'capitalize'
 
 @Component({
   selector: 'bra-product-page',
