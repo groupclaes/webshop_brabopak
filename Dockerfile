@@ -3,8 +3,7 @@
 #############
 
 # base image
-FROM groupclaes/npm:latest AS build
-USER root
+FROM groupclaes/angular-cli:18 AS build
 
 # set working directory
 WORKDIR /app
@@ -14,7 +13,7 @@ COPY package.json /app/package.json
 COPY .npmrc /app/.npmrc
 
 ENV NODE_ENV=test
-RUN npm install --ignore-scripts -g @angular/cli && npm install --ignore-scripts --legacy-peer-deps
+RUN npm install --ignore-scripts --legacy-peer-deps
 
 # copy required files for build
 COPY ./src /app/src
@@ -39,7 +38,7 @@ FROM groupclaes/nginx:latest
 #remove all content form html
 RUN rm -rf /usr/share/nginx/html/*
 
-USER nginx
+# USER nginx
 
 # copy artifact build from the 'build environment'
 COPY --from=build /app/dist /usr/share/nginx/html
