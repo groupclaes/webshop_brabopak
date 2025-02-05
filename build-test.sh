@@ -16,4 +16,4 @@ PACKAGE_NAME=$(cat package.json \
 
 echo "building docker images ${docker_reg}/${PACKAGE_NAME}:${docker_tag}"
 
-docker buildx build --platform=linux/amd64 -t "${docker_reg}/${PACKAGE_NAME}:${docker_tag}" -f Dockerfile --sbom=true --provenance=true --push .
+docker buildx build --platform=linux/amd64 -t "${docker_reg}/${PACKAGE_NAME}:${docker_tag}" -f Dockerfile_test --sbom=true --provenance=true --push .
