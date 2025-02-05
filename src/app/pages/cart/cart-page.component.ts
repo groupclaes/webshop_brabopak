@@ -1,19 +1,33 @@
 import { ChangeDetectorRef, Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core'
 import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { myPriceEntry, myPriceTotalEntry } from 'src/app/@shared/layout/buttons/cart/cart.component'
 import { CartService } from 'src/app/@shared/layout/buttons/cart/cart.service'
 import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { AuthService } from 'src/app/auth/auth.service'
-import { ICartProduct } from 'src/app/core/api/ecommerce-api.service'
+import { EcommerceApiService, ICartProduct } from 'src/app/core/api/ecommerce-api.service'
 import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
+
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
 
 @Component({
   selector: 'bra-cart-page',
   templateUrl: './cart-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    // locale bullshit does not work, congrats angular
+    // https://material.angular.io/components/datepicker/overview#setting-the-locale-code
   ]
 })
 export class CartPageComponent implements OnInit, OnDestroy {
@@ -41,8 +55,10 @@ export class CartPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public auth: AuthService,
     private modalCtrl: ModalsService,
-    private router: Router
+    private router: Router,
+    private api: EcommerceApiService
   ) {
+    this.loadDeliveryDates()
   }
 
   ngOnInit(): void {
@@ -58,13 +74,63 @@ export class CartPageComponent implements OnInit, OnDestroy {
         this.proceedCheckout(1)
       }
     }))
+
+    this.deliveryConfirmFormGroup.controls['deliveryMethod'].valueChanges.subscribe(async (value: string) => {
+      let collect = value === 'selfservice'
+      await this.loadDeliveryDates(collect)
+      const ctrl = this.deliveryConfirmFormGroup.controls['nextDate']
+      if (collect) {
+        ctrl.disable()
+        ctrl.setValue(false)
+      } else
+        ctrl.enable()
+    })
+    this.deliveryConfirmFormGroup.controls['deliverOption'].valueChanges.subscribe((changes: boolean) => {
+      const ctrl = this.deliveryConfirmFormGroup.controls['deliveryDate']
+      if (changes)
+        ctrl.disable()
+      else
+        ctrl.enable()
+      this.ref.markForCheck()
+    })
   }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe())
   }
 
+  async loadDeliveryDates(collect?: boolean) {
+    try {
+      if (collect === undefined)
+        collect = this.deliveryConfirmFormGroup.controls['deliveryMethod'].value === 'selfservice'
+      const response = await this.api.getCartDeliveryDates(this.auth.currentCustomer?.usercode)
+      if (response.code === 200 && response.data) {
+        const times: Date[] = response.data.map((e: { date: Date }) => e.date)
+        this.deliverTimes = times
+        const datey: Date = new Date(times[0])
+        this.deliveryConfirmFormGroup.controls['deliveryDate']
+          .setValue(new Date(Date.UTC(datey.getFullYear(), datey.getMonth(), datey.getDate())))
+      }
+    } catch (err) {
+      this.deliverTimes = []
+    } finally {
+      this.ref.markForCheck()
+    }
+    try {
+      const response = await this.api.getCartDeliveryCosts(this.auth.currentCustomer?.usercode)
+      if (response.code === 200 && response.data) {
+        this.final.deliverCost = response.data
+      }
+    } catch (err) {
+      this.final.deliverCost = []
+    } finally {
+      this.ref.markForCheck()
+    }
+  }
+
   proceedCheckout(stepIndex: number) {
+    this.loadDeliveryDates()
+
     if (stepIndex === 2) {
       if (this.hasOrderItem)
         this.finalConfirmFormGroup = this.fb.group({
@@ -234,6 +300,42 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.ref.markForCheck()
   }
 
+  myFilter = (d: any): boolean => {
+    let result = false
+    if (d && d._d) {
+      this.deliverTimes?.forEach((date: Date) => {
+        if ((new Date(date)).toDateString() === d._d.toDateString()) {
+          result = true
+        }
+      })
+    }
+    return result
+  }
+
+  /**
+   * It takes an amount and returns the delivery price
+   * @param {number} amount - The total amount of the order
+   * @returns The delivery price is being returned.
+   */
+  selectDelivery(amount: number): number {
+    let delvPrice = 0
+    /* Fix issue 2  added currentThresold var */
+    let currentThreshold = 320000
+    try {
+      for (let i = 0; i < this.final.deliverCost.length; i++) {
+        const delvprice = this.final.deliverCost[i]
+        if (amount < delvprice.threshold && delvprice.threshold < currentThreshold) {
+          currentThreshold = delvprice.threshold
+          delvPrice = delvprice.amount
+        }
+      }
+    } catch (ex) {
+      return 0
+    }
+
+    return delvPrice
+  }
+
   get calcTotalPrice(): myPriceTotalEntry {
     // calculate totals and discounts
     const totprice = new myPriceTotalEntry
@@ -245,7 +347,12 @@ export class CartPageComponent implements OnInit, OnDestroy {
       totprice.totalProduct += prodPrice.basePrice * prodPrice.stack
       totprice.totalDiscount += (prodPrice.basePrice * prodPrice.stack) - (prodPrice.baseDiscountPrice * prodPrice.stack)
 
-      totprice.totalDelivery = 0 // this.selectDelivery(totprice.totalProduct - totprice.totalDiscount)
+      if (this.deliveryConfirmFormGroup.controls['deliverOption'].value || this.deliveryConfirmFormGroup.controls['deliveryMethod'].value === 'selfservice') {
+        totprice.totalDelivery = 0
+      } else {
+        totprice.totalDelivery = this.selectDelivery(totprice.totalProduct - totprice.totalDiscount)
+      }
+      // totprice.totalDelivery = 0 // this.selectDelivery(totprice.totalProduct - totprice.totalDiscount)
 
       totprice.totalTax += prodPrice.totalTax
       totprice.total = (totprice.totalProduct - totprice.totalDiscount) + totprice.totalTax + totprice.totalDelivery

@@ -19,56 +19,72 @@ export class EcommerceApiService {
       dashboard: () => `${environment.api}ecommerce/dashboard`,
       carts: () => `${environment.api}ecommerce/carts`,
       cart: (id: number) => `${environment.api}ecommerce/carts/${id}`,
+      cartDeliveryDates: () => `${environment.api}ecommerce/carts/delivery-dates`,
+      cartDeliveryCosts: () => `${environment.api}ecommerce/carts/delivery-costs`,
       cartProduct: () => `${environment.api}ecommerce/carts/products`,
       orders: () => `${environment.api}ecommerce/orders`,
       order: (id: number) => `${environment.api}ecommerce/orders/${id}`
     }
   }
 
-  menu(usercode: number | undefined): Promise<IBaseApiResponse> {
+  menu(usercode?: number | undefined): Promise<IBaseApiResponse> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.menu(), { params }))
   }
 
-  dashboard(usercode: number): Promise<IBaseApiResponse> {
+  dashboard(usercode?: number): Promise<IBaseApiResponse> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.dashboard(), { params }))
   }
 
-  cart(usercode: number): Promise<IGetCartsResponse> {
+  cart(usercode?: number): Promise<IGetCartsResponse> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<IGetCartsResponse>(this.urls.carts(), { params }))
   }
 
-  orders(usercode: number): Promise<IGetOrderHistoryResponse> {
+  orders(usercode?: number): Promise<IGetOrderHistoryResponse> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<IGetOrderHistoryResponse>(this.urls.orders(), { params }))
   }
 
-  order(id: number, usercode: number): Promise<IGetOrderResponse> {
+  order(id: number, usercode?: number): Promise<IGetOrderResponse> {
     const params = trimParameters({
       usercode
     })
     return firstValueFrom(this.http.get<IGetOrderResponse>(this.urls.order(id), { params }))
   }
 
-  putCartProduct(product: any, usercode: number): Promise<IGetCartsResponse> {
-    const params = {
+  putCartProduct(product: any, usercode?: number): Promise<IGetCartsResponse> {
+    const params = trimParameters({
       usercode
-    }
+    })
     return firstValueFrom(this.http.put<IGetCartsResponse>(this.urls.cartProduct(), product, { params }))
   }
 
   postCart(id: number, form: any) {
     return firstValueFrom(this.http.post<IBaseApiResponse>(this.urls.cart(id), form))
+  }
+
+  getCartDeliveryDates(usercode?: number) {
+    const params = trimParameters({
+      usercode
+    })
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.cartDeliveryDates(), { params }))
+  }
+
+  getCartDeliveryCosts(usercode?: number) {
+    const params = trimParameters({
+      usercode
+    })
+    return firstValueFrom(this.http.get<IBaseApiResponse>(this.urls.cartDeliveryCosts(), { params }))
   }
 }
 

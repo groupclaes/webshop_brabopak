@@ -55,7 +55,7 @@
                     </div>
                   </div>
                   <div *ngIf="product.prices">
-                    <span class="baseprice text-gray-500 italic">
+                    <div class="baseprice text-gray-500 italic line-through">
                       {{ product.prices && product.prices[0].base > 0 ?
                           (product.prices[0].base * product.quantity >
                           calcPrice(product, product.quantity).totalProduct ?
@@ -63,7 +63,7 @@
                             currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : '') :
                           ''
                         }}
-                    </span>
+                    </div>
                     {{ product.prices && product.prices[0].base > 0 ?
                         ( calcPrice(product, product.quantity).totalProduct |
                         currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' ) :
@@ -83,14 +83,12 @@
                     <input name="customerReference" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="customerReference" type="text" formControlName="customerReference">
                   </div>
                 </div>
-                <!-- <mat-form-field class="deliveryDate">
-                  <input type="datetime" class="bg-white dark:bg-transparent" matInput [matDatepickerFilter]="myFilter"
-                    [placeholder]="'deliveryDate' | translate" formControlName="deliveryDate" [matDatepicker]="dp"
-                    required>
+                <mat-form-field class="deliveryDate">
+                  <input type="datetime" class="bg-white dark:bg-transparent" matInput [matDatepickerFilter]="myFilter" [placeholder]="'deliveryDate' | translate" formControlName="deliveryDate" [matDatepicker]="dp" required>
                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                   <mat-datepicker touchUi="true" #dp></mat-datepicker>
-                </mat-form-field> -->
-                <!-- <div>
+                </mat-form-field>
+                <div>
                   <legend class="block text-sm font-medium leading-6" translate>
                     pages.cart.steps.2.form.deliverOption
                   </legend>
@@ -106,7 +104,7 @@
                       pages.cart.steps.2.form.deliverNextDate
                     </label>
                   </div>
-                </div> -->
+                </div>
                 <div>
                   <legend class="block text-sm font-medium leading-6" translate>
                     pages.cart.steps.2.form.deliveryMethod
@@ -269,28 +267,28 @@
 
         <div class="min-w-nav w-nav">
           <ng-template [ngIf]="auth.canViewPrices">
-            <!-- <div id="shipping-cost">
-              <small translate="pages.cart.shippingCosts"></small>
-              <span class="price" [ngClass]="{ success: calcTotalPrice.totalDelivery === 0 }">
+            <div class="flex items-center" id="shipping-cost">
+              <small class="flex-auto" translate="pages.cart.shippingCosts"></small>
+              <span class="font-bold" [ngClass]="{ 'text-green-500': calcTotalPrice.totalDelivery === 0 }">
                 {{ calcTotalPrice.totalDelivery > 0 ? (calcTotalPrice.totalDelivery | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE') : ('pages.cart.steps.3.freeShipping' | translate) }}
               </span>
-            </div> -->
-            <div id="tax-cost" *ngIf="calcTotalPrice.totalTax > 0">
-              <small translate="pages.cart.taxCosts"></small>
-              <span class="price">
+            </div>
+            <div class="flex items-center" id="tax-cost" *ngIf="calcTotalPrice.totalTax > 0">
+              <small class="flex-auto" translate="pages.cart.taxCosts"></small>
+              <span class="font-bold">
                 {{ calcTotalPrice.totalTax | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
               </span>
             </div>
-            <div id="products-cost">
-              <small translate="pages.cart.productCosts"></small>
-              <span class="price">
+            <div class="flex items-center" id="products-cost">
+              <small class="flex-auto" translate="pages.cart.productCosts"></small>
+              <span class="font-bold">
                 {{ calcTotalPrice.totalProduct - calcTotalPrice.totalDiscount | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
               </span>
             </div>
             <br>
-            <div id="total-cost">
-              <small translate="pages.cart.totalCosts"></small>
-              <span class="price">
+            <div class="flex items-center" id="total-cost">
+              <small class="flex-auto" translate="pages.cart.totalCosts"></small>
+              <span class="font-bold">
                 {{ calcTotalPrice.total | currency:'EUR':'symbol-narrow':'0.2-2':'nl-BE' }}
               </span>
             </div>

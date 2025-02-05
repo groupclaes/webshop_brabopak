@@ -43,8 +43,6 @@ export class BannerService {
   }
 
   get content(): string {
-    return this._content ?? (
-      new Date().getTime() > new Date(2024, 11, 1).getTime() ? 'Jouw partner in verpakking, <a href="//pcm.groupclaes.be/v4/content/bra/website/leaflet/20241106" target="_blank" rel="nofollow noopener" class="text-accent hover:underline">Opgelet! Aangepaste openingsuren tijdens eindejaar</a>' : 'Jouw partner in verpakking'
-    )
+    return this._content ?? 'Jouw partner in verpakking'
   }
 }
