@@ -3,7 +3,7 @@
 #############
 
 # base image
-FROM groupclaes/angular-cli:18 AS build
+FROM groupclaes/angular-cli:v18 AS build
 
 # set working directory
 WORKDIR /app
