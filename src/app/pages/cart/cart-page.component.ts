@@ -243,6 +243,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
         reference: this.deliveryConfirmFormGroup.controls['customerReference'].value,
         comment: this.deliveryConfirmFormGroup.controls['comments'].value
       }
+      const q = this.deliveryConfirmFormGroup.controls['deliveryDate'].value
       this.final.deliveryInfo = {
         name: (customer.address_id === 0) ? customer.name : customer.address_name,
         address: (customer.address_id === 0) ? `${customer.address} ${customer.street_number}` : `${customer.address_address} ${customer.address_street_number}`,
@@ -251,7 +252,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
         country: (customer.address_id === 0) ? customer.country : customer.address_country,
         method: this.deliveryConfirmFormGroup.controls['deliveryMethod'].value,
         option: this.deliveryConfirmFormGroup.controls['deliveryOption'].value,
-        date: undefined,
+        date: (q._i !== undefined) ? new Date(Date.UTC(q._i.year, q._i.month, q._i.date)) : q,
         nextDate: this.deliveryConfirmFormGroup.controls['deliverOption'].value,
         // cartId: this.service.
       }
