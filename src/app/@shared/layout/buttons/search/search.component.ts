@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { SearchService } from './search.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { SearchApiService } from 'src/app/core/api/search-api.service'
+import { NavigationEnd, Router } from '@angular/router'
+import { filter } from 'rxjs'
 
 @Component({
   selector: 'claes-search',
@@ -22,7 +24,8 @@ export class SearchComponent {
     private ref: ChangeDetectorRef,
     public service: SearchService,
     private auth: AuthService,
-    private searchApi: SearchApiService
+    private searchApi: SearchApiService,
+    private router: Router
   ) {
     this.query = this.service.query ?? ''
     this.lastEvent = this.query
@@ -32,6 +35,11 @@ export class SearchComponent {
       this.query = this.service.query
       this.updateSuggestions()
       this.ref.markForCheck()
+    })
+
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(e => {
+      if (this.active && (!this.query || this.query?.trim().length === 0))
+        this.close()
     })
   }
 
