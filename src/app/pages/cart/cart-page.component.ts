@@ -10,7 +10,8 @@ import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService, ICartProduct } from 'src/app/core/api/ecommerce-api.service'
 import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
 
-import 'moment/locale/nl-BE'
+// import 'moment/locale/fr'
+import 'moment/locale/nl-be'
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
 
