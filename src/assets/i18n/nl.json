@@ -203,6 +203,7 @@
             "customerReference": "Klantreferentie",
             "deliverOption": "Opties van de levering van je bestelling",
             "deliverImmediately": "Lever mijn bestelling onmiddellijk",
+            "deliveryDate": "Dit is uw voorziene leverdatum. Indien u deze wenst aan te passen, gelieve een andere dag te selecteren.",
             "deliverNextDate": "Wacht met leveren tot mijn volgende bestelling",
             "deliveryMethod": "Wijze van je levering",
             "deliveryMethodDelivery": "Levering",

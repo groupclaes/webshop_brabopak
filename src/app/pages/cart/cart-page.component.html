@@ -83,11 +83,16 @@
                     <input name="customerReference" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="customerReference" type="text" formControlName="customerReference">
                   </div>
                 </div>
-                <mat-form-field class="deliveryDate">
-                  <input type="datetime" class="bg-white dark:bg-transparent" matInput [matDatepickerFilter]="myFilter" [placeholder]="'deliveryDate' | translate" formControlName="deliveryDate" [matDatepicker]="dp" required>
-                  <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                  <mat-datepicker touchUi="true" #dp></mat-datepicker>
-                </mat-form-field>
+                <div>
+                  <label class="block text-sm font-medium leading-6" for="deliveryDate" translate>
+                    pages.cart.steps.2.form.deliveryDate
+                  </label>
+                  <mat-form-field class="deliveryDate">
+                    <input type="datetime" class="bg-white dark:bg-transparent" matInput [matDatepickerFilter]="myFilter" [placeholder]="'deliveryDate' | translate" formControlName="deliveryDate" [matDatepicker]="dp" required>
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi="true" #dp></mat-datepicker>
+                  </mat-form-field>
+                </div>
                 <!-- <div>
                   <legend class="block text-sm font-medium leading-6" translate>
                     pages.cart.steps.2.form.deliverOption
