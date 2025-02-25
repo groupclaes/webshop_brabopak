@@ -80,18 +80,19 @@
                     pages.cart.steps.2.form.customerReference
                   </label>
                   <div class="relative mt-2 rounded-md shadow-sm">
-                    <input name="customerReference" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="customerReference" type="text" formControlName="customerReference">
+                    <input name="customerReference" class="block w-full rounded-md border py-1.5 pl-7 pr-20 placeholder:text-gray-400 sm:text-sm sm:leading-6 dark:bg-gray-700 focus:border-primary hover:border-primary dark:hover:border-accent" id="customerReference" type="text" formControlName="customerReference">
                   </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium leading-6" for="deliveryDate" translate>
+                  <label class="block text-sm font-medium leading-6 whitespace-pre-wrap" for="deliveryDate" translate>
                     pages.cart.steps.2.form.deliveryDate
                   </label>
-                  <mat-form-field class="deliveryDate">
+                  <input name="customerReference" class="block w-full rounded-md border py-1.5 pl-7 pr-20 placeholder:text-gray-400 sm:text-sm sm:leading-6 dark:bg-gray-700 pointer-events-none" id="deliveryDate" [readOnly]="true" type="text" [value]="deliveryConfirmFormGroup.controls['deliveryDate'].value | date:'d MMMM yyyy':undefined:'nl-BE'">
+                  <!-- <mat-form-field class="deliveryDate">
                     <input type="datetime" class="bg-white dark:bg-transparent" matInput [matDatepickerFilter]="myFilter" [placeholder]="'deliveryDate' | translate" formControlName="deliveryDate" [matDatepicker]="dp" required>
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker touchUi="true" #dp></mat-datepicker>
-                  </mat-form-field>
+                  </mat-form-field> -->
                 </div>
                 <!-- <div>
                   <legend class="block text-sm font-medium leading-6" translate>
@@ -159,7 +160,7 @@
                     pages.cart.steps.2.form.comments
                   </label>
                   <div class="relative mt-2 rounded-md shadow-sm">
-                    <textarea name="comments" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="comments" rows="4" formControlName="comments"></textarea>
+                    <textarea name="comments" class="block w-full rounded-md border py-1.5 pl-7 pr-20 placeholder:text-gray-400 sm:text-sm sm:leading-6 dark:bg-gray-700 focus:border-primary hover:border-primary dark:hover:border-accent" id="comments" rows="4" formControlName="comments"></textarea>
                   </div>
                 </div>
               </form>
