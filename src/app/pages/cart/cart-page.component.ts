@@ -10,27 +10,11 @@ import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService, ICartProduct } from 'src/app/core/api/ecommerce-api.service'
 import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
 
-// import 'moment/locale/fr'
-import 'moment/locale/nl-be'
-
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
-
 @Component({
   selector: 'bra-cart-page',
   templateUrl: './cart-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
-  ],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-    // locale bullshit does not work, congrats angular
-    // https://material.angular.io/components/datepicker/overview#setting-the-locale-code
   ]
 })
 export class CartPageComponent implements OnInit, OnDestroy {

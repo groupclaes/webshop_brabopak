@@ -9,10 +9,6 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module'
 import { CartComponentsModule } from 'src/app/core/components/cart/cart.module'
 import { CoreComponentsModule } from 'src/app/core/components/components.module'
 
-import { MatInputModule } from '@angular/material/input'
-import { MatDatepickerModule } from '@angular/material/datepicker'
-import { MatMomentDateModule } from '@angular/material-moment-adapter'
-
 @NgModule({
   declarations: [
     CartPageComponent
@@ -21,9 +17,6 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     CommonModule,
     CoreComponentsModule,
     ReactiveFormsModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
     TranslateModule.forChild(),
     LocalizeRouterModule,
     PipesModule,
