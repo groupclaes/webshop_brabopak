@@ -211,6 +211,7 @@
             "deliveryOption": "Opties bij je levering",
             "deliveryOptionParts": "Indien niet volledig, lever de hoeveelheid in voorraad.",
             "deliveryOptionComplete": "Het order mag enkel uitgeleverd worden als het volledig is.",
+            "commentsPre": "Indien je een specifieke datum geleverd wenst te worden, mag je dit bij 'opmerkingen' noteren.\nDit geldt ook indien je uiterlijk op een bepaalde datum geleverd wil worden.\nLet op: bij bestellingen na 12u is het niet mogelijk om de volgende dag geleverd te worden.",
             "comments": "Opmerkingen"
           },
           "backButton": " Terug naar productoverzicht",
