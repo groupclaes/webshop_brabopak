@@ -2,9 +2,10 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, Change
 import { AuthService, ICustomer } from 'src/app/auth/auth.service'
 
 @Component({
-  selector: 'bra-customer-modal',
-  templateUrl: './customer-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bra-customer-modal',
+    templateUrl: './customer-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CustomerModalComponent {
   @Input() title: string = 'Selecteer een klant'

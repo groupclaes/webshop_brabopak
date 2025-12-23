@@ -4,12 +4,13 @@ import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.servi
 import { AuthService } from 'src/app/auth/auth.service'
 
 @Component({
-  selector: 'claes-cart',
-  templateUrl: './cart.component.html',
-  host: {
-    class: 'relative py-3'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'claes-cart',
+    templateUrl: './cart.component.html',
+    host: {
+        class: 'relative py-3'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CartComponent {
   expanded: boolean = false

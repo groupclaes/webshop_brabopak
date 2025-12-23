@@ -7,9 +7,10 @@ import { AuthService } from '../auth.service'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 @Component({
-  selector: 'bra-reset-password',
-  templateUrl: './reset-password-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bra-reset-password',
+    templateUrl: './reset-password-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ResetPasswordPageComponent {
   isLoading = false

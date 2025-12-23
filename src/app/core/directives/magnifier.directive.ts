@@ -1,7 +1,8 @@
 import { Directive, ElementRef } from '@angular/core'
 
 @Directive({
-  selector: '[magnifier]'
+    selector: '[magnifier]',
+    standalone: false
 })
 export class MagnifierDirective {
   img: HTMLImageElement

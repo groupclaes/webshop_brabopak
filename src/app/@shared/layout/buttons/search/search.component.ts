@@ -6,9 +6,10 @@ import { NavigationEnd, Router } from '@angular/router'
 import { filter } from 'rxjs'
 
 @Component({
-  selector: 'claes-search',
-  templateUrl: './search.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'claes-search',
+    templateUrl: './search.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SearchComponent {
   query: string | undefined

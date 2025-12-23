@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { AuthService } from 'src/app/auth/auth.service'
 
 @Component({
-  selector: 'claes-ecommerce-layout',
-  templateUrl: './ecommerce-layout.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'relative flex flex-auto w-full' }
+    selector: 'claes-ecommerce-layout',
+    templateUrl: './ecommerce-layout.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'relative flex flex-auto w-full' },
+    standalone: false
 })
 export class EcommerceLayoutComponent implements OnInit {
 

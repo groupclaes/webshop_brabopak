@@ -9,8 +9,9 @@ import { firstValueFrom } from 'rxjs'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 @Component({
-  selector: 'bra-signon-page',
-  templateUrl: './signon-page.component.html'
+    selector: 'bra-signon-page',
+    templateUrl: './signon-page.component.html',
+    standalone: false
 })
 export class SignonPageComponent {
   isLoading = false

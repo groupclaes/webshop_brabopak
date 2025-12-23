@@ -1,12 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core'
 
 @Component({
-  selector: 'claes-horizontal-navigation',
-  templateUrl: './horizontal-navigation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex items-center md:space-x-4 text-secondary'
-  }
+    selector: 'claes-horizontal-navigation',
+    templateUrl: './horizontal-navigation.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'flex items-center md:space-x-4 text-secondary'
+    },
+    standalone: false
 })
 export class HorizontalNavigationComponent {
   categories: any[] = [

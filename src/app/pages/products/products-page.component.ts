@@ -11,12 +11,13 @@ import { environment } from 'src/environments/environment'
 import * as capitalize from 'capitalize'
 
 @Component({
-  selector: 'bra-page-products',
-  templateUrl: './products-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'relative flex flex-auto w-full'
-  }
+    selector: 'bra-page-products',
+    templateUrl: './products-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'relative flex flex-auto w-full'
+    },
+    standalone: false
 })
 export class ProductsPageComponent implements OnInit, OnDestroy {
   private _subs: Subscription[] = []

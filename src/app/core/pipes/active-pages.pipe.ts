@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'activePages'
+    name: 'activePages',
+    standalone: false
 })
 export class ActivePagesPipe implements PipeTransform {
   transform(value: number[], arg?: number): number[] {

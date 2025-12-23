@@ -38,9 +38,11 @@
       "prefix": "bra",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser-esbuild",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist",
+            "outputPath": {
+              "base": "dist"
+            },
             "index": "src/index.html",
             "polyfills": [
               "zone.js"
@@ -60,7 +62,7 @@
             ],
             "scripts": [],
             "serviceWorker": true,
-            "main": "src/main.ts"
+            "browser": "src/main.ts"
           },
           "configurations": {
             "staging": {

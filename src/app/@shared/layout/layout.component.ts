@@ -5,11 +5,12 @@ import { environment } from 'src/environments/environment'
 import { LayoutService } from './layout.service'
 
 @Component({
-  selector: 'claes-layout',
-  templateUrl: './layout.component.html',
-  host: {
-    class: 'flex flex-auto w-full min-w-0 max-w-full'
-  }
+    selector: 'claes-layout',
+    templateUrl: './layout.component.html',
+    host: {
+        class: 'flex flex-auto w-full min-w-0 max-w-full'
+    },
+    standalone: false
 })
 export class LayoutComponent {
   private _forcedLayout: string | null = null

@@ -7,10 +7,10 @@ import { PcmApiService } from 'src/app/core/api/pcm-api.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'bra-cart-detail-page',
-  templateUrl: './cart-detail-page.component.html',
-  styles: [
-  ]
+    selector: 'bra-cart-detail-page',
+    templateUrl: './cart-detail-page.component.html',
+    styles: [],
+    standalone: false
 })
 export class CartDetailPageComponent implements OnInit {
   isLoading: boolean = false

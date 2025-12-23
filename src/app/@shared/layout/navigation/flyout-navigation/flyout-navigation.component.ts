@@ -5,9 +5,10 @@ import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 import * as capitalize from 'capitalize'
 
 @Component({
-  selector: 'bra-flyout-navigation',
-  templateUrl: './flyout-navigation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bra-flyout-navigation',
+    templateUrl: './flyout-navigation.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FlyoutNavigationComponent {
   _categories: ICategory[] = []

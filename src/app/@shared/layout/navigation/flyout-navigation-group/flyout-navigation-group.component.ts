@@ -4,8 +4,9 @@ import { ICategory } from '../flyout-navigation/flyout-navigation.component'
 import * as capitalize from 'capitalize'
 
 @Component({
-  selector: 'bra-flyout-navigation-group',
-  templateUrl: './flyout-navigation-group.component.html'
+    selector: 'bra-flyout-navigation-group',
+    templateUrl: './flyout-navigation-group.component.html',
+    standalone: false
 })
 export class FlyoutNavigationGroupComponent {
   @Input() category: ICategory | undefined

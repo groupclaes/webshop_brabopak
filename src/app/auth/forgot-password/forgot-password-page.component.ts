@@ -9,9 +9,10 @@ import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { AuthService } from '../auth.service'
 
 @Component({
-  selector: 'bra-forgot-password-page',
-  templateUrl: './forgot-password-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bra-forgot-password-page',
+    templateUrl: './forgot-password-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForgotPasswordPageComponent {
   isLoading = false

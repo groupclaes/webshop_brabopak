@@ -5,12 +5,13 @@ import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 
 @Component({
-  selector: 'bra-home-page',
-  templateUrl: './home-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'relative flex flex-auto w-full'
-  }
+    selector: 'bra-home-page',
+    templateUrl: './home-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'relative flex flex-auto w-full'
+    },
+    standalone: false
 })
 export class HomePageComponent implements OnDestroy {
   private _subs: Subscription[] = []

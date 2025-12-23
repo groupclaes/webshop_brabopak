@@ -4,13 +4,14 @@ import { PDFDocumentProxy } from 'ng2-pdf-viewer'
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'bra-leaflet-page',
-  templateUrl: './leaflet-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'relative flex flex-col flex-auto w-full px-8 py-2'
-  },
-  styleUrls: ['./leaflet-page.component.scss']
+    selector: 'bra-leaflet-page',
+    templateUrl: './leaflet-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'relative flex flex-col flex-auto w-full px-8 py-2'
+    },
+    styleUrls: ['./leaflet-page.component.scss'],
+    standalone: false
 })
 export class LeafletPageComponent implements OnInit, OnDestroy {
   _zoom: number = 1

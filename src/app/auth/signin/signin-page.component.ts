@@ -10,9 +10,10 @@ import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { TranslateService } from '@ngx-translate/core'
 
 @Component({
-  selector: 'bra-signin-page',
-  templateUrl: './signin-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bra-signin-page',
+    templateUrl: './signin-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SigninPageComponent {
   mfaRequired = false

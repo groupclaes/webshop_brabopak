@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
 
 @Component({
-  selector: 'claes-fullscreen',
-  templateUrl: './fullscreen.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'claes-fullscreen',
+    templateUrl: './fullscreen.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FullscreenComponent {
   constructor(

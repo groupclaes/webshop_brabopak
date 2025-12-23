@@ -2,10 +2,10 @@ import { Component } from '@angular/core'
 import { AuthService } from 'src/app/auth/auth.service'
 
 @Component({
-  selector: 'bra-mobile-navigation',
-  templateUrl: './mobile-navigation.component.html',
-  styles: [
-  ]
+    selector: 'bra-mobile-navigation',
+    templateUrl: './mobile-navigation.component.html',
+    styles: [],
+    standalone: false
 })
 export class MobileNavigationComponent {
   constructor(private auth: AuthService) { }

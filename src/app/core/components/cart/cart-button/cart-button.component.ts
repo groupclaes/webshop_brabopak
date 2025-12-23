@@ -5,11 +5,12 @@ import { AuthService } from 'src/app/auth/auth.service'
 import { IProductBase } from 'src/app/core/api/products-api.service'
 
 @Component({
-  selector: 'bra-cart-button',
-  templateUrl: './cart-button.component.html',
-  host: {
-    class: 'block w-full max-w-[15rem]'
-  }
+    selector: 'bra-cart-button',
+    templateUrl: './cart-button.component.html',
+    host: {
+        class: 'block w-full max-w-[15rem]'
+    },
+    standalone: false
 })
 export class CartButtonComponent {
   @Input() product: IProductBase | undefined = undefined

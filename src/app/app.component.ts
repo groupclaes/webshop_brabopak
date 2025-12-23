@@ -15,13 +15,14 @@ registerLocaleData(localeNlBE)
 registerLocaleData(localeFrBE)
 
 @Component({
-  selector: 'bra-root',
-  template: '<claes-layout></claes-layout>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex flex-auto w-full h-full',
-    'app-version': pck.version
-  }
+    selector: 'bra-root',
+    template: '<claes-layout></claes-layout>',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'flex flex-auto w-full h-full',
+        'app-version': pck.version
+    },
+    standalone: false
 })
 export class AppComponent {
   constructor(

@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener } f
 import { AuthService, ICustomer } from 'src/app/auth/auth.service'
 
 @Component({
-  selector: 'claes-account',
-  templateUrl: './account.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'relative py-3'
-  }
+    selector: 'claes-account',
+    templateUrl: './account.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'relative py-3'
+    },
+    standalone: false
 })
 export class AccountComponent {
   expanded: boolean = false

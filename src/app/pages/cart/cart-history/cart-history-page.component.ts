@@ -4,9 +4,10 @@ import { AuthService } from 'src/app/auth/auth.service'
 import { EcommerceApiService } from 'src/app/core/api/ecommerce-api.service'
 
 @Component({
-  selector: 'bra-cart-history-page',
-  templateUrl: './cart-history-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bra-cart-history-page',
+    templateUrl: './cart-history-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CartHistoryPageComponent {
   orders: any[] = []

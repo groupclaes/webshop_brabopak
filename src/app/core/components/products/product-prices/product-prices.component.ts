@@ -4,12 +4,13 @@ import { TranslateService } from '@ngx-translate/core'
 import { IProductPrice } from 'src/app/core/api/products-api.service'
 
 @Component({
-  selector: 'bra-product-prices',
-  templateUrl: './product-prices.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'block'
-  }
+    selector: 'bra-product-prices',
+    templateUrl: './product-prices.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'block'
+    },
+    standalone: false
 })
 export class ProductPricesComponent {
   @Input() culture: string = 'nl-BE'

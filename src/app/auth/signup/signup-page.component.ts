@@ -8,10 +8,10 @@ import { Modal, ModalsService } from 'src/app/@shared/modals/modals.service'
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router'
 
 @Component({
-  selector: 'bra-signup-page',
-  templateUrl: './signup-page.component.html',
-  styles: [
-  ]
+    selector: 'bra-signup-page',
+    templateUrl: './signup-page.component.html',
+    styles: [],
+    standalone: false
 })
 export class SignupPageComponent implements OnInit {
   isLoading = false

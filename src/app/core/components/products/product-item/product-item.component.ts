@@ -7,12 +7,13 @@ import { IProduct } from 'src/app/core/api/products-api.service'
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'bra-product-item',
-  templateUrl: './product-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex flex-col w-full cursor-pointer group'
-  }
+    selector: 'bra-product-item',
+    templateUrl: './product-item.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'flex flex-col w-full cursor-pointer group'
+    },
+    standalone: false
 })
 export class ProductItemComponent implements OnInit, OnDestroy {
   @Input() item: IProduct | undefined

@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
-  name: 'thumbSmall'
+    name: 'thumbSmall',
+    standalone: false
 })
 export class ThumbSmallPipe implements PipeTransform {
 

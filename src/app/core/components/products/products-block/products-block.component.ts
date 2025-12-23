@@ -3,12 +3,13 @@ import { TranslateService } from '@ngx-translate/core'
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'bra-products-block',
-  templateUrl: './products-block.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex flex-col p-4 dark:rounded-xl dark:bg-gray-800'
-  }
+    selector: 'bra-products-block',
+    templateUrl: './products-block.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'flex flex-col p-4 dark:rounded-xl dark:bg-gray-800'
+    },
+    standalone: false
 })
 export class ProductsBlockComponent {
   @Input() header: string = ''

@@ -2,8 +2,9 @@ import { ChangeDetectorRef, Component } from '@angular/core'
 import { Modal, ModalsService } from '../modals.service'
 
 @Component({
-  selector: 'bra-modals-container',
-  templateUrl: './modals-container.component.html'
+    selector: 'bra-modals-container',
+    templateUrl: './modals-container.component.html',
+    standalone: false
 })
 export class ModalsContainerComponent {
   constructor(private modalService: ModalsService, private ref: ChangeDetectorRef) {

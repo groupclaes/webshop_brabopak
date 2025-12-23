@@ -3,9 +3,10 @@ import { TranslateService } from '@ngx-translate/core'
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'claes-languages',
-  templateUrl: './languages.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'claes-languages',
+    templateUrl: './languages.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LanguagesComponent {
   constructor(

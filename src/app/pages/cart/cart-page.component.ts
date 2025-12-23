@@ -11,11 +11,11 @@ import { EcommerceApiService, ICartProduct } from 'src/app/core/api/ecommerce-ap
 import { IProductBase, IProductPrice } from 'src/app/core/api/products-api.service'
 
 @Component({
-  selector: 'bra-cart-page',
-  templateUrl: './cart-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-  ]
+    selector: 'bra-cart-page',
+    templateUrl: './cart-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styles: [],
+    standalone: false
 })
 export class CartPageComponent implements OnInit, OnDestroy {
   currentStep = 1

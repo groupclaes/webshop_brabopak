@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 import { SearchService } from 'src/app/@shared/layout/buttons/search/search.service'
 
 @Component({
-  selector: 'bra-pagination',
-  templateUrl: './pagination.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex items-center justify-between border-t px-4 py-3 sm:px-6'
-  }
+    selector: 'bra-pagination',
+    templateUrl: './pagination.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'flex items-center justify-between border-t px-4 py-3 sm:px-6'
+    },
+    standalone: false
 })
 export class PaginationComponent {
   @Input() count: number = 0

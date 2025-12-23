@@ -1,6 +1,9 @@
 import { Directive, ElementRef } from '@angular/core'
 
-@Directive({ selector: 'img' })
+@Directive({
+    selector: 'img',
+    standalone: false
+})
 export class LazyImageDirective {
   constructor({ nativeElement }: ElementRef<HTMLImageElement>) {
     const supports = 'loading' in HTMLImageElement.prototype

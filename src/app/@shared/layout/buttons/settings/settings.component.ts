@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core'
 import { LayoutService, Layout } from '../../layout.service'
 
 @Component({
-  selector: 'claes-settings',
-  templateUrl: './settings.component.html',
-  host: {
-    class: 'static block flex-none w-auto'
-  }
+    selector: 'claes-settings',
+    templateUrl: './settings.component.html',
+    host: {
+        class: 'static block flex-none w-auto'
+    },
+    standalone: false
 })
 export class SettingsComponent implements OnInit {
 
